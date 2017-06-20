@@ -7,13 +7,13 @@ Extension for the existing software [TUnfold](https://www.desy.de/~sschmitt/tunf
 | Function | Input | Output | Description |
 | --- | --- | --- | --- |
 | DebiasTau | Initial Tau, Epsilon(tolerance), Max iteration | Debiased Tau | Debiases initial tau gradually until the minimum computed coverage meets the desired coverage, which is the nominal coverage subtracted by epsilon. |
-| ComputeCoverage | , Tau | Debiased Tau | Debiases initial tau gradually until the minimum computed coverage meets the desired coverage, which is the nominal coverage subtracted by epsilon. |
-| ComputeCoverageOracle | Initial Tau, Epsilon(tolerance), Max iteration | Same as `ComputeCoverage` but input is the true spectrum. Used to compare interval length. |
+| ComputeCoverage | Vector of estimation of the true distribution, Tau | Vector of computed coverage | Given a vector of estimation of the true distribution and a regularization strength parameter tau, computes  |
+| ComputeCoverageOracle | Vector of the true distribution, Tau | Vector of computed coverage | Same as `ComputeCoverage` but input is the true spectrum. Used to compare interval length. |
 
 
-## Demo
+## Simulation
 
-![Demo](debiasTauDemo.png)
+![Demo](debiasTauSimulation.png)
 
 ## Installation
 The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package. For the latest `ROOT` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
