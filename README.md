@@ -22,5 +22,5 @@ This simulation compares the coverage performances of the existing unfolding alg
 The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package and recompile `ROOT`. For the latest `ROOT` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
 
 ## References
-![M. Kuusela. Uncertainty quantification in unfolding elementary particle spectra at the large hadron collider. 2016.](https://infoscience.epfl.ch/record/220015)
-![S. Schmitt. TUnfold, an algorithm for correcting migration effects in high energy physics. 2012.](http://iopscience.iop.org/1748-0221/7/10/T10003/)
+[M. Kuusela. Uncertainty quantification in unfolding elementary particle spectra at the large hadron collider. 2016.](https://infoscience.epfl.ch/record/220015)
+[S. Schmitt. TUnfold, an algorithm for correcting migration effects in high energy physics. 2012.](http://iopscience.iop.org/1748-0221/7/10/T10003/)
