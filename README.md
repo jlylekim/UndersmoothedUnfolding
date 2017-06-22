@@ -21,6 +21,9 @@ This simulation compares the coverage performances of the existing unfolding alg
 ## Installation
 The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package and recompile `ROOT`. For the latest `ROOT` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
 
+## Known issues
+* Current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing a `TUnfold` object.    
+
 ## References
 [M. Kuusela. Uncertainty quantification in unfolding elementary particle spectra at the large hadron collider. 2016.](https://infoscience.epfl.ch/record/220015)        
 

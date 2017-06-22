@@ -19,6 +19,7 @@
 #include <TFile.h>
 #include <TLine.h>
 #include <TLegend.h>
+#include <TLatex.h>
 #include "TUnfold.h"
 #include "Math/ProbFunc.h"
 #endif
@@ -103,9 +104,14 @@ void UndersmoothTauSimulation() {
   Int_t repeatNum = 1000;
   //Double_t *tauListY = new Double_t[repeatNum];   // uncomment to save and plot the taus
   //Double_t *tauListX = new Double_t[repeatNum];   // uncomment to save and plot the taus
+  /*
   Double_t *intervalLengthListUndersmooth = new Double_t[repeatNum];
   Double_t *intervalLengthListOracle = new Double_t[repeatNum];
   Double_t *intervalLengthListLcurve = new Double_t[repeatNum];
+  */
+  vector<Double_t> intervalLengthListUndersmooth(repeatNum);
+  vector<Double_t> intervalLengthListOracle(repeatNum);
+  vector<Double_t> intervalLengthListLcurve(repeatNum);
 
   // for plotting binwise coverage
   // initiating with bin# + 1 since bins start from index 1 in histograms
@@ -248,51 +254,10 @@ void UndersmoothTauSimulation() {
     cout << "Bin #: " << k << " Coverage: " << binwiseCoverageY[k] << endl;
   }
 
-
-  /*
-  ofstream delta_txtfile_lcurve ("26May2017_deltas_Lcurve_fromUS_check.txt");
-  if (delta_txtfile_lcurve.is_open()) {
-    for(Int_t i=0; i<repeatNum; i++){
-        delta_txtfile_lcurve << tauListLcurve[i] << "\n" ;
-    }
-    delta_txtfile_lcurve.close();
-  }
-  */
-
-  /*
-  ofstream coverage_txtfile ("10000data/26May2017_binwise_coverage_US.txt");
-  if (coverage_txtfile.is_open()) {
-    for(Int_t i=1; i<41; i++){
-        coverage_txtfile << binwiseCoverageY[i] << "\n" ;
-    }
-    coverage_txtfile.close();
-  }
-
-  // write obtained deltas in txt file
-  ofstream delta_txtfile ("10000data/26May2017_deltas_US.txt");
-  if (delta_txtfile.is_open()) {
-    for(Int_t i=0; i<repeatNum; i++){
-        delta_txtfile << tauListY[i] << "\n" ;
-    }
-    delta_txtfile.close();
-  }
-
-  ofstream interval_length_txtfile ("10000data/26May2017_average_length_US.txt");
-  if (interval_length_txtfile.is_open()) {
-    for(Int_t i=0; i<repeatNum; i++){
-        interval_length_txtfile << intervalLengthList[i] << "\n" ;
-    }
-    interval_length_txtfile.close();
-  }
-
-  ofstream interval_length_txtfile2 ("10000data/26May2017_average_length_US_oracle.txt");
-  if (interval_length_txtfile2.is_open()) {
-    for(Int_t i=0; i<repeatNum; i++){
-        interval_length_txtfile2 << intervalLengthListOracle[i] << "\n" ;
-    }
-    interval_length_txtfile2.close();
-  }
-  */
+  // obtain average interval lengths
+  Double_t averageIntervalLengthLcurve = TMath::Mean(intervalLengthListLcurve.begin(), intervalLengthListLcurve.end());
+  Double_t averageIntervalLengthUndersmooth = TMath::Mean(intervalLengthListUndersmooth.begin(), intervalLengthListUndersmooth.end());
+  Double_t averageIntervalLengthOracle = TMath::Mean(intervalLengthListOracle.begin(), intervalLengthListOracle.end());
 
 
   // Set up plotting binwise coverage
@@ -300,11 +265,11 @@ void UndersmoothTauSimulation() {
   gStyle->SetTickLength(0.01, "Y");
   gStyle->SetTickLength(0.0, "X");
 
-  TH1D* debiasCoverageHist = new TH1D ("x", "", 40, 0, 41);
+  TH1D* undersmoothCoverageHist = new TH1D ("x", "", 40, 0, 41);
   TH1D* lcurveCoverageHist = new TH1D ("x", "", 40, 0, 41);
 
   for (Int_t i=1;i<41;i++) {
-    debiasCoverageHist->SetBinContent(i,binwiseCoverageY[i]);
+    undersmoothCoverageHist->SetBinContent(i,binwiseCoverageY[i]);
     lcurveCoverageHist->SetBinContent(i,binwiseCoverageLcurve[i]);
   }
 
@@ -325,20 +290,24 @@ void UndersmoothTauSimulation() {
   nominalCov->SetLineColor(1);  // black
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
+  TLatex *lcurveIntervalLength = new TLatex(10.5,0.81,Form("#scale[0.85]{#bf{Average interval length: %g}}", averageIntervalLengthLcurve));
+  lcurveIntervalLength->Draw();
 
   output->cd(2);
-  debiasCoverageHist->SetLineColor(1);   // black
-  debiasCoverageHist->SetBarWidth(0.9);
-  debiasCoverageHist->SetFillColor(38);
-  debiasCoverageHist->SetTitle("Binwise coverage, Undersmoothing");
-  debiasCoverageHist->GetXaxis()->SetTitle("Bin");
-  debiasCoverageHist->GetYaxis()->SetTitle("Coverage (1000 repetitions)");
-  debiasCoverageHist->GetYaxis()->SetRangeUser(0.0, 0.8);
-  debiasCoverageHist->SetStats(kFALSE);
-  debiasCoverageHist->Draw("bar");
+  undersmoothCoverageHist->SetLineColor(1);   // black
+  undersmoothCoverageHist->SetBarWidth(0.9);
+  undersmoothCoverageHist->SetFillColor(38);
+  undersmoothCoverageHist->SetTitle("Binwise coverage, Undersmoothing");
+  undersmoothCoverageHist->GetXaxis()->SetTitle("Bin");
+  undersmoothCoverageHist->GetYaxis()->SetTitle("Coverage (1000 repetitions)");
+  undersmoothCoverageHist->GetYaxis()->SetRangeUser(0.0, 0.8);
+  undersmoothCoverageHist->SetStats(kFALSE);
+  undersmoothCoverageHist->Draw("bar");
   nominalCov->SetLineColor(1);  // black
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
+  TLatex *undersmoothIntervalLength = new TLatex(10.5,0.81,Form("#scale[0.85]{#bf{Average interval length: %g}}", averageIntervalLengthUndersmooth));
+  undersmoothIntervalLength->Draw();
 
   TLegend* legendData = new TLegend(0.15,0.7,0.35,0.85);
   output->cd(3);
@@ -354,9 +323,6 @@ void UndersmoothTauSimulation() {
   legendData->AddEntry(hLambda,"True","l");
   legendData->Draw();
 
-  double var = 9.05;
-  TLatex *l = new TLatex(0.2,0.7,Form("A string %g in some units",var));
-  l->Draw();
 
   output->cd(4);
   unfoldedUndersmooth->SetStats(kFALSE);
