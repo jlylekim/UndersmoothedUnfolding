@@ -1,5 +1,5 @@
 //==============================================================================
-//  Junhyung "Lyle" Kim
+//  Junhyung (Lyle) Kim
 //  June 20, 2017
 //
 //==============================================================================
@@ -57,19 +57,9 @@ TH1D* generateData() {
   return hy;
 }
 
-void debiasTauSimulation() {
+void UndersmoothTauSimulation() {
 
   gRandom->SetSeed(123456);
-  /*
-  // get true histogram
-  TH1D* hLambda;
-  TFile *inputFile=new TFile("hLambda.root");
-  inputFile->GetObject("hLambda",hLambda);
-
-  //hLambda->Scale(1.0/1000.0);
-  //hLambda->Scale(1.0/50.0);
-  hLambda->Scale(dataSize/1000000.0);
-  */
 
   // Fill hLambda by simulating a large number
   // of observations from the true distribution
@@ -110,11 +100,10 @@ void debiasTauSimulation() {
   // obtain nominal coverage
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
 
-  // for plotting different delta's (tau's)
-  Int_t repeatNum = 10;
-  Double_t *tauListY = new Double_t[repeatNum];
-  Double_t *tauListX = new Double_t[repeatNum];
-  Double_t *intervalLengthList = new Double_t[repeatNum];
+  Int_t repeatNum = 1000;
+  //Double_t *tauListY = new Double_t[repeatNum];   // uncomment to save and plot the taus
+  //Double_t *tauListX = new Double_t[repeatNum];   // uncomment to save and plot the taus
+  Double_t *intervalLengthListUndersmooth = new Double_t[repeatNum];
   Double_t *intervalLengthListOracle = new Double_t[repeatNum];
   Double_t *intervalLengthListLcurve = new Double_t[repeatNum];
 
@@ -125,7 +114,7 @@ void debiasTauSimulation() {
   Double_t binwiseCoverageY[41] = {0};
   Double_t binwiseCoverageX[41];
   // initiating vector to store interval lengths
-  vector<Double_t> intervalLengths(40);
+  vector<Double_t> intervalLengthsUndersmooth(40);
   vector<Double_t> intervalLengthsOracle(40);
   vector<Double_t> intervalLengthsLcurve(40);
 
@@ -139,42 +128,47 @@ void debiasTauSimulation() {
   TSpline *logTauX,*logTauY;
   TGraph *lCurve;
 
+
   //Double_t biasScaleLK=0.0;
   Double_t biasScaleLK=dataSize/1000000.0;
 
   // to plot one realization of unfolded histogram
   TH1D *unfoldedLcurve = new TH1D("Unfolded","", 40, -7.0, 7.0);
-  TH1D *unfoldedDebias = new TH1D("Unfolded","", 40, -7.0, 7.0);
+  TH1D *unfoldedUndersmooth = new TH1D("Unfolded","", 40, -7.0, 7.0);
 
   for (Int_t i=0; i<repeatNum; i++) {
-    Int_t numIterOracle = 0;
+    //Int_t numIterOracle = 0;
 
     TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
-
-    //TUnfold* unfold = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
-    TUnfold* unfold = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
-    //TUnfold* unfoldOracle = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
+    TUnfold* unfoldUndersmooth = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
     TUnfold* unfoldOracle = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
 
+    //TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
+    //TUnfold* unfoldUndersmooth = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
+    //TUnfold* unfoldOracle = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
+
+
     TH1D *hLambdaHatInvLcurve = new TH1D("Unfolded","", 40, -7.0, 7.0);
-    TH1D *hLambdaHatInv = new TH1D("Unfolded","", 40, -7.0, 7.0);
+    TH1D *hLambdaHatInvUndersmooth = new TH1D("Unfolded","", 40, -7.0, 7.0);
     TH1D *hLambdaHatInvOracle = new TH1D("Unfolded","", 40, -7.0, 7.0);
 
     TH1D* hy = generateData();
 
     unfoldLcurve->SetInput(hy, biasScaleLK);
-    unfold->SetInput(hy, biasScaleLK);
+    unfoldUndersmooth->SetInput(hy, biasScaleLK);
     unfoldOracle->SetInput(hy, biasScaleLK);
 
     // Unfolding using L-curve
     unfoldLcurve->ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
-    unfold->ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
+    unfoldUndersmooth->ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
 
-    Double_t deltaFromLcurve = unfold->GetTau();
+    Double_t deltaFromLcurve = unfoldUndersmooth->GetTau();
     //tauListLcurve[i] = deltaFromLcurve;
     Double_t oracleDelta = deltaFromLcurve;
 
-    // for obtaining oracle interval length
+
+    // for obtaining oracle interval length; uncomment to obtain it
+    /*
     TVectorD oracleCoverage = unfoldOracle->ComputeCoverageOracle(hLambda, oracleDelta);
     // subtracting tolerance (0.01) from the nominal coverage
     while (oracleCoverage.Min() < nominalCoverage - 0.01) {
@@ -182,21 +176,23 @@ void debiasTauSimulation() {
       oracleCoverage = unfoldOracle->ComputeCoverageOracle(hLambda, oracleDelta);
       numIterOracle++;
     }
+    */
 
-    Double_t new_delta = unfold->DebiasTau(deltaFromLcurve, 0.01, 1000);
-    std::cout << "New delta is: " << new_delta << std::endl;
 
-    unfold->DoUnfold(new_delta);
+    Double_t new_delta = unfoldUndersmooth->UndersmoothTau(deltaFromLcurve, 0.01, 1000);
+    std::cout << "Undersmoothed tau is: " << new_delta << std::endl;
+
+    unfoldUndersmooth->DoUnfold(new_delta);
     unfoldOracle->DoUnfold(oracleDelta);
 
     // save delta obtained from debiasTau // i can probably get rid of all the parts pertinent to saving tau
-    tauListX[i] = i;
-    tauListY[i] = new_delta;
+    //tauListX[i] = i;
+    //tauListY[i] = new_delta;
 
     unfoldLcurve->GetOutput(hLambdaHatInvLcurve);
     unfoldLcurve->GetOutput(unfoldedLcurve);
-    unfold->GetOutput(hLambdaHatInv);
-    unfold->GetOutput(unfoldedDebias);
+    unfoldUndersmooth->GetOutput(hLambdaHatInvUndersmooth);
+    unfoldUndersmooth->GetOutput(unfoldedUndersmooth);
     unfoldOracle->GetOutput(hLambdaHatInvOracle);
 
     // check coverage in each bin
@@ -210,14 +206,14 @@ void debiasTauSimulation() {
 
       Double_t hLambdaHatInvOracleVar = hLambdaHatInvOracle->GetBinError(j);  // to save oracle interval length
 
-      Double_t hLambdaHatInvVar = hLambdaHatInv->GetBinError(j);
-      Double_t hLambdaHatInvLow = hLambdaHatInv->GetBinContent(j) - hLambdaHatInvVar;
-      Double_t hLambdaHatInvUp = hLambdaHatInv->GetBinContent(j) + hLambdaHatInvVar;
+      Double_t hLambdaHatInvUndersmoothVar = hLambdaHatInvUndersmooth->GetBinError(j);
+      Double_t hLambdaHatInvUndersmoothLow = hLambdaHatInvUndersmooth->GetBinContent(j) - hLambdaHatInvUndersmoothVar;
+      Double_t hLambdaHatInvUndersmoothUp = hLambdaHatInvUndersmooth->GetBinContent(j) + hLambdaHatInvUndersmoothVar;
 
       binwiseCoverageX[j] = j;  // for plotting
 
       intervalLengthsLcurve[j-1] = hLambdaHatInvLcurveVar * 2.0;
-      intervalLengths[j-1] = hLambdaHatInvVar * 2.0;
+      intervalLengthsUndersmooth[j-1] = hLambdaHatInvUndersmoothVar * 2.0;
       intervalLengthsOracle[j-1] = hLambdaHatInvOracleVar * 2.0;
 
       // check if lcurve scan covered the true lambda
@@ -226,26 +222,27 @@ void debiasTauSimulation() {
         binwiseCoverageLcurve[j] = binwiseCoverageLcurve[j] + (1.0 / repeatNum);
       }
 
-      if (hLambdaHatInvLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvUp) {
+      if (hLambdaHatInvUndersmoothLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvUndersmoothUp) {
         // binwiseCoverageY starts from index 0 but it is initialized to 0 so neglect;
         binwiseCoverageY[j] = binwiseCoverageY[j] + (1.0 / repeatNum);
       }
     }
     // store average interval lengths of the unfolded output in this particular repetition
     intervalLengthListLcurve[i] = TMath::Mean(intervalLengthsLcurve.begin(), intervalLengthsLcurve.end());
-    intervalLengthList[i] = TMath::Mean(intervalLengths.begin(), intervalLengths.end());
+    intervalLengthListUndersmooth[i] = TMath::Mean(intervalLengthsUndersmooth.begin(), intervalLengthsUndersmooth.end());
     intervalLengthListOracle[i] = TMath::Mean(intervalLengthsOracle.begin(), intervalLengthsOracle.end());
 
     delete hy;
-    delete unfold;
+    delete unfoldUndersmooth;
     delete unfoldOracle;
     delete unfoldLcurve;
-    delete hLambdaHatInv;
+    delete hLambdaHatInvUndersmooth;
     delete hLambdaHatInvOracle;
     delete hLambdaHatInvLcurve;
-    cout << "Oracle Iteration #: " << numIterOracle << endl;
+    //cout << "Oracle Iteration #: " << numIterOracle << endl;
   }
 
+  // print out obtained binwise coverage from undersmoothing
   for (Int_t k=1; k<41; k++) {
     //cout << "Delta: " << deltaList[k] << "  Coverage: " << coverageList[k] << endl;
     cout << "Bin #: " << k << " Coverage: " << binwiseCoverageY[k] << endl;
@@ -297,6 +294,7 @@ void debiasTauSimulation() {
   }
   */
 
+
   // Set up plotting binwise coverage
   gStyle->SetPadTickY(2);
   gStyle->SetTickLength(0.01, "Y");
@@ -313,7 +311,6 @@ void debiasTauSimulation() {
   TCanvas* output = new TCanvas("output");
   output->Divide(2,2);
 
-  //TCanvas* c1 = new TCanvas("c1");
   output->cd(1);
   lcurveCoverageHist->SetLineColor(1);   // black
   lcurveCoverageHist->SetBarWidth(0.9);
@@ -329,7 +326,6 @@ void debiasTauSimulation() {
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
 
-  //TCanvas* c2 = new TCanvas("c2");
   output->cd(2);
   debiasCoverageHist->SetLineColor(1);   // black
   debiasCoverageHist->SetBarWidth(0.9);
@@ -344,8 +340,7 @@ void debiasTauSimulation() {
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
 
-  TLegend* legendData = new TLegend(0.15,0.6,0.4,0.85);
-  //TCanvas* c3 = new TCanvas("c3");
+  TLegend* legendData = new TLegend(0.15,0.7,0.35,0.85);
   output->cd(3);
   unfoldedLcurve->SetStats(kFALSE);
   unfoldedLcurve->SetLineColor(15); // Gray
@@ -357,23 +352,25 @@ void debiasTauSimulation() {
   hLambda->SetLineColor(6); // Magenta
   hLambda->Draw("SAME HIST");
   legendData->AddEntry(hLambda,"True","l");
-
   legendData->Draw();
 
-  //TCanvas* c4 = new TCanvas("c4");
+  double var = 9.05;
+  TLatex *l = new TLatex(0.2,0.7,Form("A string %g in some units",var));
+  l->Draw();
+
   output->cd(4);
-  unfoldedDebias->SetStats(kFALSE);
-  unfoldedDebias->SetLineColor(15); // Gray
-  unfoldedDebias->SetTitle("Unfolded, Undersmoothing");
-  unfoldedDebias->GetYaxis()->SetRangeUser(0.0, 1600.0);
-  unfoldedDebias->Draw("");
+  unfoldedUndersmooth->SetStats(kFALSE);
+  unfoldedUndersmooth->SetLineColor(15); // Gray
+  unfoldedUndersmooth->SetTitle("Unfolded, Undersmoothing");
+  unfoldedUndersmooth->GetYaxis()->SetRangeUser(0.0, 1600.0);
+  unfoldedUndersmooth->Draw("");
   hLambda->SetStats(kFALSE);
   hLambda->SetLineColor(6); // Magenta
   hLambda->Draw("SAME HIST");
 
-  output->SaveAs("debiasTauDemo.pdf");
+  output->SaveAs("UndersmoothTauSimulation.pdf");
 }
 
 #ifndef __CINT__
-int main () { debiasTauSimulation(); return 0; }  // Main program when run stand-alone
+int main () { UndersmoothTauSimulation(); return 0; }  // Main program when run stand-alone
 #endif

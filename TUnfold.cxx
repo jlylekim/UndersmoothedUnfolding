@@ -1,4 +1,9 @@
 // @(#)root/unfold:$Id$
+
+// Modified by Junhyung (Lyle) Kim and Mikael Kuusela
+// starting from TUnfold.cxx (version 17.6) by Stefan Schmitt
+
+
 // Author: Stefan Schmitt DESY, 13/10/08
 
 /** \class TUnfold
@@ -123,7 +128,7 @@ along with TUnfold.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <vector>
 
-#include "Math/ProbFunc.h" //LK: this includes normal cdf function
+#include "Math/ProbFunc.h"
 
 
 //#define DEBUG
@@ -1727,7 +1732,9 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
    //    fL: filled depending on the regularisation scheme
    InitTUnfold();
    SetConstraint(constraint);
-   std::cout << "MODIFIED SOURCEFILE FOR UNDERSMOOTHED UNFOLDING" << std::endl;
+   //std::cout << "MODIFIED SOURCEFILE FOR UNDERSMOOTHED UNFOLDING" << std::endl;
+   Info("TUnfold", "MODIFIED SOURCEFILE FOR UNDERSMOOTHED UNFOLDING");
+
    Int_t nx0, nx, ny;
    if (histmap == kHistMapOutputHoriz) {
       // include overflow bins on the X axis
@@ -3689,14 +3696,12 @@ TVectorD TUnfold::ComputeCoverageOracle(TH1 *hist_beta, Double_t tau)
     (*beta) (i, 0) = hist_beta->GetBinContent(fXToHist[i]);
   }
 
-  /*
   if(!fVyyInv) {
      GetInputInverseEmatrix(0);
      if(fConstraint != kEConstraintNone) {
   fNdf--;
      }
   }
-  */
 
   // calculate bias
   TMatrixDSparse *AtVyyinv=MultiplyMSparseTranspMSparse(fA,fVyyInv);
@@ -3777,14 +3782,12 @@ TVectorD TUnfold::ComputeCoverageOracle(TH1 *hist_beta, Double_t tau)
 TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
 {
 
-  /*
   if(!fVyyInv) {
      GetInputInverseEmatrix(0);
      if(fConstraint != kEConstraintNone) {
   fNdf--;
      }
   }
-  */
 
   // calculate bias
   TMatrixDSparse *AtVyyinv=MultiplyMSparseTranspMSparse(fA,fVyyInv);
@@ -3854,16 +3857,11 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
   }
 
   Int_t dim = fXToHist.GetSize() - 2;
-  //std::cout << "LK: dim: " << dim <<std::endl;
-  // dim should equal the # of bins in TRUE space (40 in this case).
+  // dim should equal the # of bins in TRUE space
   // Subtracts 2 because in TUnfold constructor,
   // 2 is added to the # of bins in TRUE space
   // for overflow purpose
 
-  // TVectorD Coverage_probability used to start from 1 because
-  // histograms start from bin 1 and needed to plot binwise coverage from bin1
-  // but this was inconsistent and confusing since all other objects above
-  // such as bias_data or SEii start from 0
   TVectorD Coverage_probability(dim);
 
   for(Int_t i=0; i<dim; i++) {
@@ -3876,7 +3874,7 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
 
 ////////////////////////////////////////////////////////////////////////
 ///
-Double_t TUnfold::DebiasTau(Double_t tau, Double_t epsilon, Int_t max_iter)
+Double_t TUnfold::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
 
@@ -3910,20 +3908,16 @@ Double_t TUnfold::DebiasTau(Double_t tau, Double_t epsilon, Int_t max_iter)
       fXHat = new TMatrixD(*xSparse);
       DeleteMatrix(&rhs);
       DeleteMatrix(&xSparse);
-
       //std::cout << "Obtained new BetaHat" << std::endl;
     }
 
     TVectorD computedCoverage = ComputeCoverage(fXHat, tau);
     coverages[0] = coverages[1];
     coverages[1] = computedCoverage.Min();
-    //std::cout << "Current estimated coverage: " << coverages[1] << std::endl;
-    Info("DebiasTau", "Current computed coverage: %lf", coverages[1]);
+    Info("UndersmoothTau", "Current computed coverage: %lf", coverages[1]);
 
     if (coverages[0] > coverages[1]) {
-
-      //std::cout<<"Computed coverage decreased"<<"\n"<<"Prev: "<<coverages[0]<<"   New: "<<coverages[1]<<std::endl;
-      Info("DebiasTau", "Computed coverage decreased\nPrevious: %lf, Now: %lf",
+      Info("UndersmoothTau", "Computed coverage decreased\nPrevious: %lf, Now: %lf",
       coverages[0], coverages[1]);
 
       fixed = 1;
@@ -3932,14 +3926,12 @@ Double_t TUnfold::DebiasTau(Double_t tau, Double_t epsilon, Int_t max_iter)
       coverages[1] = computedCoverage.Min();
     }
     tau = tau * scaling;
-    //std::cout << "Decreasing tau to " << tau << std::endl;
-    Info("DebiasTau", "Decreasing tau to %lf", tau);
+    Info("UndersmoothTau", "Decreasing tau to %lf", tau);
 
     num_iter = num_iter+1;
   } while (coverages[1] < nominalCoverage-epsilon && num_iter<max_iter);
   tau = tau / scaling;
-  //std::cout << "Obtained estimated coverage: " << coverages[1] << std::endl;
-  Info("DebiasTau", "Obtained estimated coverage: %lf", coverages[1]);
+  Info("UndersmoothTau", "Obtained estimated coverage: %lf", coverages[1]);
   return tau;
 }
 

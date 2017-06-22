@@ -1,3 +1,7 @@
+// Modified by Junhyung (Lyle) Kim and Mikael Kuusela
+// starting from TUnfold.cxx (version 17.6) by Stefan Schmitt
+
+
 // Author: Stefan Schmitt
 // DESY, 13/10/08
 
@@ -296,12 +300,12 @@ public:
    Double_t GetRhoI(TH1 *rhoi,const Int_t *binMap=0,TH2 *invEmat=0) const;
    void GetFoldedOutput(TH1 *folded,const Int_t *binMap=0) const;
 
-
-   TVectorD ComputeCoverageOracle(TH1 *hist_beta, Double_t tau);
-   TVectorD ComputeCoverage(TMatrixD *beta, Double_t tau);
-
-   TVectorD DebiasTauEstCov(Double_t tau_init, Double_t epsilon, Int_t max_iter, Int_t bin_index);
-   Double_t DebiasTau(Double_t tau_init, Double_t epsilon, Int_t max_iter);
+   ////////////////////////////////////////////////////////////////////////////////
+   // Implemented by Junhung (Lyle) Kim and Mikael Kuusela                       //
+   TVectorD ComputeCoverageOracle(TH1 *hist_beta, Double_t tau);                 //
+   TVectorD ComputeCoverage(TMatrixD *beta, Double_t tau);                       //
+   Double_t UndersmoothTau(Double_t tau_init, Double_t epsilon, Int_t max_iter); //
+   ////////////////////////////////////////////////////////////////////////////////
 
    // access input parameters
    void GetProbabilityMatrix(TH2 *A,EHistMap histmap) const;

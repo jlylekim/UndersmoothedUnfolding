@@ -16,7 +16,7 @@ This page provides an extension for the existing software [TUnfold V17.6](https:
 
 This simulation compares the coverage performances of the existing unfolding algorithm `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this extension. Top plots compare binwise coverages of each method, which are obtained by repeating unfolding 1,000 times with independent realizations of data with each algorithm. Bottom plots show one realization of unfolding of each method.
 
-![Simulation](debiasTauSimulation.png)
+![Simulation](UndersmoothTauSimulation.png)
 
 ## Installation
 The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package and recompile `ROOT`. For the latest `ROOT` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
