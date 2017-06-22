@@ -19,7 +19,7 @@ This simulation compares the coverage performances of the existing unfolding alg
 ![Simulation](UndersmoothTauSimulation.png)
 
 ## Installation
-The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package and recompile `ROOT`. For the latest `ROOT` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
+The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile that comes with `ROOT` package and recompile `ROOT`. For the latest `ROOT V6.10` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
 
 ## Known issues
 * Current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing a `TUnfold` object.    
