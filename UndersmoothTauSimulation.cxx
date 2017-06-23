@@ -122,11 +122,8 @@ void UndersmoothTauSimulation() {
   Int_t repeatNum = 1000;
   //Double_t *tauListY = new Double_t[repeatNum];   // uncomment to save and plot the taus
   //Double_t *tauListX = new Double_t[repeatNum];   // uncomment to save and plot the taus
-  /*
-  Double_t *intervalLengthListUndersmooth = new Double_t[repeatNum];
-  Double_t *intervalLengthListOracle = new Double_t[repeatNum];
-  Double_t *intervalLengthListLcurve = new Double_t[repeatNum];
-  */
+
+  // initiating vectors to store confidence interval lengths for each iteration
   vector<Double_t> intervalLengthListUndersmooth(repeatNum);
   vector<Double_t> intervalLengthListOracle(repeatNum);
   vector<Double_t> intervalLengthListLcurve(repeatNum);
@@ -137,7 +134,7 @@ void UndersmoothTauSimulation() {
   Double_t binwiseCoverageLcurve[41] = {0};
   Double_t binwiseCoverageY[41] = {0};
   Double_t binwiseCoverageX[41];
-  // initiating vector to store interval lengths
+  // initiating vectors to display average interval lengths
   vector<Double_t> intervalLengthsUndersmooth(40);
   vector<Double_t> intervalLengthsOracle(40);
   vector<Double_t> intervalLengthsLcurve(40);
