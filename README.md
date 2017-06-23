@@ -2,7 +2,7 @@
 
 ### Authors: Junhyung (Lyle) Kim and Mikael Kuusela, University of Chicago
 
-This page provides an extension for the existing software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html) written by Stefan Schmitt. The existing software provides several algorithms to unfold measured data from particle detectors to obtain the true physical spectra, but often suffers significant undercoverage with regards to uncertainty quantification. This extension provides another unfolding methodology, `UndersmoothTau`, which is a fully data-driven way of unfolding while meeting the desired coverage at the cost of slight increase in the interval lengths. `UndersmoothTau` is an implementation of undersmoothing debias technique proposed by M. Kuusela (2016). Please refer to the references section for more detail on the statistical methodology.
+This repository provides an extension for the unfolding software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing the regularization strength so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
 
 ## Main functions
 
