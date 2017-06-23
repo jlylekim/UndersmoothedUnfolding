@@ -2,15 +2,17 @@
 
 ### Authors: Junhyung (Lyle) Kim and Mikael Kuusela, University of Chicago
 
-This repository provides an extension for the unfolding software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing the regularization strength so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
+This repository provides an extension for the unfolding software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing the regularization strength so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
 
-## Main functions
+## New functions
 
 | Function | Input | Output | Description |
 | --- | --- | --- | --- |
-| UndersmoothTau | Initial tau, epsilon, max iteration | Undersmoothed Tau | Undersmooths initial tau gradually until the minimum computed coverage meets the desired coverage, which is the nominal coverage subtracted by epsilon. |
-| ComputeCoverage | Vector of estimation of the true distribution, tau | Vector of computed coverage | Given a vector of estimation of the true distribution and a regularization strength parameter tau, computes the estimated coverage. |
-| ComputeCoverageOracle | Vector of the true distribution, tau | Vector of computed coverage | Same as `ComputeCoverage` but input is the true spectrum. Used for comparing interval lengths. |
+| `UndersmoothTau` | Initial tau, epsilon, max number of iterations | Undersmoothed tau | Undersmooths the initial tau (from L-curve for example) gradually until the minimum estimated coverage meets the target coverage, which is the nominal 68% coverage minus epsilon. This is the main function from the user's perspective. |
+| `ComputeCoverage` | Estimate of the true histogram, tau | Computed coverage | Computes the estimated coverage given an estimate of the true histogram and a regularization strength tau. Used by `UndersmoothTau`. |
+| `ComputeCoverageOracle` | True histogram, tau | Computed coverage | Same as `ComputeCoverage` but the first input is `TH1*` instead of `TMatrixD*`. Used for comparing interval lengths. |
+
+See `UndersmoothTauSimulation.cxx` for an example on how to use `UndersmoothTau`.
 
 ## Demonstration
 
