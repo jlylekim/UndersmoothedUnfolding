@@ -8,7 +8,7 @@ This repository provides an extension for the unfolding software [TUnfold V17.6]
 
 | Function | Input | Output | Description |
 | --- | --- | --- | --- |
-| `UndersmoothTau` | Initial tau, epsilon, max number of iterations | Undersmoothed tau | Undersmooths the initial tau (from L-curve for example) gradually until the minimum estimated coverage meets the target coverage, which is the nominal 68% coverage minus epsilon. This is the main function from the user's perspective. |
+| `UndersmoothTau` | Initial tau, tolerance epsilon, max number of iterations | Undersmoothed tau | Undersmooths the initial tau (from L-curve for example) gradually until the minimum estimated coverage meets the target coverage, which is the nominal 68% minus the tolerance epsilon. This is the main function from the user's perspective. |
 | `ComputeCoverage` | Estimate of the true histogram, tau | Computed coverage | Computes the estimated coverage given an estimate of the true histogram and a regularization strength tau. Used by `UndersmoothTau`. |
 | `ComputeCoverageOracle` | True histogram, tau | Computed coverage | Same as `ComputeCoverage` but the first input is `TH1*` instead of `TMatrixD*`. Used for comparing interval lengths. |
 
