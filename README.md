@@ -12,17 +12,17 @@ This page provides an extension for the existing software [TUnfold V17.6](https:
 | ComputeCoverage | Vector of estimation of the true distribution, tau | Vector of computed coverage | Given a vector of estimation of the true distribution and a regularization strength parameter tau, computes the estimated coverage. |
 | ComputeCoverageOracle | Vector of the true distribution, tau | Vector of computed coverage | Same as `ComputeCoverage` but input is the true spectrum. Used for comparing interval lengths. |
 
-## Simulation
+## Demonstration
 
 This simulation compares the coverage performances of the existing unfolding algorithm `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this extension. Top plots compare binwise coverages of each method, which are obtained by repeating unfolding 1,000 times with independent realizations of data with each algorithm. Bottom plots show one realization of unfolding of each method.
 
-![Simulation](UndersmoothTauSimulation.png)
+![Demonstration](UndersmoothTauSimulation.png)
 
 ## Installation
-The easiest way to make use of undersmoothed unfolding as of now is to replace the `TUnfold` sourcefile and the headerfile that come with `ROOT` package with the ones in this extension page, and then recompile `ROOT`. For the latest `ROOT V6.10` release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
+As of now, the easiest way to use this code is to replace the `TUnfold` sourcefile and headerfile that come with ROOT with the ones in this repository and then recompile ROOT. For the latest [ROOT V6.10](https://root.cern.ch/content/release-61000) release, the `TUnfold` sourcefile is located at `root/hist/unfold/src` and the headerfile is located at `root/hist/unfold/inc`.
 
 ## Known issues
-* Current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing a `TUnfold` object.
+* The current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing the `TUnfold` object.
 
 ## References
 [M. Kuusela. Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider. PhD thesis, École Polytechnique Fédérale de Lausanne (EPFL), 2016.](https://infoscience.epfl.ch/record/220015)
