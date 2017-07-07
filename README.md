@@ -1,6 +1,6 @@
 # Undersmoothed uncertainty quantification for unfolding    
 
-### Authors: Junhyung (Lyle) Kim and Mikael Kuusela, University of Chicago
+### Authors: Junhyung Lyle Kim and Mikael Kuusela, University of Chicago
 
 This repository provides an extension for the unfolding software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing tau so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
 
@@ -10,9 +10,25 @@ This repository provides an extension for the unfolding software [TUnfold V17.6]
 | --- | --- | --- | --- |
 | `UndersmoothTau` | Initial tau, tolerance epsilon, max number of iterations | Undersmoothed tau | Undersmooths the initial tau (from L-curve for example) gradually until the minimum estimated coverage meets the target coverage, which is the nominal 68% minus the tolerance epsilon. This is the main function from the user's perspective. |
 | `ComputeCoverage` | Estimate of the true histogram, tau | Computed coverage | Computes the estimated coverage given an estimate of the true histogram and a regularization strength tau. Used by `UndersmoothTau`. |
-| `ComputeCoverageOracle` | True histogram, tau | Computed coverage | Same as `ComputeCoverage` but the first input is `TH1*` instead of `TMatrixD*`. Used for comparing interval lengths. |
 
-See `UndersmoothTauSimulation.cxx` for an example on how to use `UndersmoothTau`.
+
+##  Example usage  
+`UndersmoothTau is implemented so that it can be used with any other method that might suffer undercoverage. Below is an exemplary usage of `UndersmoothTau` with `ScanLcurve` method provided in `TUnfold`.    
+
+```c++
+TUnfold unfold = new TUnfold();	         // construct a TUnfold object
+unfold.ScanLcurve();				  		       // unfold using ScanLcurve method
+TauFromLcurve = unfold.GetTau();	   	   // retrieve tau chosen by ScanLcurve
+
+// starting from tau chosen by ScanLcurve, perform undersmoothing which gradually
+// decreases tau until the minimum estimated coverage meets the target coverage,
+// which is the nominal 68% minus the tolerance epsilon (0.01 in this example).
+
+TauFromUndersmoothing = unfold.UndersmoothTau(deltaFromLcurve, 0.01);
+unfold.DoUnfold(TauFromUndersmoothing);   // unfold again with undersmoothed tau
+```
+
+See `UndersmoothTauSimulation.cxx` for more detail on how to use `UndersmoothTau`.
 
 ## Demonstration
 
