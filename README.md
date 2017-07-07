@@ -18,11 +18,11 @@ This repository provides an extension for the unfolding software [TUnfold V17.6]
 ```c++
 TUnfold unfold = new TUnfold();          // construct a TUnfold object
 unfold.ScanLcurve();                     // unfold using ScanLcurve method
-TauFromLcurve = unfold.GetTau();         // retrieve tau chosen by ScanLcurve
+Double TauFromLcurve = unfold.GetTau();         // retrieve tau chosen by ScanLcurve
 
 // starting from tau chosen by ScanLcurve, undersmooth tau until the minimum estimated coverage  
 // meets the target coverage, which is the nominal 68% minus the tolerance epsilon (0.01 in this example).
-TauFromUndersmoothing = unfold.UndersmoothTau(TauFromLcurve, 0.01);
+Double TauFromUndersmoothing = unfold.UndersmoothTau(TauFromLcurve, 0.01);
 unfold.DoUnfold(TauFromUndersmoothing);   // unfold again with undersmoothed tau
 ```
 
