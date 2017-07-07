@@ -3733,7 +3733,6 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
   Double_t *bias_data = biasSparse->GetMatrixArray();
 
   // calculate SE
-  // EAtVyyinv: 41x42; Vyy: 42x42 => EAtVyyinvVyy: 41x42
   TMatrixDSparse *EAtVyyinvVyy = MultiplyMSparseMSparse(EAtVyyinv, fVyy);
 
   // Transpose EAtVyyinv

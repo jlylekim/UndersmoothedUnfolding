@@ -301,7 +301,7 @@ public:
    void GetFoldedOutput(TH1 *folded,const Int_t *binMap=0) const;
 
    ////////////////////////////////////////////////////////////////////////////////
-   // Implemented by Junhung (Lyle) Kim and Mikael Kuusela                       //
+   // Implemented by Junhung Lyle Kim and Mikael Kuusela                       //
    TVectorD ComputeCoverage(TMatrixD *beta, Double_t tau);                       //
    Double_t UndersmoothTau(Double_t tau_init, Double_t epsilon, Int_t max_iter); //
    ////////////////////////////////////////////////////////////////////////////////
