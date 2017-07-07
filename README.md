@@ -13,18 +13,14 @@ This repository provides an extension for the unfolding software [TUnfold V17.6]
 
 
 ##  Example usage  
-`UndersmoothTau is implemented so that it can be used with any other method that might suffer undercoverage. Below is an exemplary usage of `UndersmoothTau` with `ScanLcurve` method provided in `TUnfold`.    
+`UndersmoothTau` is implemented so that it can be used with any other method that might suffer undercoverage. Below is an exemplary usage of `UndersmoothTau` with `ScanLcurve` method provided in `TUnfold`.    
 
 ```c++
-TUnfold unfold = new TUnfold();	         // construct a TUnfold object
-unfold.ScanLcurve();				  		       // unfold using ScanLcurve method
-TauFromLcurve = unfold.GetTau();	   	   // retrieve tau chosen by ScanLcurve
+TUnfold unfold = new TUnfold();          // construct a TUnfold object
+unfold.ScanLcurve();                     // unfold using ScanLcurve method
+TauFromLcurve = unfold.GetTau();         // retrieve tau chosen by ScanLcurve
 
-// starting from tau chosen by ScanLcurve, perform undersmoothing which gradually
-// decreases tau until the minimum estimated coverage meets the target coverage,
-// which is the nominal 68% minus the tolerance epsilon (0.01 in this example).
-
-TauFromUndersmoothing = unfold.UndersmoothTau(deltaFromLcurve, 0.01);
+TauFromUndersmoothing = unfold.UndersmoothTau(TauFromLcurve, 0.01);
 unfold.DoUnfold(TauFromUndersmoothing);   // unfold again with undersmoothed tau
 ```
 
