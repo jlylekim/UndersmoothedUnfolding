@@ -1,14 +1,41 @@
-// @(#)root/unfold:$Id$
-
-// Modified by Junhyung (Lyle) Kim and Mikael Kuusela
-// starting from TUnfold.cxx (version 17.6) by Stefan Schmitt
+// Modified by Junhyung Lyle Kim and Mikael Kuusela
+// starting from TUnfoldV17.cxx (version 17.6) by Stefan Schmitt
 
 
-// Author: Stefan Schmitt DESY, 13/10/08
+// Author: Stefan Schmitt
+// DESY, 13/10/08
 
-/** \class TUnfold
-\ingroup Unfold
+// Version 17.6, updated doxygen-style comments, add one argument for scanLCurve
+//
+//  History:
+//    Version 17.5, fix memory leak with fVyyInv, bugs in GetInputInverseEmatrix(), GetInput(), bug in MultiplyMSparseMSparseTranspVector
+//    Version 17.4, in parallel to changes in TUnfoldBinning
+//    Version 17.3, in parallel to changes in TUnfoldBinning
+//    Version 17.2, bug fix with GetProbabilityMatrix
+//    Version 17.1, bug fixes in GetFoldedOutput, GetOutput
+//    Version 17.0, option to specify an error matrix with SetInput(), new ScanRho() method
+//    Version 16.2, in parallel to bug-fix in TUnfoldSys
+//    Version 16.1, fix bug with error matrix in case kEConstraintArea is used
+//    Version 16.0, fix calculation of global correlations, improved error messages
+//    Version 15, simplified L-curve scan, new tau definition, new error calc., area preservation
+//    Version 14, with changes in TUnfoldSys.cxx
+//    Version 13, new methods for derived classes and small bug fix
+//    Version 12, report singular matrices
+//    Version 11, reduce the amount of printout
+//    Version 10, more correct definition of the L curve, update references
+//    Version 9, faster matrix inversion and skip edge points for L-curve scan
+//    Version 8, replace all TMatrixSparse matrix operations by private code
+//    Version 7, fix problem with TMatrixDSparse,TMatrixD multiplication
+//    Version 6, replace class XY by std::pair
+//    Version 5, replace run-time dynamic arrays by new and delete[]
+//    Version 4, fix new bug from V3 with initial regularisation condition
+//    Version 3, fix bug with initial regularisation condition
+//    Version 2, with improved ScanLcurve() algorithm
+//    Version 1, added ScanLcurve() method
+//    Version 0, stable version of basic unfolding algorithm
 
+
+/** \class TUnfoldV17
 An algorithm to unfold distributions from detector to truth level
 
 TUnfold is used to decompose a measurement y into several sources x,
@@ -20,101 +47,65 @@ TUnfold has an adjustable regularisation term and also supports an
 optional constraint on the total number of events.
 
 <b>For most applications, it is better to use the derived class
-TUnfoldDensity instead of TUnfold</b>. TUnfoldDensity adds various
+TUnfoldDensity instead of TUnfold. TUnfoldDensity adds various
 features to TUnfold, such as:
 background subtraction, propagation of systematic uncertainties,
 complex multidimensional arrangements of the bins. For innocent
 users, the most notable improvement of TUnfoldDensity over TUnfold are
 the getter functions. For TUnfold, histograms have to be booked by the
 user and the getter functions fill the histogram bins. TUnfoldDensity
-simply returns a new, already filled histogram.
+simply returns a new, already filled histogram.</b>
 
 If you use this software, please consider the following citation
-
+<br/>
 <b>S.Schmitt, JINST 7 (2012) T10003 [arXiv:1205.6201]</b>
-
+<br/>
 Detailed documentation and updates are available on
 http://www.desy.de/~sschmitt
 
-Brief recipe to use TUnfold:
+Brief recipy to use TUnfold:
+<ul>
+<li>a matrix (truth,reconstructed) is given as a two-dimensional histogram
+  as argument to the constructor of TUnfold</li>
+<li>a vector of measurements is given as one-dimensional histogram using
+  the SetInput() method</li>
+<li>The unfolding is performed
+<ul>
+<li>either once with a fixed parameter tau, method DoUnfold(tau)</li>
+<li>or multiple times in a scan to determine the best chouce of tau,
+     method ScanLCurve()</li>
+</ul>
+<li>Unfolding results are retrieved using various GetXXX() methods
+</ul>
 
-  - a matrix (truth,reconstructed) is given as a two-dimensional histogram
-    as argument to the constructor of TUnfold
-  - a vector of measurements is given as one-dimensional histogram using
-    the SetInput() method
-  - The unfolding is performed
+Basic formulae:<br/>
+&chi;<sup>2</sup><sub>A</sub>=(Ax-y)<sup>T</sup>V<sub>yy</sub><sup>-1</sup>(Ax-y)<br/>
+&chi;<sup>2</sup><sub>L</sub>=(x-f*x<sub>0</sub>)<sup>T</sup>L<sup>T</sup>L(x-f*x<sub>0</sub>)<br/>
+&chi;<sup>2</sup><sub>unf</sub>=&chi;<sup>2</sup><sub>A</sub>+&tau;<sup>2</sup>&chi;<sup>2</sup><sub>L</sub>+&lambda;&Sigma;<sub>i</sub>(Ax-y)<sub>i</sub><br/>
+x:result, A:probabilities, y:data, V<sub>yy</sub>:data
+covariance, f:bias scale, x<sub>0</sub>:bias, L:regularisation conditions,
+&tau;:regularisation strength, &lambda;:Lagrangian multiplier<br/>
+Without area constraint, &lambda; is set to zero, and
+&chi;<sup>2</sup><sub>unf</sub> is minimized to determine x. With area
+constraint, both x and &lambda; are determined.
+*/
 
-  - either once with a fixed parameter tau, method DoUnfold(tau)
-  - or multiple times in a scan to determine the best choice of tau,
-    method ScanLCurve()
 
-  - Unfolding results are retrieved using various GetXXX() methods
+/*
+  This file is part of TUnfold.
 
-Basic formulae:
-\f[
-\chi^{2}_{A}=(Ax-y)^{T}V_{yy}^{-1}(Ax-y) \\
-\chi^{2}_{L}=(x-f*x_{0})^{T}L^{T}L(x-f*x_{0}) \\
-\chi^{2}_{unf}=\chi^{2}_{A}+\tau^{2}\chi^{2}_{L}+\lambda\Sigma_{i}(Ax-y)_{i}
-\f]
+  TUnfold is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-  - \f$ x \f$:result,
-  - \f$ A \f$:probabilities,
-  - \f$ y \f$:data,
-  - \f$ V_{yy} \f$:data covariance,
-  - \f$ f \f$:bias scale,
-  - \f$ x_{0} \f$:bias,
-  - \f$ L \f$:regularisation conditions,
-  - \f$ \tau \f$:regularisation strength,
-  - \f$ \lambda \f$:Lagrangian multiplier.
+  TUnfold is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- Without area constraint, \f$ \lambda \f$ is set to zero, and
-\f$ \chi^{2}_{unf} \f$ is minimized to determine \f$ x \f$.
-With area constraint, both \f$ x \f$ and \f$ \lambda \f$ are determined.
-
---------------------------------------------------------------------------------
-This file is part of TUnfold.
-
-TUnfold is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-TUnfold is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with TUnfold.  If not, see <http://www.gnu.org/licenses/>.
-
-<b>Version 17.6, updated doxygen-style comments, add one argument for scanLCurve </b>
-
-#### History:
-  - Version 17.5, fix memory leak with fVyyInv, bugs in GetInputInverseEmatrix(), GetInput(), bug in MultiplyMSparseMSparseTranspVector
-  - Version 17.4, in parallel to changes in TUnfoldBinning
-  - Version 17.3, in parallel to changes in TUnfoldBinning
-  - Version 17.2, bug fix with GetProbabilityMatrix
-  - Version 17.1, bug fixes in GetFoldedOutput, GetOutput
-  - Version 17.0, option to specify an error matrix with SetInput(), new ScanRho() method
-  - Version 16.2, in parallel to bug-fix in TUnfoldSys
-  - Version 16.1, fix bug with error matrix in case kEConstraintArea is used
-  - Version 16.0, fix calculation of global correlations, improved error messages
-  - Version 15, simplified L-curve scan, new tau definition, new error calc., area preservation
-  - Version 14, with changes in TUnfoldSys.cxx
-  - Version 13, new methods for derived classes and small bug fix
-  - Version 12, report singular matrices
-  - Version 11, reduce the amount of printout
-  - Version 10, more correct definition of the L curve, update references
-  - Version 9, faster matrix inversion and skip edge points for L-curve scan
-  - Version 8, replace all TMatrixSparse matrix operations by private code
-  - Version 7, fix problem with TMatrixDSparse,TMatrixD multiplication
-  - Version 6, replace class XY by std::pair
-  - Version 5, replace run-time dynamic arrays by new and delete[]
-  - Version 4, fix new bug from V3 with initial regularisation condition
-  - Version 3, fix bug with initial regularisation condition
-  - Version 2, with improved ScanLcurve() algorithm
-  - Version 1, added ScanLcurve() method
-  - Version 0, stable version of basic unfolding algorithm
+  You should have received a copy of the GNU General Public License
+  along with TUnfold.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <iostream>
@@ -130,14 +121,13 @@ along with TUnfold.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Math/ProbFunc.h"
 
-
 //#define DEBUG
 //#define DEBUG_DETAIL
 //#define FORCE_EIGENVALUE_DECOMPOSITION
 
-ClassImp(TUnfold)
+ClassImp(TUnfoldV17)
 
-TUnfold::~TUnfold(void)
+TUnfoldV17::~TUnfoldV17(void)
 {
    // delete all data members
 
@@ -151,10 +141,10 @@ TUnfold::~TUnfold(void)
    ClearResults();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Initialize data members, for use in constructors.
 
-void TUnfold::InitTUnfold(void)
+////////////////////////////////////////////////////////////////////////
+/// initialize data menbers, for use in constructors
+void TUnfoldV17::InitTUnfold(void)
 {
    // reset all data members
    fXToHist.Set(0);
@@ -192,38 +182,33 @@ void TUnfold::InitTUnfold(void)
    fIgnoredBins=0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Delete matrix and invalidate pointer.
+////////////////////////////////////////////////////////////////////////
+/// delete matrix and invalidate pointer
 ///
 /// \param[inout] m pointer to a matrix-pointer
 ///
-/// If the matrix pointer os non-zero, the matrix id deleted. The matrix pointer
-/// is set to zero.
-
-void TUnfold::DeleteMatrix(TMatrixD **m)
+/// if the matrix pointer os non-zero, thematrix id deleted. The matrox pointer is set to zero.
+void TUnfoldV17::DeleteMatrix(TMatrixD **m)
 {
    if(*m) delete *m;
    *m=0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Delete sparse matrix and invalidate pointer
+////////////////////////////////////////////////////////////////////////
+/// delete sparse matrix and invalidate pointer
 ///
 /// \param[inout] m pointer to a matrix-pointer
 ///
-/// if the matrix pointer os non-zero, the matrix id deleted. The matrix pointer
-/// is set to zero.
-
-void TUnfold::DeleteMatrix(TMatrixDSparse **m)
+/// if the matrix pointer os non-zero, thematrix id deleted. The matrox pointer is set to zero.
+void TUnfoldV17::DeleteMatrix(TMatrixDSparse **m)
 {
    if(*m) delete *m;
    *m=0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Reset all results.
-
-void TUnfold::ClearResults(void)
+////////////////////////////////////////////////////////////////////////
+/// reset all results
+void TUnfoldV17::ClearResults(void)
 {
    // delete old results (if any)
    // this function is virtual, so derived classes may implement their own
@@ -250,60 +235,58 @@ void TUnfold::ClearResults(void)
    fRhoAvg = -1.0;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Only for use by root streamer or derived classes.
-
-TUnfold::TUnfold(void)
+////////////////////////////////////////////////////////////////////////
+/// only for use by root streamer or derived classes
+///
+TUnfoldV17::TUnfoldV17(void)
 {
    // set all matrix pointers to zero
    InitTUnfold();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Core unfolding algorithm.
-///
-/// Main unfolding algorithm. Declared virtual, because other algorithms
-/// could be implemented
-///
-/// Purpose: unfold y -> x
-///
-///  - Data members required:
-///      - fA:  matrix to relate x and y
-///      - fY:  measured data points
-///      - fX0: bias on x
-///      - fBiasScale: scale factor for fX0
-///      - fVyy:  covariance matrix for y
-///      - fL: regularisation conditions
-///      - fTauSquared: regularisation strength
-///      - fConstraint: whether the constraint is applied
-///  - Data members modified:
-///      - fVyyInv: inverse of input data covariance matrix
-///      - fNdf: number of degrees of freedom
-///      - fEinv: inverse of the matrix needed for unfolding calculations
-///      - fE:    the matrix needed for unfolding calculations
-///      - fX:    unfolded data points
-///      - fDXDY: derivative of x wrt y (for error propagation)
-///      - fVxx:  error matrix (covariance matrix) on x
-///      - fAx:   estimate of distribution y from unfolded data
-///      - fChi2A:  contribution to chi**2 from y-Ax
-///      - fChi2L:  contribution to chi**2 from L*(x-x0)
-///      - fDXDtauSquared: derivative of x wrt tau
-///      - fDXDAM[0,1]: matrix parts of derivative x wrt A
-///      - fDXDAZ[0,1]: vector parts of derivative x wrt A
-///      - fRhoMax: maximum global correlation coefficient
-///      - fRhoAvg: average global correlation coefficient
-///  - Return code:
-///      - fRhoMax   if(fRhoMax>=1.0) then the unfolding has failed!
-
-Double_t TUnfold::DoUnfold(void)
+////////////////////////////////////////////////////////////////////////
+/// core unfolding algorithm
+Double_t TUnfoldV17::DoUnfold(void)
 {
+   // main unfolding algorithm. Declared virtual, because other algorithms
+   // could be implemented
+   //
+   // Purpose: unfold y -> x
+   // Data members required:
+   //     fA:  matrix to relate x and y
+   //     fY:  measured data points
+   //     fX0: bias on x
+   //     fBiasScale: scale factor for fX0
+   //     fVyy:  covariance matrix for y
+   //     fL: regularisation conditions
+   //     fTauSquared: regularisation strength
+   //     fConstraint: whether the constraint is applied
+   // Data members modified:
+   //     fVyyInv: inverse of input data covariance matrix
+   //     fNdf: number of degrees of freedom
+   //     fEinv: inverse of the matrix needed for unfolding calculations
+   //     fE:    the matrix needed for unfolding calculations
+   //     fX:    unfolded data points
+   //     fDXDY: derivative of x wrt y (for error propagation)
+   //     fVxx:  error matrix (covariance matrix) on x
+   //     fAx:   estimate of distribution y from unfolded data
+   //     fChi2A:  contribution to chi**2 from y-Ax
+   //     fChi2L:  contribution to chi**2 from L*(x-x0)
+   //     fDXDtauSquared: derivative of x wrt tau
+   //     fDXDAM[0,1]: matrix parts of derivative x wrt A
+   //     fDXDAZ[0,1]: vector parts of derivative x wrt A
+   //     fRhoMax: maximum global correlation coefficient
+   //     fRhoAvg: average global correlation coefficient
+   // return code:
+   //     fRhoMax   if(fRhoMax>=1.0) then the unfolding has failed!
+
    ClearResults();
 
    // get pseudo-inverse matrix Vyyinv and NDF
    if(!fVyyInv) {
       GetInputInverseEmatrix(0);
       if(fConstraint != kEConstraintNone) {
-   fNdf--;
+	fNdf--;
       }
    }
    //
@@ -358,7 +341,7 @@ Double_t TUnfold::DoUnfold(void)
    TMatrixDSparse *epsilon=0;
    TMatrixDSparse *Eepsilon=0;
    if(fConstraint != kEConstraintNone) {
-      // calculate epsilon: vector of efficiencies
+      // calculate epsilon: verctor of efficiencies
       const Int_t *A_rows=fA->GetRowIndexArray();
       const Int_t *A_cols=fA->GetColIndexArray();
       const Double_t *A_data=fA->GetMatrixArray();
@@ -582,8 +565,8 @@ Double_t TUnfold::DoUnfold(void)
    return fRhoMax;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Create a sparse matrix, given the nonzero elements.
+////////////////////////////////////////////////////////////////////////
+/// create a sparse matrix, given the nonzero elements
 ///
 /// \param[in] nrow number of rows
 /// \param[in] ncol number of columns
@@ -594,9 +577,8 @@ Double_t TUnfold::DoUnfold(void)
 ///
 /// return pointer to a new sparse matrix
 ///
-/// shortcut to new TMatrixDSparse() followed by SetMatrixArray().
-
-TMatrixDSparse *TUnfold::CreateSparseMatrix
+/// shortcut to new TMatrixDSparse() followed by SetMatrixArray()
+TMatrixDSparse *TUnfoldV17::CreateSparseMatrix
 (Int_t nrow,Int_t ncol,Int_t nel,Int_t *row,Int_t *col,Double_t *data) const
 {
    // create a sparse matri
@@ -610,19 +592,18 @@ TMatrixDSparse *TUnfold::CreateSparseMatrix
    return A;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Multiply two sparse matrices.
+////////////////////////////////////////////////////////////////////////
+/// multiply two sparse matrices
 ///
 /// \param[in] a sparse matrix
 /// \param[in] b sparse matrix
 ///
 /// returns a new sparse matrix a*b.
-///
+/// <br/>
 /// A replacement for:
 ///  new TMatrixDSparse(a,TMatrixDSparse::kMult,b)
-/// the root implementation had problems in older versions of root.
-
-TMatrixDSparse *TUnfold::MultiplyMSparseMSparse(const TMatrixDSparse *a,
+/// the root implementation had problems in older versions of root
+TMatrixDSparse *TUnfoldV17::MultiplyMSparseMSparse(const TMatrixDSparse *a,
                                                 const TMatrixDSparse *b) const
 {
    if(a->GetNcols()!=b->GetNrows()) {
@@ -685,19 +666,18 @@ TMatrixDSparse *TUnfold::MultiplyMSparseMSparse(const TMatrixDSparse *a,
    return r;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Multiply a transposed Sparse matrix with another sparse matrix,
+////////////////////////////////////////////////////////////////////////
+/// multiply a transposed Sparse matrix with another Sparse matrix
 ///
 /// \param[in] a sparse matrix (to be transposed)
 /// \param[in] b sparse matrix
 ///
-/// returns a new sparse matrix a^{T}*b
-///
+/// returns a new sparse matrix a<sup>T</sup>*b
+/// <br/>
 /// this is a replacement for the root constructors
-/// new TMatrixDSparse(TMatrixDSparse(TMatrixDSparse::kTransposed,*a),
-/// TMatrixDSparse::kMult,*b)
+/// new TMatrixDSparse(TMatrixDSparse(TMatrixDSparse::kTransposed,*a),TMatrixDSparse::kMult,*b)
 
-TMatrixDSparse *TUnfold::MultiplyMSparseTranspMSparse
+TMatrixDSparse *TUnfoldV17::MultiplyMSparseTranspMSparse
 (const TMatrixDSparse *a,const TMatrixDSparse *b) const
 {
   if(a->GetNrows() != b->GetNrows()) {
@@ -770,18 +750,17 @@ TMatrixDSparse *TUnfold::MultiplyMSparseTranspMSparse
    return r;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Multiply sparse matrix and a non-sparse matrix.
+////////////////////////////////////////////////////////////////////////
+/// multiply sparse matrix and a non-sparse matrix
 ///
 /// \param[in] a sparse matrix
 /// \param[in] b matrix
 ///
 /// returns a new sparse matrix a*b.
-///  A replacement for:
+/// <br/> A replacement for:
 ///  new TMatrixDSparse(a,TMatrixDSparse::kMult,b)
-/// the root implementation had problems in older versions of root.
-
-TMatrixDSparse *TUnfold::MultiplyMSparseM(const TMatrixDSparse *a,
+/// the root implementation had problems in older versions of root
+TMatrixDSparse *TUnfoldV17::MultiplyMSparseM(const TMatrixDSparse *a,
                                           const TMatrixD *b) const
 {
    if(a->GetNcols()!=b->GetNrows()) {
@@ -829,18 +808,18 @@ TMatrixDSparse *TUnfold::MultiplyMSparseM(const TMatrixDSparse *a,
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// Calculate a sparse matrix product\f$ M1*V*M2^{T} \f$ where the diagonal matrix V is
-/// given by a vector.
+////////////////////////////////////////////////////////////////////////
+/// calculate a sparse matrix product M1*V*M2<sup>T</sup> where the diagonal matrix V is
+/// given by a vector
 ///
 /// \param[in] m1 pointer to sparse matrix with dimension I*K
 /// \param[in] m2 pointer to sparse matrix with dimension J*K
 /// \param[in] v pointer to vector (matrix) with dimension K*1
 ///
 /// returns a sparse matrix R with elements
-/// \f$ r_{ij}=\Sigma_{k}M1_{ik}V_{k}M2_{jk} \f$
+/// r<sub>ij</sub>=&Sigma;<sub>k</sub>M1<sub>ik</sub>V<sub>k</sub>M2<sub>jk</sub>
 
-TMatrixDSparse *TUnfold::MultiplyMSparseMSparseTranspVector
+TMatrixDSparse *TUnfoldV17::MultiplyMSparseMSparseTranspVector
 (const TMatrixDSparse *m1,const TMatrixDSparse *m2,
  const TMatrixTBase<Double_t> *v) const
 {
@@ -925,20 +904,18 @@ TMatrixDSparse *TUnfold::MultiplyMSparseMSparseTranspVector
    return r;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add a sparse matrix, scaled by a factor, to another scaled matrix.
+////////////////////////////////////////////////////////////////////////
+/// add a sparse matrix, scaled by a factor, to another scaled matrix
 ///
 /// \param[inout] dest destination matrix
 /// \param[in] f scaling factor
 /// \param[in] src matrix to be added to dest
 ///
 /// a replacement for
-/// ~~~
 ///     (*dest) += f * (*src)
-/// ~~~
-/// which suffered from a bug in old root versions.
+/// which suffered from a bug in old root versions
 
-void TUnfold::AddMSparse(TMatrixDSparse *dest,Double_t f,
+void TUnfoldV17::AddMSparse(TMatrixDSparse *dest,Double_t f,
                          const TMatrixDSparse *src) const
 {
    const Int_t *dest_rows=dest->GetRowIndexArray();
@@ -998,24 +975,24 @@ void TUnfold::AddMSparse(TMatrixDSparse *dest,Double_t f,
    delete[] result_cols;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get the inverse or pseudo-inverse of a positive, sparse matrix.
+////////////////////////////////////////////////////////////////////////
+/// get the inverse or pseudo-inverse of a positive, sparse matrix
 ///
 /// \param[in] A the sparse matrix to be inverted, has to be positive
 /// \param[inout] rankPtr if zero, suppress calculation of pseudo-inverse
 /// otherwise the rank of the matrix is returned in *rankPtr
 ///
 /// return value: 0 or a new sparse matrix
-///
-///   - if(rankPtr==0) return the inverse if it exists, or return 0
-///   - else return a (pseudo-)inverse and store the rank of the matrix in
-/// *rankPtr
-///
+/// <ul>
+/// <li>if(rankPtr==0) return the inverse if it exists, or return 0</li>
+/// <li>else return a (pseudo-)inverse and store the rank of the matrix in
+/// *rankPtr </li>
+/// </ul>
 ///
 /// the matrix inversion is optimized in performance for the case
 /// where a large submatrix of A is diagonal
 
-TMatrixDSparse *TUnfold::InvertMSparseSymmPos
+TMatrixDSparse *TUnfoldV17::InvertMSparseSymmPos
 (const TMatrixDSparse *A,Int_t *rankPtr) const
 {
 
@@ -1359,7 +1336,7 @@ TMatrixDSparse *TUnfold::InvertMSparseSymmPos
                if(f_cols[indexF]>=i) c(f_cols[indexF],i)=f_data[indexF];
             }
             // calculate diagonal element
-       Double_t c_ii=c(i,i);
+	    Double_t c_ii=c(i,i);
             for(Int_t j=0;j<i;j++) {
                Double_t c_ij=c(i,j);
                c_ii -= c_ij*c_ij;
@@ -1368,8 +1345,8 @@ TMatrixDSparse *TUnfold::InvertMSparseSymmPos
                nErrorF++;
                break;
             }
-       c_ii=TMath::Sqrt(c_ii);
-       c(i,i)=c_ii;
+	    c_ii=TMath::Sqrt(c_ii);
+	    c(i,i)=c_ii;
             // off-diagonal elements
             for(Int_t j=i+1;j<nF;j++) {
                Double_t c_ji=c(j,i);
@@ -1678,26 +1655,25 @@ TMatrixDSparse *TUnfold::InvertMSparseSymmPos
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get bin name of an output bin.
+////////////////////////////////////////////////////////////////////////
+/// Get bin name of an outpt bin
 ///
 /// \param[in] iBinX bin number
 ///
 /// Return value: name of the bin
-///
+/// <br/>
 /// For TUnfold and TUnfoldSys, this function simply returns the bin
 /// number as a string. This function really only makes sense in the
-/// context of TUnfoldDensity, where binning schemes are implemented
+/// context of TUnfoldDensity, where binnig schemes are implemented
 /// using the class TUnfoldBinning, and non-trivial bin names are
 /// returned.
-
-TString TUnfold::GetOutputBinName(Int_t iBinX) const
+TString TUnfoldV17::GetOutputBinName(Int_t iBinX) const
 {
    return TString::Format("#%d",iBinX);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Set up response matrix and regularisation scheme.
+////////////////////////////////////////////////////////////////////////
+/// Set up response matrix and regularisation scheme
 ///
 /// \param[in] hist_A matrix of MC events that describes the migrations
 /// \param[in] histmap mapping of the histogram axes
@@ -1705,24 +1681,25 @@ TString TUnfold::GetOutputBinName(Int_t iBinX) const
 /// \param[in] constraint (default=kEConstraintArea) type of constraint
 ///
 /// Treatment of overflow bins in the matrix hist_A
-///
-///   - Events reconstructed in underflow or overflow bins are counted
-/// as inefficiency. They have to be filled properly.
-///   - Events where the truth level is in underflow or overflow bins are
+/// <ul>
+/// <li>Events reconstructed in underflow or overflow bins are counted
+/// as inefficiency. They have to be filled properly.</li>
+/// <li>Events where the truth level is in underflow or overflow bins are
 /// treated as a part of the generator level distribution.
 /// The full truth level distribution (including underflow and
-/// overflow) is unfolded.
-///
+/// overflow) is unfolded.</li>
+/// </ul>
 /// If unsure, do the following:
-///
-///   - store evens where the truth is in underflow or overflow
+/// <ul>
+/// <li>store evens where the truth is in underflow or overflow
 /// (sometimes called "fakes") in a separate TH1. Ensure that the
 /// truth-level underflow and overflow bins of hist_A are all zero.
-///   - the fakes are background to the
+/// <li>the fakes are background to the
 /// measurement. Use the classes TUnfoldSys and TUnfoldDensity instead
-/// of the plain TUnfold for subtracting background.
+/// of the plain TUnfold for subtracting background</li>
+/// </ul>
 
-TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
+TUnfoldV17::TUnfoldV17(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
                  EConstraint constraint)
 {
    // data members initialized to something different from zero:
@@ -1732,16 +1709,14 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
    //    fL: filled depending on the regularisation scheme
    InitTUnfold();
    SetConstraint(constraint);
-   //std::cout << "MODIFIED SOURCEFILE FOR UNDERSMOOTHED UNFOLDING" << std::endl;
-   Info("TUnfold", "MODIFIED SOURCEFILE FOR UNDERSMOOTHED UNFOLDING");
-
+   std::cout << "MODIFIED FOR UNDERSMOOTHING" << std::endl;
    Int_t nx0, nx, ny;
    if (histmap == kHistMapOutputHoriz) {
       // include overflow bins on the X axis
       nx0 = hist_A->GetNbinsX()+2;
       ny = hist_A->GetNbinsY();
    } else {
-      // include overflow bins on the Y axis
+      // include overflow bins on the X axis
       nx0 = hist_A->GetNbinsY()+2;
       ny = hist_A->GetNbinsX();
    }
@@ -1783,6 +1758,7 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
          }
       }
       // check whether there is any sensitivity to this generator bin
+
       if (nonZeroY) {
          // update mapping tables to convert bin number to matrix index
          fXToHist[nx] = ix;
@@ -1806,7 +1782,6 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
          fHistToX[ix] = -1;
       }
    }
-
    Int_t underflowBin=0,overflowBin=0;
    for (Int_t ix = 0; ix < nx; ix++) {
       Int_t ibinx = fXToHist[ix];
@@ -1848,7 +1823,7 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
       }
       if(nskipped==(2-underflowBin-overflowBin)) {
          Info("TUnfold","underflow and overflow bin "
-         "do not depend on the input data");
+	      "do not depend on the input data");
       } else {
          Warning("TUnfold","%d output bins "
                  "do not depend on the input data %s",nDisconnected,
@@ -1857,7 +1832,6 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
    }
    // store bias as matrix
    fX0 = new TMatrixD(nx, 1, fSumOverY.GetArray());
-
    // store non-zero elements in sparse matrix fA
    // construct sparse matrix fA
    Int_t *rowA = new Int_t[nonzeroA];
@@ -1915,15 +1889,14 @@ TUnfold::TUnfold(const TH2 *hist_A, EHistMap histmap, ERegMode regmode,
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Set bias vector.
+////////////////////////////////////////////////////////////////////////
+/// set bias vector
 ///
 /// \param[in] bias histogram with new bias vector
 ///
 /// the initial bias vector is determined from the response matrix
 /// but may be changed by using this method
-
-void TUnfold::SetBias(const TH1 *bias)
+void TUnfoldV17::SetBias(const TH1 *bias)
 {
    DeleteMatrix(&fX0);
    fX0 = new TMatrixD(GetNx(), 1);
@@ -1932,8 +1905,8 @@ void TUnfold::SetBias(const TH1 *bias)
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add a row of regularisation conditions to the matrix L.
+////////////////////////////////////////////////////////////////////////
+/// add a row of regularisation conditions to the matrix L
 ///
 /// \param[in] i0 truth histogram bin number
 /// \param[in] f0 entry in the matrix L, column i0
@@ -1943,10 +1916,9 @@ void TUnfold::SetBias(const TH1 *bias)
 /// \param[in] f2 entry in the matrix L, column i2
 ///
 /// the arguments are used to form one row (k) of the matrix L, where
-///   \f$ L_{k,i0}=f0 \f$ and \f$ L_{k,i1}=f1 \f$ and  \f$ L_{k,i2}=f2 \f$
-/// negative indexes i0,i1,i2 are ignored.
-
-Bool_t TUnfold::AddRegularisationCondition
+/// <br/>  L<sub>k,i0</sub>=f0 and  L<sub>k,i1</sub>=f1 and  L<sub>k,i2</sub>=f2
+/// <br>negative indexes i0,i1,i2 are ignored
+Bool_t TUnfoldV17::AddRegularisationCondition
 (Int_t i0,Double_t f0,Int_t i1,Double_t f1,Int_t i2,Double_t f2)
 {
    Int_t indices[3];
@@ -1971,20 +1943,19 @@ Bool_t TUnfold::AddRegularisationCondition
    return AddRegularisationCondition(nEle,indices,data);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add a row of regularisation conditions to the matrix L.
+////////////////////////////////////////////////////////////////////////
+/// add a row of regularisation conditions to the matrix L
 ///
-/// \param[in] nEle number of valid entries in indices and rowData
+/// \param[in] nEle number of valid entries in indeces and rowData
 /// \param[in] indices column numbers of L to fill
 /// \param[in] rowData data to fill into the new row of L
 ///
 /// returns true if a row was added, false otherwise
-///
+/// <br/>
 /// A new row k is added to the matrix L, its dimension is expanded.
-/// The new elements \f$ L_{ki} \f$ are filled from the array rowData[]
+/// The new elements L<sub>ki</sub> are filled from the array rowData[]
 /// where the indices i which are taken from the array indices[].
-
-Bool_t TUnfold::AddRegularisationCondition
+Bool_t TUnfoldV17::AddRegularisationCondition
 (Int_t nEle,const Int_t *indices,const Double_t *rowData)
 {
    Bool_t r=kTRUE;
@@ -2037,8 +2008,8 @@ Bool_t TUnfold::AddRegularisationCondition
    return r;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add  a regularisation condition on the magnitude of a truth bin.
+////////////////////////////////////////////////////////////////////////
+/// add  a regularisation condition on the magnitude of a truth bin
 ///
 /// \param[in] bin bin number
 /// \param[in] scale (default=1) scale factor
@@ -2055,7 +2026,7 @@ Bool_t TUnfold::AddRegularisationCondition
 /// of regularisation conditions. In this case, start with an empty
 /// matrix L (argument regmode=kRegModeNone in the constructor)
 
-Int_t TUnfold::RegularizeSize(int bin, Double_t scale)
+Int_t TUnfoldV17::RegularizeSize(int bin, Double_t scale)
 {
    // add regularisation on the size of bin i
    //    bin: bin number
@@ -2069,8 +2040,8 @@ Int_t TUnfold::RegularizeSize(int bin, Double_t scale)
    return AddRegularisationCondition(bin,scale) ? 0 : 1;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add  a regularisation condition on the difference of two truth bin.
+////////////////////////////////////////////////////////////////////////
+/// add  a regularisation condition on the difference of two truth bin
 ///
 /// \param[in] left_bin bin number
 /// \param[in] right_bin bin number
@@ -2089,7 +2060,7 @@ Int_t TUnfold::RegularizeSize(int bin, Double_t scale)
 /// of regularisation conditions. In this case, start with an empty
 /// matrix L (argument regmode=kRegModeNone in the constructor)
 
-Int_t TUnfold::RegularizeDerivative(int left_bin, int right_bin,
+Int_t TUnfoldV17::RegularizeDerivative(int left_bin, int right_bin,
                                    Double_t scale)
 {
    // add regularisation on the difference of two bins
@@ -2105,8 +2076,8 @@ Int_t TUnfold::RegularizeDerivative(int left_bin, int right_bin,
    return AddRegularisationCondition(left_bin,-scale,right_bin,scale) ? 0 : 1;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add  a regularisation condition on the curvature of three truth bin.
+////////////////////////////////////////////////////////////////////////
+/// add  a regularisation condition on the curvature of three truth bin
 ///
 /// \param[in] left_bin bin number
 /// \param[in] center_bin bin number
@@ -2128,7 +2099,7 @@ Int_t TUnfold::RegularizeDerivative(int left_bin, int right_bin,
 /// of regularisation conditions. In this case, start with an empty
 /// matrix L (argument regmode=kRegModeNone in the constructor)
 
-Int_t TUnfold::RegularizeCurvature(int left_bin, int center_bin,
+Int_t TUnfoldV17::RegularizeCurvature(int left_bin, int center_bin,
                                   int right_bin,
                                   Double_t scale_left,
                                   Double_t scale_right)
@@ -2152,8 +2123,8 @@ Int_t TUnfold::RegularizeCurvature(int left_bin, int center_bin,
           ? 0 : 1;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add regularisation conditions for a group of bins.
+////////////////////////////////////////////////////////////////////////
+/// add  regularisation conditions for a group of bins
 ///
 /// \param[in] start first bin number
 /// \param[in] step step size
@@ -2167,12 +2138,13 @@ Int_t TUnfold::RegularizeCurvature(int left_bin, int center_bin,
 ///
 /// Return value: number of regularisation conditions which could not
 /// be added.
-///
+/// <br/>
 /// Conditions which are not added typically correspond to bin
 /// numbers where the truth can not be unfolded (either response
 /// matrix is empty or the data do not constrain).
+///
 
-Int_t TUnfold::RegularizeBins(int start, int step, int nbin,
+Int_t TUnfoldV17::RegularizeBins(int start, int step, int nbin,
                              ERegMode regmode)
 {
    // set regulatisation on a 1-dimensional curve
@@ -2212,8 +2184,8 @@ Int_t TUnfold::RegularizeBins(int start, int step, int nbin,
    return nError;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add regularisation conditions for 2d unfolding.
+////////////////////////////////////////////////////////////////////////
+/// add  regularisation conditions for 2d unfolding
 ///
 /// \param[in] start_bin first bin number
 /// \param[in] step1 step size, 1st dimension
@@ -2232,8 +2204,8 @@ Int_t TUnfold::RegularizeBins(int start, int step, int nbin,
 /// be added. Conditions which are not added typically correspond to bin
 /// numbers where the truth can not be unfolded (either response
 /// matrix is empty or the data do not constrain).
-
-Int_t TUnfold::RegularizeBins2D(int start_bin, int step1, int nbin1,
+///
+Int_t TUnfoldV17::RegularizeBins2D(int start_bin, int step1, int nbin1,
                                int step2, int nbin2, ERegMode regmode)
 {
    // set regularisation on a 2-dimensional grid of bins
@@ -2242,9 +2214,9 @@ Int_t TUnfold::RegularizeBins2D(int start_bin, int step1, int nbin1,
    //     nbin1: number of bins in 1st direction
    //     step2: distance between bins in 2nd direction
    //     nbin2: number of bins in 2nd direction
-   // return value:
+    // return value:
    //   number of errors (i.e. conditions which have been skipped)
-   // modifies data member fL
+  // modifies data member fL
 
    Int_t nError = 0;
    for (Int_t i1 = 0; i1 < nbin1; i1++) {
@@ -2256,37 +2228,33 @@ Int_t TUnfold::RegularizeBins2D(int start_bin, int step1, int nbin1,
    return nError;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Perform the unfolding for a given input and regularisation.
+////////////////////////////////////////////////////////////////////////
+/// perform the unfolding for a given input and regularisation
 ///
 /// \param[in] tau_reg regularisation parameter
 /// \param[in] input input distribution with uncertainties
 /// \param[in] scaleBias (default=0.0) scale factor applied to the bias
 ///
-/// This is a shortcut for `{ SetInput(input,scaleBias); DoUnfold(tau); }`
-///
-/// Data members required:
-///  - fA, fX0, fL
-/// Data members modified:
-///  - those documented in SetInput()
-///    and those documented in DoUnfold(Double_t)
-/// Return value:
-///  - maximum global correlation coefficient
-///    NOTE!!! return value >=1.0 means error, and the result is junk
-///
-/// Overflow bins of the input distribution are ignored!
-
-Double_t TUnfold::DoUnfold(Double_t tau_reg,const TH1 *input,
+/// This is a shortcut for { SetInput(input,scaleBias); DoUnfold(tau); }
+Double_t TUnfoldV17::DoUnfold(Double_t tau_reg,const TH1 *input,
                            Double_t scaleBias)
 {
-
+// Data members required:
+   //   fA, fX0, fL
+   // Data members modified:
+   //   those documented in SetInput()
+   //   and those documented in DoUnfold(Double_t)
+   // Return value:
+   //   maximum global correlation coefficient
+   //   NOTE!!! return value >=1.0 means error, and the result is junk
+   //
+   // Overflow bins of the input distribution are ignored!
    SetInput(input,scaleBias);
    return DoUnfold(tau_reg);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Define input data for subsequent calls to DoUnfold(tau).
-///
+////////////////////////////////////////////////////////////////////////
+/// Define input data for subsequent calls to DoUnfold(tau)
 /// \param[in] input input distribution with uncertainties
 /// \param[in] scaleBias (default=0) scale factor applied to the bias
 /// \param[in] oneOverZeroError (default=0) for bins with zero error, this number defines 1/error.
@@ -2297,24 +2265,26 @@ Double_t TUnfold::DoUnfold(Double_t tau_reg,const TH1 *input,
 /// inversion of the input covariance matrix is lengthy
 ///
 /// Return value: nError1+10000*nError2
-///
-///   - nError1: number of bins where the uncertainty is zero.
+/// <ul>
+/// <li>nError1: number of bins where the uncertainty is zero.
 /// these bins either are not used for the unfolding (if
-/// oneOverZeroError==0) or 1/uncertainty is set to oneOverZeroError.
-///   - nError2: return values>10000 are fatal errors, because the
+/// oneOverZeroError==0) or 1/uncertainty is set to oneOverZeroError.</li>
+/// <li>nError2: return values>10000 are fatal errors, because the
 /// unfolding can not be done. The number nError2 corresponds to the
 /// number of truth bins which are not constrained by data points.
-///
-/// Data members modified:
-///  - fY, fVyy, , fBiasScale
-/// Data members cleared
-///  - fVyyInv, fNdf
-///  - + see ClearResults
+/// </li>
+/// </ul>
 
-Int_t TUnfold::SetInput(const TH1 *input, Double_t scaleBias,
+Int_t TUnfoldV17::SetInput(const TH1 *input, Double_t scaleBias,
                         Double_t oneOverZeroError,const TH2 *hist_vyy,
                         const TH2 *hist_vyy_inv)
 {
+  // Data members modified:
+  //   fY, fVyy, , fBiasScale
+  // Data members cleared
+  //   fVyyInv, fNdf
+  //   + see ClearResults
+
   DeleteMatrix(&fVyyInv);
   fNdf=0;
 
@@ -2494,7 +2464,7 @@ Int_t TUnfold::SetInput(const TH1 *input, Double_t scaleBias,
                     binlist +=row;
                  }
                  } */
-              Warning("SetInput","%s",(char const *)binlist);
+              Warning("SetInput",binlist);
            }
         }
      }
@@ -2512,30 +2482,31 @@ Int_t TUnfold::SetInput(const TH1 *input, Double_t scaleBias,
   return nVarianceForced+nVarianceZero+10000*nError2;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Perform the unfolding for a given regularisation parameter tau.
+////////////////////////////////////////////////////////////////////////
+/// perform the unfolding for a given regularisation parameter tau
 ///
 /// \param[in] tau regularisation parameter
 ///
-/// This method sets tau and then calls the core unfolding algorithm
-/// required data members:
-///    - fA:  matrix to relate x and y
-///    - fY:  measured data points
-///    - fX0: bias on x
-///    - fBiasScale: scale factor for fX0
-///    - fV:  inverse of covariance matrix for y
-///    - fL: regularisation conditions
-/// modified data members:
-///    - fTauSquared and those documented in DoUnfold(void)
+/// this method sets tau and then calls the core unfolding algorithm
 
-Double_t TUnfold::DoUnfold(Double_t tau)
+Double_t TUnfoldV17::DoUnfold(Double_t tau)
 {
+   // required data members:
+   //     fA:  matrix to relate x and y
+   //     fY:  measured data points
+   //     fX0: bias on x
+   //     fBiasScale: scale factor for fX0
+   //     fV:  inverse of covariance matrix for y
+   //     fL: regularisation conditions
+   // modified data members:
+   //     fTauSquared and those documented in DoUnfold(void)
    fTauSquared=tau*tau;
    return DoUnfold();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Scan the L curve, determine tau and unfold at the final value of tau.
+////////////////////////////////////////////////////////////////////////
+/// scan the L curve, determine tau and unfold at the final value of
+/// tau
 ///
 /// \param[in] nPoint number of points used for the scan
 /// \param[in] tauMin smallest tau value to study
@@ -2559,9 +2530,9 @@ Double_t TUnfold::DoUnfold(Double_t tau)
 /// it should be approximately L-shaped. If in doubt, adjust tauMin
 /// and tauMax until the results are satisfactory.
 
-Int_t TUnfold::ScanLcurve(Int_t nPoint,
+Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
                           Double_t tauMin,Double_t tauMax,
-           TGraph **lCurve,TSpline **logTauX,
+			  TGraph **lCurve,TSpline **logTauX,
                              TSpline **logTauY,TSpline **logTauCurvature)
 {
   typedef std::map<Double_t,std::pair<Double_t,Double_t> > XYtau_t;
@@ -2605,10 +2576,10 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
      Double_t x0=GetLcurveX();
      Double_t y0=GetLcurveY();
      Info("ScanLcurve","logtau=-Infinity X=%lf Y=%lf",x0,y0);
-     if(!TMath::Finite(x0)) {
+     if(!finite(x0)) {
         Fatal("ScanLcurve","problem (too few input bins?) X=%f",x0);
      }
-     if(!TMath::Finite(y0)) {
+     if(!finite(y0)) {
         Fatal("ScanLcurve","problem (missing regularisation?) Y=%f",y0);
      }
      {
@@ -2617,7 +2588,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
            0.5*(TMath::Log10(fChi2A+3.*TMath::Sqrt(GetNdf()+1.0))
                 -GetLcurveY());
         DoUnfold(TMath::Power(10.,logTau));
-        if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+        if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
            Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                  GetLcurveX(),GetLcurveY());
         }
@@ -2636,7 +2607,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
            x0=GetLcurveX();
            Double_t logTau=(*curve.begin()).first-0.5;
            DoUnfold(TMath::Power(10.,logTau));
-           if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+           if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
               Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                     GetLcurveX(),GetLcurveY());
            }
@@ -2648,7 +2619,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
               ((*curve.begin()).second.first<x0));
      } else {
         // minimum tau is chosen such that is less than
-        // 1% different from the case of no regularization
+        // 1% different from the case of no regularusation
         // log10(1.01) = 0.00432
 
         // here, more than one point are inserted if necessary
@@ -2658,7 +2629,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
                (curve.size()<2))) {
            Double_t logTau=(*curve.begin()).first-0.5;
            DoUnfold(TMath::Power(10.,logTau));
-           if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+           if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
               Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                     GetLcurveX(),GetLcurveY());
            }
@@ -2673,7 +2644,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
      if(nPoint>1) {
         // insert maximum tau
         DoUnfold(TMath::Power(10.,logTauMax));
-        if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+        if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
            Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                  GetLcurveX(),GetLcurveY());
         }
@@ -2683,7 +2654,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
      }
      // insert minimum tau
      DoUnfold(TMath::Power(10.,logTauMin));
-     if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+     if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
         Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
               GetLcurveX(),GetLcurveY());
      }
@@ -2698,7 +2669,6 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
   //          have been calculated
 
   while(int(curve.size())<nPoint-1) {
-
     // insert additional points, such that the sizes of the delta(XY) vectors
     // are getting smaller and smaller
     XYtau_t::const_iterator i0,i1;
@@ -2719,7 +2689,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
       i0=i1;
     }
     DoUnfold(TMath::Power(10.,logTau));
-    if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+    if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
        Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
              GetLcurveX(),GetLcurveY());
     }
@@ -2797,11 +2767,11 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
         xMax=cTi[i];
       }
       // find maximum for x[i]<x<x[i+1]
-      // get spline coefficients and solve equation
+      // get spline coefficiencts and solve equation
       //   derivative(x)==0
       Double_t x,y,b,c,d;
       splineC->GetCoeff(i,x,y,b,c,d);
-      // coefficients of quadratic equation
+      // coefficiencts of quadratic equation
       Double_t m_p_half=-c/(3.*d);
       Double_t q=b/(3.*d);
       Double_t discr=m_p_half*m_p_half-q;
@@ -2853,7 +2823,7 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
     delete[] cCi;
     logTauFin=cTmax;
     DoUnfold(TMath::Power(10.,logTauFin));
-    if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
+    if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
        Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
              GetLcurveX(),GetLcurveY());
     }
@@ -2896,21 +2866,22 @@ Int_t TUnfold::ScanLcurve(Int_t nPoint,
   return bestChoice;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Histogram of truth bins, determined from summing over the response matrix.
+////////////////////////////////////////////////////////////////////////
+/// histogram of truth bins, determined from suming over the response matrix
 ///
 /// \param[out] out histogram to store the truth bins. The bin contents
 /// are overwritten
 /// \param[in] binMap (default=0) array for mapping truth bins to histogram bins
 ///
 /// This vector is also used to initialize the bias
-/// x_{0}. However, the bias vector may be changed using the
+/// x<sub>0</sub>. However, the bias vector may be changed using the
 /// SetBias() method.
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
-/// the GetOutput() method.
+/// the GetOutput() method
+///
 
-void TUnfold::GetNormalisationVector(TH1 *out,const Int_t *binMap) const
+void TUnfoldV17::GetNormalisationVector(TH1 *out,const Int_t *binMap) const
 {
 
    ClearHistogram(out);
@@ -2922,20 +2893,22 @@ void TUnfold::GetNormalisationVector(TH1 *out,const Int_t *binMap) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get bias vector including bias scale.
+////////////////////////////////////////////////////////////////////////
+/// get bias vector including bias scale
 ///
 /// \param[out] out histogram to store the scaled bias vector. The bin
 /// contents are overwritten
 /// \param[in] binMap (default=0) array for mapping truth bins to histogram bins
 ///
-/// This method returns the bias vector times scaling factor, f*x_{0}
+/// This method returns the bias vector times scaling factor, f*x<sub>0</sub>
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
+///
 
-void TUnfold::GetBias(TH1 *out,const Int_t *binMap) const
+void TUnfoldV17::GetBias(TH1 *out,const Int_t *binMap) const
 {
+
    ClearHistogram(out);
    for (Int_t i = 0; i < GetNx(); i++) {
       int dest=binMap ? binMap[fXToHist[i]] : fXToHist[i];
@@ -2946,10 +2919,10 @@ void TUnfold::GetBias(TH1 *out,const Int_t *binMap) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get unfolding result on detector level.
+////////////////////////////////////////////////////////////////////////
+/// get unfolding result on detector level
 ///
-/// \param[out] out histogram to store the correlation coefficients. The bin
+/// \param[out] out histogram to store the correlation coefficiencts. The bin
 /// contents and errors are overwritten.
 /// \param[in] binMap (default=0) array for mapping truth bins to histogram bins
 ///
@@ -2958,8 +2931,9 @@ void TUnfold::GetBias(TH1 *out,const Int_t *binMap) const
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
+///
 
-void TUnfold::GetFoldedOutput(TH1 *out,const Int_t *binMap) const
+void TUnfoldV17::GetFoldedOutput(TH1 *out,const Int_t *binMap) const
 {
    ClearHistogram(out);
 
@@ -2998,8 +2972,8 @@ void TUnfold::GetFoldedOutput(TH1 *out,const Int_t *binMap) const
    DeleteMatrix(&AVxx);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get matrix of probabilities.
+////////////////////////////////////////////////////////////////////////
+/// get matrix of probabilities
 ///
 /// \param[out] A two-dimensional histogram to store the
 /// probabilities (normalized response matrix). The bin contents are
@@ -3007,9 +2981,9 @@ void TUnfold::GetFoldedOutput(TH1 *out,const Int_t *binMap) const
 /// \param[in] histmap specify axis along which the truth bins are
 /// oriented
 
-void TUnfold::GetProbabilityMatrix(TH2 *A,EHistMap histmap) const
+void TUnfoldV17::GetProbabilityMatrix(TH2 *A,EHistMap histmap) const
 {
-   // retrieve matrix of probabilities
+   // retreive matrix of probabilities
    //    histmap: on which axis to arrange the input/output vector
    //    A: histogram to store the probability matrix
    const Int_t *rows_A=fA->GetRowIndexArray();
@@ -3028,21 +3002,22 @@ void TUnfold::GetProbabilityMatrix(TH2 *A,EHistMap histmap) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 /// Input vector of measurements
 ///
 /// \param[out] out histogram to store the measurements. Bin content
-/// and bin errors are overwrite.
+/// and bin errors are overwritte.
 /// \param[in] binMap (default=0) array for mapping truth bins to histogram bins
 ///
 /// Bins which had an uncertainty of zero in the call to SetInput()
-/// may acquire bin contents or bin errors different from the
+/// maye acquire bin contents or bin errors different from the
 /// original settings in SetInput().
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
+///
 
-void TUnfold::GetInput(TH1 *out,const Int_t *binMap) const
+void TUnfoldV17::GetInput(TH1 *out,const Int_t *binMap) const
 {
    ClearHistogram(out);
 
@@ -3066,12 +3041,12 @@ void TUnfold::GetInput(TH1 *out,const Int_t *binMap) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get inverse of the measurement's covariance matrix.
+////////////////////////////////////////////////////////////////////////
+/// get inverse of the measurement's covariance matrix
 ///
 /// \param[out] out histogram to store the inverted covariance
 
-void TUnfold::GetInputInverseEmatrix(TH2 *out)
+void TUnfoldV17::GetInputInverseEmatrix(TH2 *out)
 {
    // calculate the inverse of the contribution to the error matrix
    // corresponding to the input data
@@ -3112,22 +3087,22 @@ void TUnfold::GetInputInverseEmatrix(TH2 *out)
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get matrix of regularisation conditions squared.
+////////////////////////////////////////////////////////////////////////
+/// get matrix of regularisation conditions squared
 ///
 /// \param[out] out histogram to store the squared matrix of
 /// regularisation conditions. the bin contents are overwritten
 ///
-/// This returns the square matrix L^{T}L as a histogram
+/// This returns the square matrix L<sup>T</sup>L as a histogram
 ///
 /// The histogram should have dimension nx times nx, where nx
 /// corresponds to the number of histogram bins in the response matrix
 /// along the truth axis.
 
-void TUnfold::GetLsquared(TH2 *out) const
+void TUnfoldV17::GetLsquared(TH2 *out) const
 {
-   // retrieve matrix of regularisation conditions squared
-   //   out: pre-booked matrix
+   // retreive matrix of regularisation conditions squared
+   //   out: prebooked matrix
 
    TMatrixDSparse *lSquared=MultiplyMSparseTranspMSparse(fL,fL);
    // loop over sparse matrix
@@ -3143,28 +3118,28 @@ void TUnfold::GetLsquared(TH2 *out) const
    DeleteMatrix(&lSquared);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get number of regularisation conditions.
+////////////////////////////////////////////////////////////////////////
+/// get number of regularisation conditions
 ///
-/// This returns the number of regularisation conditions, useful for
+/// Ths returns the number of regularisation conditions, useful for
 /// booking a histogram for a subsequent call of GetL().
 
-Int_t TUnfold::GetNr(void) const {
+Int_t TUnfoldV17::GetNr(void) const {
    return fL->GetNrows();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get matrix of regularisation conditions.
+////////////////////////////////////////////////////////////////////////
+/// get matrix of regularisation conditions
 ///
 /// \param[out] out histogram to store the regularisation conditions.
-/// the bin contents are overwritten
+/// the bincontents are overwritten
 ///
 /// The histogram should have dimension nr (x-axis) times nx (y-axis).
 /// nr corresponds to the number of regularisation conditions, it can
 /// be obtained using the method GetNr(). nx corresponds to the number
 /// of histogram bins in the response matrix along the truth axis.
 
-void TUnfold::GetL(TH2 *out) const
+void TUnfoldV17::GetL(TH2 *out) const
 {
    // loop over sparse matrix
    const Int_t *rows=fL->GetRowIndexArray();
@@ -3179,71 +3154,67 @@ void TUnfold::GetL(TH2 *out) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Set type of area constraint.
+////////////////////////////////////////////////////////////////////////
+/// set type of area constraint
 ///
 /// results of a previous unfolding are reset
 
-void TUnfold::SetConstraint(EConstraint constraint)
+void TUnfoldV17::SetConstraint(EConstraint constraint)
 {
    // set type of constraint for the next unfolding
    if(fConstraint !=constraint) ClearResults();
    fConstraint=constraint;
-   Info("traint","fConstraint=%d",fConstraint);
+   Info("SetConstraint","fConstraint=%d",fConstraint);
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// Return regularisation parameter.
-
-Double_t TUnfold::GetTau(void) const
+////////////////////////////////////////////////////////////////////////
+/// return regularisation parameter
+///
+Double_t TUnfoldV17::GetTau(void) const
 {
    // return regularisation parameter
    return TMath::Sqrt(fTauSquared);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get \f$ chi^{2}_{L} \f$ contribution determined in recent unfolding.
-
-Double_t TUnfold::GetChi2L(void) const
+////////////////////////////////////////////////////////////////////////
+/// get &chi;<sup>2</sup><sub>L</sub> contribution determined in recent unfolding
+Double_t TUnfoldV17::GetChi2L(void) const
 {
    // return chi**2 contribution from regularisation conditions
    return fLXsquared*fTauSquared;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get number of truth parameters determined in recent unfolding.
+////////////////////////////////////////////////////////////////////////
+/// get number of truth parameters determined in recent unfolding
 ///
 /// empty bins of the response matrix or bins which can not be
 /// unfolded due to rank deficits are not counted
-
-Int_t TUnfold::GetNpar(void) const
+Int_t TUnfoldV17::GetNpar(void) const
 {
    return GetNx();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get value on x-axis of L-curve determined in recent unfolding.
+////////////////////////////////////////////////////////////////////////
+/// get value on x-axis of L-curve determined in recent unfolding
 ///
-/// \f$ x=log_{10}(GetChi2A()) \f$
-
-Double_t TUnfold::GetLcurveX(void) const
+/// x=log<sub>10</sub>(GetChi2A())
+Double_t TUnfoldV17::GetLcurveX(void) const
 {
   return TMath::Log10(fChi2A);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get value on y-axis of L-curve determined in recent unfolding.
+////////////////////////////////////////////////////////////////////////
+/// get value on y-axis of L-curve determined in recent unfolding
 ///
-/// \f$ y=log_{10}(GetChi2L()) \f$
-
-Double_t TUnfold::GetLcurveY(void) const
+/// y=log<sub>10</sub>(GetChi2L())
+Double_t TUnfoldV17::GetLcurveY(void) const
 {
   return TMath::Log10(fLXsquared);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get output distribution, possibly cumulated over several bins.
+////////////////////////////////////////////////////////////////////////
+/// get output distribution, possibly cumulated over several bins
 ///
 /// \param[out] output existing output histogram. content and errors
 /// will be updated.
@@ -3261,21 +3232,22 @@ Double_t TUnfold::GetLcurveY(void) const
 /// ignore an unfolded truth bin. The uncertainties are
 /// calculated from the corresponding parts of the covariance matrix,
 /// properly taking care of added truth bins.
-///
+/// <br/>
 /// If the pointer <b>binMap</b> is zero, the bins are mapped
 /// one-to-one. Truth bin zero (underflow) is stored in the
 /// <b>output</b> underflow, truth bin 1 is stored in bin number 1, etc.
-///
-///  - output: output histogram
-///  - binMap: for each bin of the original output distribution
-///           specify the destination bin. A value of -1 means that the bin
-///           is discarded. 0 means underflow bin, 1 first bin, ...
-///       - binMap[0] : destination of underflow bin
-///       - binMap[1] : destination of first bin
-///          ...
 
-void TUnfold::GetOutput(TH1 *output,const Int_t *binMap) const
+void TUnfoldV17::GetOutput(TH1 *output,const Int_t *binMap) const
 {
+   //
+   //   output: output histogram
+   //   binMap: for each bin of the original output distribution
+   //           specify the destination bin. A value of -1 means that the bin
+   //           is discarded. 0 means underflow bin, 1 first bin, ...
+   //        binMap[0] : destination of underflow bin
+   //        binMap[1] : destination of first bin
+   //          ...
+
    ClearHistogram(output);
    /* Int_t nbin=output->GetNbinsX();
    Double_t *c=new Double_t[nbin+2];
@@ -3341,8 +3313,8 @@ void TUnfold::GetOutput(TH1 *output,const Int_t *binMap) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Add up an error matrix, also respecting the bin mapping.
+////////////////////////////////////////////////////////////////////////
+/// add up an error matrix, also respecting the bin mapping
 ///
 /// \param[inout] ematrix error matrix histogram
 /// \param[in] emat error matrix stored with internal mapping (member fXToHist)
@@ -3354,8 +3326,8 @@ void TUnfold::GetOutput(TH1 *output,const Int_t *binMap) const
 /// matrix emat must have dimension NxN where N=fXToHist.size()
 /// The flag <b>doClear</b> may be used to add covariance matrices from
 /// several uncertainty sources.
-
-void TUnfold::ErrorMatrixToHist(TH2 *ematrix,const TMatrixDSparse *emat,
+///
+void TUnfoldV17::ErrorMatrixToHist(TH2 *ematrix,const TMatrixDSparse *emat,
                                 const Int_t *binMap,Bool_t doClear) const
 {
    Int_t nbin=ematrix->GetNbinsX();
@@ -3412,8 +3384,8 @@ void TUnfold::ErrorMatrixToHist(TH2 *ematrix,const TMatrixDSparse *emat,
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get output covariance matrix, possibly cumulated over several bins.
+////////////////////////////////////////////////////////////////////////
+/// get output covariance matrix, possibly cumulated over several bins
 ///
 /// \param[out] ematrix histogram to store the covariance. The bin
 /// contents are overwritten.
@@ -3422,22 +3394,22 @@ void TUnfold::ErrorMatrixToHist(TH2 *ematrix,const TMatrixDSparse *emat,
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
 
-void TUnfold::GetEmatrix(TH2 *ematrix,const Int_t *binMap) const
+void TUnfoldV17::GetEmatrix(TH2 *ematrix,const Int_t *binMap) const
 {
    ErrorMatrixToHist(ematrix,fVxx,binMap,kTRUE);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get correlation coefficients, possibly cumulated over several bins.
+////////////////////////////////////////////////////////////////////////
+/// get correlation coefficiencts, possibly cumulated over several bins
 ///
-/// \param[out] rhoij histogram to store the correlation coefficients. The bin
+/// \param[out] rhoij histogram to store the correlation coefficiencts. The bin
 /// contents are overwritten.
 /// \param[in] binMap (default=0) array for mapping truth bins to histogram bins
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
 
-void TUnfold::GetRhoIJ(TH2 *rhoij,const Int_t *binMap) const
+void TUnfoldV17::GetRhoIJ(TH2 *rhoij,const Int_t *binMap) const
 {
    GetEmatrix(rhoij,binMap);
    Int_t nbin=rhoij->GetNbinsX();
@@ -3457,8 +3429,8 @@ void TUnfold::GetRhoIJ(TH2 *rhoij,const Int_t *binMap) const
    delete[] e;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get global correlation coefficients, possibly cumulated over several bins.
+////////////////////////////////////////////////////////////////////////
+/// get global correlation coefficiencts, possibly cumulated over several bins
 ///
 /// \param[out] rhoi histogram to store the global correlation
 /// coefficients. The bin contents are overwritten.
@@ -3468,8 +3440,9 @@ void TUnfold::GetRhoIJ(TH2 *rhoij,const Int_t *binMap) const
 /// covariance matrix
 ///
 /// for a given bin, the global correlation coefficient is defined
-/// as \f$ \rho_{i} = \sqrt{1-\frac{1}{(V_{ii}*V^{-1}_{ii})}} \f$
-///
+/// as<br/>
+///  &rho;<sub>i</sub>=sqrt(1-1/(V<sub>ii</sub>*V<sup>-1</sup><sub>ii</sub>))
+/// <br/>
 /// such that the calculation of global correlation coefficients
 /// possibly involves the inversion of a covariance matrix.
 ///
@@ -3477,8 +3450,9 @@ void TUnfold::GetRhoIJ(TH2 *rhoij,const Int_t *binMap) const
 ///
 /// The use of <b>binMap</b> is explained with the documentation of
 /// the GetOutput() method
+///
 
-Double_t TUnfold::GetRhoI(TH1 *rhoi,const Int_t *binMap,TH2 *invEmat) const
+Double_t TUnfoldV17::GetRhoI(TH1 *rhoi,const Int_t *binMap,TH2 *invEmat) const
 {
    ClearHistogram(rhoi,-1.);
 
@@ -3527,22 +3501,20 @@ Double_t TUnfold::GetRhoI(TH1 *rhoi,const Int_t *binMap,TH2 *invEmat) const
    }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Get global correlation coefficients with arbitrary min map.
-///
-///  - rhoi: global correlation histogram
-///  - emat: error matrix
-///  - binMap: for each bin of the original output distribution
-///           specify the destination bin. A value of -1 means that the bin
-///           is discarded. 0 means underflow bin, 1 first bin, ...
-///       - binMap[0] : destination of underflow bin
-///       - binMap[1] : destination of first bin
-///          ...
-/// return value: maximum global correlation
-
-Double_t TUnfold::GetRhoIFromMatrix(TH1 *rhoi,const TMatrixDSparse *eOrig,
+Double_t TUnfoldV17::GetRhoIFromMatrix(TH1 *rhoi,const TMatrixDSparse *eOrig,
                                     const Int_t *binMap,TH2 *invEmat) const
 {
+   // get global correlation coefficients with arbitrary min map
+   //   rhoi: global correlation histogram
+   //   emat: error matrix
+   //   binMap: for each bin of the original output distribution
+   //           specify the destination bin. A value of -1 means that the bin
+   //           is discarded. 0 means underflow bin, 1 first bin, ...
+   //        binMap[0] : destination of underflow bin
+   //        binMap[1] : destination of first bin
+   //          ...
+   // return value: maximum global correlation
+
    Double_t rhoMax=0.;
    // original number of bins:
    //    fHistToX.GetSize()
@@ -3648,15 +3620,15 @@ Double_t TUnfold::GetRhoIFromMatrix(TH1 *rhoi,const TMatrixDSparse *eOrig,
    return rhoMax;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// Initialize bin contents and bin errors for a given histogram.
+
+////////////////////////////////////////////////////////////////////////
+/// Initialize bin contents and bin errors for a given histogram
 ///
 /// \param[out] h histogram
 /// \param[in] x new histogram content
 ///
 /// all histgram errors are set to zero, all contents are set to <b>x</b>
-
-void TUnfold::ClearHistogram(TH1 *h,Double_t x) const
+void TUnfoldV17::ClearHistogram(TH1 *h,Double_t x) const
 {
    Int_t nxyz[3];
    nxyz[0]=h->GetNbinsX()+1;
@@ -3679,17 +3651,17 @@ void TUnfold::ClearHistogram(TH1 *h,Double_t x) const
    }
 }
 
-void TUnfold::SetEpsMatrix(Double_t eps) {
+void TUnfoldV17::SetEpsMatrix(Double_t eps) {
    // set accuracy for matrix inversion
    if((eps>0.0)&&(eps<1.0)) fEpsMatrix=eps;
 }
 
 
+
 ////////////////////////////////////////////////////////////////////////
 ///
-TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
+TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 {
-
   if(!fVyyInv) {
      GetInputInverseEmatrix(0);
      if(fConstraint != kEConstraintNone) {
@@ -3701,8 +3673,6 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
   TMatrixDSparse *AtVyyinv=MultiplyMSparseTranspMSparse(fA,fVyyInv);
   fEinv=MultiplyMSparseMSparse(AtVyyinv,fA);
   TMatrixDSparse *lSquared=MultiplyMSparseTranspMSparse(fL,fL);
-  //std::cout << "fL is: " <<std::endl;
-  //fL->Print();
   AddMSparse(fEinv,tau*tau,lSquared);
 
   //         T              2 T   -1
@@ -3750,7 +3720,6 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
   const Double_t *SE_data=SE->GetMatrixArray();
   // SEii: diagonals of SE
   TVectorD SEii(SE->GetNrows());
-  //TVectorD SEii_reciprocal(SE->GetNrows());
   Int_t nError=0;
   for(Int_t iA=0;iA<SE->GetNrows();iA++) {
      for(Int_t indexA=SE_rows[iA];indexA<SE_rows[iA+1];indexA++) {
@@ -3758,7 +3727,6 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
         if(iA==jA) {
            if(!(SE_data[indexA]>=0.0)) nError++;
            SEii(iA)=SE_data[indexA];
-           //SEii_reciprocal(iA)=1.0/SE_data[indexA];
         }
      }
   }
@@ -3778,10 +3746,24 @@ TVectorD TUnfold::ComputeCoverage(TMatrixD *beta, Double_t tau)
   return Coverage_probability;
 }
 
+////////////////////////////////////////////////////////////////////////
+///
+TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
+{
+  // converting TH1 hist_beta to TMatrixD beta
+  TMatrixD *beta;
+  beta = new TMatrixD(GetNx(), 1);
+  for (Int_t i = 0; i < GetNx(); i++) {
+    (*beta) (i, 0) = hist_beta->GetBinContent(fXToHist[i]);
+  }
+
+  TVectorD Coverage_probability = ComputeCoverage(beta, tau);
+  return Coverage_probability;
+}
 
 ////////////////////////////////////////////////////////////////////////
 ///
-Double_t TUnfold::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
+Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
 
@@ -3843,8 +3825,8 @@ Double_t TUnfold::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// Return a string describing the TUnfold version.
+////////////////////////////////////////////////////////////////////////
+/// return a string describing the TUnfold version
 ///
 /// The version is reported in the form  Vmajor.minor
 /// Changes of the minor version number typically correspond to
@@ -3852,7 +3834,7 @@ Double_t TUnfold::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 /// removing data attributes, such that the streamer methods are not
 /// compatible between different major versions.
 
-const char *TUnfold::GetTUnfoldVersion(void)
+const char *TUnfoldV17::GetTUnfoldVersion(void)
 {
    return TUnfold_VERSION;
 }

@@ -22,7 +22,6 @@
 //
 //==============================================================================
 
-#if !defined(__CINT__) || defined(__MAKECINT__)
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -40,7 +39,7 @@
 #include <TLatex.h>
 #include "TUnfold.h"
 #include "Math/ProbFunc.h"
-#endif
+using namespace std;
 
 // Smear x by additive zero-mean Gaussian noise with standard deviation sigmaSmear
 Double_t smear(Double_t x) {
@@ -76,8 +75,8 @@ TH1D* generateData() {
   return hy;
 }
 
-void UndersmoothTauSimulation() {
-
+void UndersmoothDemo()
+{
   gRandom->SetSeed(123456);
 
   // Fill hLambda by simulating a large number
@@ -213,7 +212,6 @@ void UndersmoothTauSimulation() {
 
       // check if lcurve scan covered the true lambda
       if (hLambdaHatInvLcurveLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvLcurveUp) {
-        // binwiseCoverageY starts from index 0 but it is initialized to 0 so neglect;
         binwiseCoverageLcurve[j] = binwiseCoverageLcurve[j] + (1.0 / repeatNum);
       }
 
@@ -315,9 +313,10 @@ void UndersmoothTauSimulation() {
   hLambda->SetLineColor(6); // Magenta
   hLambda->Draw("SAME HIST");
 
-  output->SaveAs("UndersmoothTauSimulation.pdf");
+  output->SaveAs("UndersmoothDemo.pdf");
 }
 
-#ifndef __CINT__
-int main () { UndersmoothTauSimulation(); return 0; }  // Main program when run stand-alone
-#endif
+int main() {
+  UndersmoothDemo();
+  return 0;
+}

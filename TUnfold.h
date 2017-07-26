@@ -1,6 +1,5 @@
-// Modified by Junhyung (Lyle) Kim and Mikael Kuusela
+// Modified by Junhyung Lyle Kim and Mikael Kuusela
 // starting from TUnfold.cxx (version 17.6) by Stefan Schmitt
-
 
 // Author: Stefan Schmitt
 // DESY, 13/10/08
@@ -104,8 +103,9 @@
 #define TUnfold_VERSION "V17.6"
 #define TUnfold_CLASS_VERSION 17
 
+#define TUnfold TUnfoldV17
 
-class TUnfold : public TObject {
+class TUnfoldV17 : public TObject {
  private:
    void InitTUnfold(void);     // initialize all data members
  public:
@@ -149,7 +149,6 @@ class TUnfold : public TObject {
       /// truth level on y-axis of the response matrix
       kHistMapOutputVert = 1
    };
-
 
  protected:
    /// response matrix A
@@ -275,12 +274,12 @@ class TUnfold : public TObject {
 public:
    static const char*GetTUnfoldVersion(void);
    // Set up response matrix and regularisation scheme
-   TUnfold(const TH2 *hist_A, EHistMap histmap,
+   TUnfoldV17(const TH2 *hist_A, EHistMap histmap,
            ERegMode regmode = kRegModeSize,
            EConstraint constraint=kEConstraintArea);
    // for root streamer and derived classes
-   TUnfold(void);
-   virtual ~TUnfold(void);
+   TUnfoldV17(void);
+   virtual ~TUnfoldV17(void);
    // define input distribution
    virtual Int_t SetInput(const TH1 *hist_y, Double_t scaleBias=0.0,Double_t oneOverZeroError=0.0,const TH2 *hist_vyy=0,const TH2 *hist_vyy_inv=0);
    // Unfold with given choice of tau and input
@@ -301,10 +300,12 @@ public:
    void GetFoldedOutput(TH1 *folded,const Int_t *binMap=0) const;
 
    ////////////////////////////////////////////////////////////////////////////////
-   // Implemented by Junhung Lyle Kim and Mikael Kuusela                       //
+   // Implemented by Junhung Lyle Kim and Mikael Kuusela                         //
    TVectorD ComputeCoverage(TMatrixD *beta, Double_t tau);                       //
+   TVectorD ComputeCoverage(TH1 *hist_beta, Double_t tau);                       //
    Double_t UndersmoothTau(Double_t tau_init, Double_t epsilon, Int_t max_iter); //
    ////////////////////////////////////////////////////////////////////////////////
+
 
    // access input parameters
    void GetProbabilityMatrix(TH2 *A,EHistMap histmap) const;
@@ -350,7 +351,7 @@ public:
    /// matrices with rank problems
    void SetEpsMatrix(Double_t eps); // set accuracy for eigenvalue analysis
 
-   ClassDef(TUnfold, TUnfold_CLASS_VERSION) //Unfolding with support for L-curve analysis
+   ClassDef(TUnfoldV17, TUnfold_CLASS_VERSION) //Unfolding with support for L-curve analysis
 };
 
 #endif
