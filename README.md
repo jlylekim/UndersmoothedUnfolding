@@ -35,7 +35,7 @@ The simulation below compares the performance of the unfolded confidence interva
 ![Demonstration](UndersmoothDemo.png)
 
 ## Installation
-To install, simply set up the `ROOT` environment and run `make` as below:
+To install, simply set up the `ROOT` environment (tested using [ROOT V6.10/00](https://root.cern.ch/content/release-61000)) and run `make` as below:
 ```bash
 $ source /path/to/install-or-build/dir/bin/thisroot.sh
 $ make
