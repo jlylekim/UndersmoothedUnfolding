@@ -1,5 +1,5 @@
 // Modified by Junhyung Lyle Kim and Mikael Kuusela
-// starting from TUnfold.cxx (version 17.6) by Stefan Schmitt
+// starting from TUnfold.h (version 17.6) by Stefan Schmitt
 
 // Author: Stefan Schmitt
 // DESY, 13/10/08
