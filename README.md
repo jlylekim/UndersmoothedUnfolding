@@ -9,11 +9,11 @@ This repository provides an extension for the unfolding software [TUnfold V17.6]
 | Function | Input | Output | Description |
 | --- | --- | --- | --- |
 | `UndersmoothTau` | Initial tau, tolerance epsilon, max number of iterations | Undersmoothed tau | Undersmooths the initial tau (from L-curve for example) gradually until the minimum estimated coverage meets the target coverage, which is the nominal 68% minus the tolerance epsilon. This is the main function from the user's perspective. |
-| `ComputeCoverage` | Estimate of the true histogram, tau | Computed coverage | Computes the estimated coverage given an estimate of the true histogram and a regularization strength tau. Used by `UndersmoothTau`. |
+| `ComputeCoverage` | Estimate of the true histogram, tau | Estimated coverage | Computes the estimated coverage given an estimate of the true histogram and a regularization strength tau. Used by `UndersmoothTau`. |
 
 
 ##  Example usage  
-`UndersmoothTau` is implemented so that it can be used with any other method that might suffer undercoverage. Below is an exemplary usage of `UndersmoothTau` with `ScanLcurve` method provided in `TUnfold`.    
+`UndersmoothTau` is implemented so that it can be used with any initial estimate of tau. Below is example usage of `UndersmoothTau` with the `ScanLcurve` method provided in `TUnfold`.
 
 ```c++
 TUnfold unfold = new TUnfold();          // construct a TUnfold object
@@ -26,11 +26,11 @@ TauFromUndersmoothing = unfold.UndersmoothTau(TauFromLcurve, 0.01, 1000);
 unfold.DoUnfold(TauFromUndersmoothing);   // unfold again with undersmoothed tau
 ```
 
-See `UndersmoothDemo.cxx` for more detail on how to use `UndersmoothTau`.
+See `UndersmoothDemo.C` for more details on how to use `UndersmoothTau`.
 
 ## Demonstration
 
-The simulation below compares the performance of the unfolded confidence intervals when the regularization strength is chosen using `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this extension. The tolerance epsilon was set to 0.01 so the intervals from `UndersmoothTau` should have 67% coverage. The top plots compare the binwise coverage of the methods. The coverage is estimated by repeating the unfolding 1,000 times with independent realizations of data. The bottom plots show one realization of the unfolded confidence intervals for each method. The confidence intervals provided by `ScanLcurve` are too short and suffer from drastic undercoverage, while the intervals provided by `UndersmoothTau` have nearly nominal coverage without being excessively long. See `UndersmoothDemo.cxx` for details of the simulation setup.
+The simulation below compares the performance of the unfolded confidence intervals when the regularization strength is chosen using `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this extension. The tolerance epsilon was set to 0.01, so the intervals from `UndersmoothTau` should have 67% coverage. The top plots compare the binwise coverage of the methods. The coverage is estimated by repeating the unfolding 1,000 times with independent realizations of data. The bottom plots show one realization of the unfolded confidence intervals for each method. The confidence intervals provided by `ScanLcurve` are too short and suffer from drastic undercoverage, while the intervals provided by `UndersmoothTau` have nearly nominal coverage without being excessively long. See `UndersmoothDemo.C` for details of the simulation setup.
 
 ![Demonstration](UndersmoothDemo.png)
 
@@ -40,7 +40,7 @@ To install, simply set up the `ROOT` environment and run `make` as below:
 $ source /path/to/install-or-build/dir/bin/thisroot.sh
 $ make
 ```
-You should see an executable named `UndersmoothDemo`. Running the executable will generate `UndersmoothDemo.pdf`.
+You should see an executable named `UndersmoothDemo`. Running the executable will generate `UndersmoothDemo.pdf`. (Running the script takes a while. To obtain results faster reduce `repeatNum` in `UndersmoothDemo.C`.)
 
 ## Known issues
 * The current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing the `TUnfold` object.
