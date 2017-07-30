@@ -40,7 +40,7 @@ To install, simply set up the `ROOT` environment (tested with [ROOT V6.10/00](ht
 $ source /path/to/install-or-build/dir/bin/thisroot.sh
 $ make
 ```
-You should see an executable named `UndersmoothDemo`. Running the executable will generate `UndersmoothDemo.pdf`. (Running the script takes a while. To obtain results faster reduce `repeatNum` in `UndersmoothDemo.C`.)
+You should see an executable named `UndersmoothDemo`. Running the executable will generate `UndersmoothDemo.pdf`. (Running the demo takes a while. To obtain results faster reduce `repeatNum` in `UndersmoothDemo.C`.)
 
 ## Known issues
 * The current version is intended to be used with `kEConstraintNone` for the area constraint option when constructing the `TUnfold` object.
