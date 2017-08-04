@@ -151,8 +151,8 @@ void UndersmoothDemo()
   Double_t biasScale=dataSize/1000000.0;
 
   // to plot one realization of unfolded histogram
-  TH1D *unfoldedLcurve = new TH1D("Unfolded","", 40, -7.0, 7.0);
-  TH1D *unfoldedUndersmooth = new TH1D("Unfolded","", 40, -7.0, 7.0);
+  TH1D *unfoldedLcurve = new TH1D("UnfoldedLcurve","", 40, -7.0, 7.0);
+  TH1D *unfoldedUndersmooth = new TH1D("UnfoldedUnersmooth","", 40, -7.0, 7.0);
 
   for (Int_t i=0; i<repeatNum; i++) {
     TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
@@ -161,8 +161,8 @@ void UndersmoothDemo()
     //TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
     //TUnfold* unfoldUndersmooth = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
 
-    TH1D *hLambdaHatInvLcurve = new TH1D("Unfolded","", 40, -7.0, 7.0);
-    TH1D *hLambdaHatInvUndersmooth = new TH1D("Unfolded","", 40, -7.0, 7.0);
+    TH1D *hLambdaHatInvLcurve = new TH1D("LcurveUnfolded","", 40, -7.0, 7.0);
+    TH1D *hLambdaHatInvUndersmooth = new TH1D("UndersmoothUnfolded","", 40, -7.0, 7.0);
 
     TH1D* hy = generateData();
 
@@ -245,8 +245,8 @@ void UndersmoothDemo()
   gStyle->SetTickLength(0.01, "Y");
   gStyle->SetTickLength(0.0, "X");
 
-  TH1D* undersmoothCoverageHist = new TH1D ("x", "", 40, 0, 41);
-  TH1D* lcurveCoverageHist = new TH1D ("x", "", 40, 0, 41);
+  TH1D* undersmoothCoverageHist = new TH1D ("x1", "", 40, 0, 41);
+  TH1D* lcurveCoverageHist = new TH1D ("x2", "", 40, 0, 41);
 
   for (Int_t i=1;i<41;i++) {
     undersmoothCoverageHist->SetBinContent(i,binwiseCoverageY[i]);
