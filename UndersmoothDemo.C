@@ -152,7 +152,7 @@ void UndersmoothDemo()
 
   // to plot one realization of unfolded histogram
   TH1D *unfoldedLcurve = new TH1D("UnfoldedLcurve","", 40, -7.0, 7.0);
-  TH1D *unfoldedUndersmooth = new TH1D("UnfoldedUnersmooth","", 40, -7.0, 7.0);
+  TH1D *unfoldedUndersmooth = new TH1D("UnfoldedUndersmooth","", 40, -7.0, 7.0);
 
   for (Int_t i=0; i<repeatNum; i++) {
     TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
