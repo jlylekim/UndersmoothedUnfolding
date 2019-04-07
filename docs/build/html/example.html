@@ -155,8 +155,6 @@
             
   <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>PyUnfold is a Python package for incorporating imperfections
-of the measurement process into a data analysis pipeline.</p>
 <div class="section" id="two-peaks-spectra">
 <h2>Two peaks spectra<a class="headerlink" href="#two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -165,24 +163,6 @@ of the measurement process into a data analysis pipeline.</p>
 </div>
 <div class="section" id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
-<p>In the measurement process, a true distribution of <strong>causes</strong> is detected by some
-apparatus having a characteristic <strong>response function</strong>, or matrix, which produces a
-<em>measurable</em> distribution of <strong>effects</strong>.</p>
-<p>The act of unfolding approximates the inverse of the response function by convolving it with
-a <strong>prior</strong> distribution which encodes a guess at the form of the true cause distribution.
-Including the measured effects distribution, we obtain an improved estimate of the cause
-distribution. This updated, better guess can be used as a prior for another unfolding,
-making this an iterative procedure.</p>
-<p>These unfolding iterations continue until some stopping condition (a test statistic
-comparing the unfolded cause distribution between subsequent iterations) satisfies some
-pre-defined threshold, typically taking just a few iterations.</p>
-<p>To use PyUnfold, one needs only to provide the</p>
-<ul class="simple">
-<li>Measured effects distribution</li>
-<li>Response matrix</li>
-<li>Prior distribution</li>
-</ul>
-<p>For further mathematical details on the unfolding procedure, see the <span class="xref std std-doc">mathematics</span> section.</p>
 <table class="docutils footnote" frame="void" id="id1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">

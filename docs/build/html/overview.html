@@ -85,8 +85,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#new-functions">New functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-unfolding">What is unfolding?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#iterative-unfolding">Iterative unfolding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#terminology">Terminology</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -130,8 +128,6 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -144,10 +140,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            
-              <!-- User defined GitHub URL -->
-              <a href="https://github.com/jrbourbeau/pyunfold" class="fa fa-github"> Edit on GitHub</a>
-            
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -160,8 +153,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="id1">
-<h1>Overview<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 written by Stefan Schmitt.
 TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors.
 However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate
@@ -175,56 +168,6 @@ Please refer to the references section for more details on the statistical metho
 </div>
 <div class="section" id="what-is-unfolding">
 <h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
-<p>In an ideal world, we would have access to the perfect detector:
-an apparatus that makes no error in measuring a desired quantity.
-However, in real life, detectors have:</p>
-<ul class="simple">
-<li>Finite resolutions</li>
-<li>Characteristic biases that cannot be eliminated</li>
-<li>Less than 100% detection efficiencies</li>
-<li>Statistical uncertainties</li>
-</ul>
-<p>By building a matrix that encodes a detector’s smearing of the desired true quantity
-into the measured observable(s), a deconvolution can be performed that provides
-an estimate of the true variable. This deconvolution process is known as unfolding.</p>
-</div>
-<div class="section" id="iterative-unfolding">
-<h2>Iterative unfolding<a class="headerlink" href="#iterative-unfolding" title="Permalink to this headline">¶</a></h2>
-<p>The unfolding method implemented in PyUnfold accomplishes this deconvolution
-by harnessing the power of Bayes’ Theorem in an iterative procedure, providing results
-based on physical expectations of the desired quantity <a class="footnote-reference" href="#id3" id="id2">[1]</a>.
-Furthermore, tedious book-keeping for both statistical and systematic errors
-produces precise final uncertainty estimates.</p>
-</div>
-<div class="section" id="terminology">
-<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
-<p>In the measurement process, a true distribution of <strong>causes</strong> is detected by some
-apparatus having a characteristic <strong>response function</strong>, or matrix, which produces a
-<em>measurable</em> distribution of <strong>effects</strong>.</p>
-<p>The act of unfolding approximates the inverse of the response function by convolving it with
-a <strong>prior</strong> distribution which encodes a guess at the form of the true cause distribution.
-Including the measured effects distribution, we obtain an improved estimate of the cause
-distribution. This updated, better guess can be used as a prior for another unfolding,
-making this an iterative procedure.</p>
-<p>These unfolding iterations continue until some stopping condition (a test statistic
-comparing the unfolded cause distribution between subsequent iterations) satisfies some
-pre-defined threshold, typically taking just a few iterations.</p>
-<p>To use PyUnfold, one needs only to provide the</p>
-<ul class="simple">
-<li>Measured effects distribution</li>
-<li>Response matrix</li>
-<li>Prior distribution</li>
-</ul>
-<p>For further mathematical details on the unfolding procedure, see the <span class="xref std std-doc">mathematics</span> section.</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><ol class="first last upperalpha simple" start="7">
-<li>D’Agostini, “A Multidimensional unfolding method based on Bayes’ theorem”, Nucl. Instrum. Meth. A <strong>362</strong> (1995) 487.</li>
-</ol>
-</td></tr>
-</tbody>
-</table>
 </div>
 </div>
 
