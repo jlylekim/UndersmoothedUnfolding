@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Overview &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="UndersmoothedUnfolding" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> UndersmoothedUnfolding
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-functions">New functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-unfolding">What is unfolding?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iterative-unfolding">Iterative unfolding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminology">Terminology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">UndersmoothedUnfolding</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/jrbourbeau/pyunfold" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>Overview<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 written by Stefan Schmitt.
+TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors.
+However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate
+the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.
+This extension provides a new function for choosing the regularization strength, UndersmoothTau,
+which aims at choosing tau so that the confidence intervals have nearly nominal coverage.
+UndersmoothTau is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016).
+Please refer to the references section for more details on the statistical methodology.</p>
+<div class="section" id="new-functions">
+<h2>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="what-is-unfolding">
+<h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
+<p>In an ideal world, we would have access to the perfect detector:
+an apparatus that makes no error in measuring a desired quantity.
+However, in real life, detectors have:</p>
+<ul class="simple">
+<li>Finite resolutions</li>
+<li>Characteristic biases that cannot be eliminated</li>
+<li>Less than 100% detection efficiencies</li>
+<li>Statistical uncertainties</li>
+</ul>
+<p>By building a matrix that encodes a detector’s smearing of the desired true quantity
+into the measured observable(s), a deconvolution can be performed that provides
+an estimate of the true variable. This deconvolution process is known as unfolding.</p>
+</div>
+<div class="section" id="iterative-unfolding">
+<h2>Iterative unfolding<a class="headerlink" href="#iterative-unfolding" title="Permalink to this headline">¶</a></h2>
+<p>The unfolding method implemented in PyUnfold accomplishes this deconvolution
+by harnessing the power of Bayes’ Theorem in an iterative procedure, providing results
+based on physical expectations of the desired quantity <a class="footnote-reference" href="#id3" id="id2">[1]</a>.
+Furthermore, tedious book-keeping for both statistical and systematic errors
+produces precise final uncertainty estimates.</p>
+</div>
+<div class="section" id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
+<p>In the measurement process, a true distribution of <strong>causes</strong> is detected by some
+apparatus having a characteristic <strong>response function</strong>, or matrix, which produces a
+<em>measurable</em> distribution of <strong>effects</strong>.</p>
+<p>The act of unfolding approximates the inverse of the response function by convolving it with
+a <strong>prior</strong> distribution which encodes a guess at the form of the true cause distribution.
+Including the measured effects distribution, we obtain an improved estimate of the cause
+distribution. This updated, better guess can be used as a prior for another unfolding,
+making this an iterative procedure.</p>
+<p>These unfolding iterations continue until some stopping condition (a test statistic
+comparing the unfolded cause distribution between subsequent iterations) satisfies some
+pre-defined threshold, typically taking just a few iterations.</p>
+<p>To use PyUnfold, one needs only to provide the</p>
+<ul class="simple">
+<li>Measured effects distribution</li>
+<li>Response matrix</li>
+<li>Prior distribution</li>
+</ul>
+<p>For further mathematical details on the unfolding procedure, see the <span class="xref std std-doc">mathematics</span> section.</p>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><ol class="first last upperalpha simple" start="7">
+<li>D’Agostini, “A Multidimensional unfolding method based on Bayes’ theorem”, Nucl. Instrum. Meth. A <strong>362</strong> (1995) 487.</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="UndersmoothedUnfolding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Junhyung Lyle Kim and Mikael Kuusela
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
