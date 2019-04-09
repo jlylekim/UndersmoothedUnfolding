@@ -11,8 +11,11 @@ UndersmoothedUnfolding
    :caption: Getting Started
 
    overview
-   installation
+   why
+   how
    example
+   installation
+   api
 
 
 Indices and tables
