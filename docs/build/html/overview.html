@@ -83,14 +83,17 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#what-is-unfolding">What is unfolding?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#new-functions">New functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-blah-balh">testing blah balh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-unfolding">What is unfolding?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-functions">New functions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why UndersmoothedUnfolding?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">UndersmoothedUnfolding API</a></li>
 </ul>
 
@@ -158,29 +161,31 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 <a class="footnote-reference" href="#id7" id="id1">[2]</a> <a class="footnote-reference" href="#id8" id="id2">[3]</a> written by Stefan Schmitt.
+<p>UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 <a class="footnote-reference" href="#id6" id="id1">[2]</a> <a class="footnote-reference" href="#id7" id="id2">[3]</a> written by Stefan Schmitt.
 TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors.
-However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id6" id="id3">[1]</a>, the resulting confidence intervals may seriously underestimate
+However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id5" id="id3">[1]</a>, the resulting confidence intervals may seriously underestimate
 the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.
 This extension provides a new function for choosing the regularization strength, UndersmoothTau,
 which aims at choosing tau so that the confidence intervals have nearly nominal coverage.
-UndersmoothTau is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id4">[1]</a>.
-Please refer to the references section for more details on the statistical methodology <a class="footnote-reference" href="#id6" id="id5">[1]</a>.</p>
+UndersmoothTau is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference" href="#id5" id="id4">[1]</a>.
+Please refer to the references section for more details on the statistical methodology.</p>
+<div class="section" id="testing-blah-balh">
+<h2>testing blah balh<a class="headerlink" href="#testing-blah-balh" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="what-is-unfolding">
 <h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="new-functions">
-<h2>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
+<h3>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h3>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id4">2</a>, <a class="fn-backref" href="#id5">3</a>)</em> <ol class="last upperalpha simple" start="13">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> <ol class="last upperalpha simple" start="13">
 <li>Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016).</li>
 </ol>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
+<table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td><ol class="first last upperalpha simple" start="19">
@@ -189,7 +194,7 @@ Please refer to the references section for more details on the statistical metho
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
+<table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[3]</a></td><td><ol class="first last upperalpha simple" start="18">
@@ -198,6 +203,7 @@ Please refer to the references section for more details on the statistical metho
 </td></tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 

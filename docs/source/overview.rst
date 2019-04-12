@@ -11,6 +11,7 @@ which aims at choosing tau so that the confidence intervals have nearly nominal 
 UndersmoothTau is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016) [1]_.
 Please refer to the references section for more details on the statistical methodology.
 
+
 ------------------
 What is unfolding?
 ------------------

@@ -23,7 +23,18 @@ Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method p
 
 
 
+------------------
+Two peaks spectra
+------------------
+.. image:: plots/binwise_coverage_Lcurve_curvature_lambdaMC.pdf
+    :width: 45%
+.. image:: plots/binwise_coverage_US_curvature_lambdaMC.pdf
+    :width: 45%
+.. image:: plots/boxplot_length_comparison_curvature_lambdaMC.pdf
+    :width: 45%
 
-------------
-Known issues
-------------
+
+
+------------------------
+Steeply falling spectra
+------------------------

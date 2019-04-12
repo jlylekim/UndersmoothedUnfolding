@@ -13,8 +13,8 @@ UndersmoothedUnfolding
    overview
    why
    how
-   example
    installation
+   caveat
    api
 
 
