@@ -23,18 +23,15 @@ Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method p
 
 
 
-------------------
-Two peaks spectra
-------------------
-.. image:: plots/binwise_coverage_Lcurve_curvature_lambdaMC.pdf
-    :width: 45%
-.. image:: plots/binwise_coverage_US_curvature_lambdaMC.pdf
-    :width: 45%
-.. image:: plots/boxplot_length_comparison_curvature_lambdaMC.pdf
-    :width: 45%
+
+UndersmoothedUnfolding iteratively debiases the unfolded point estimator
+using undersmoothing. The undersmoothed estimator has nearly nominal coverage
+at the cost of a modest increase in the length of the confidence intervals.
 
 
-
-------------------------
-Steeply falling spectra
-------------------------
+---------------------
+Expected input/output
+---------------------
+TODO:
+* input: throw a lot of error/warning messages
+  * probability version of smearing matrix (usually formed with Monte Carlo)

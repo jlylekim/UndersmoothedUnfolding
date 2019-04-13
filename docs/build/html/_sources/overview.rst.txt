@@ -2,25 +2,42 @@
 Overview
 ********
 
+``UndersmoothedUnfolding`` is a software for unfolding in high energy physics with focus on
+optimal *uncertainty quantification*. Most unfolding softwares focus on optimal
+point estimation, which can suffer significant undercoverage and
+thus might not be suitable statistical inference and uncertainty quantification.
+
+On the contrary, this software provides a function for choosing the
+regularization strength so that the estimated confidence intervals have
+nearly nominal coverage.
+
+``UndersmoothedUnfolding`` is a ``ROOT`` [3]_. implementation of the data-driven
+undersmoothing technique introduced in Kuusela (2016) [1]_.
+It is  and is extended from the de facto unfolding library, ``TUnfold`` [2]_,
+which comes with ``ROOT`` [3]_.
+
+
+
+OLD version for back up:
 UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 [2]_ [3]_ written by Stefan Schmitt.
 TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors.
 However, as demonstrated by Kuusela (2016) [1]_, the resulting confidence intervals may seriously underestimate
 the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.
-This extension provides a new function for choosing the regularization strength, UndersmoothTau,
-which aims at choosing tau so that the confidence intervals have nearly nominal coverage.
-UndersmoothTau is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016) [1]_.
-Please refer to the references section for more details on the statistical methodology.
 
 
-testing blah balh
 ------------------
 What is unfolding?
 ------------------
 
+Any measurement made at the Large Hadron Collider (LHC) at CERN
+is smeared by the finite resolution of the particle detectors. The goal in
+unfolding is to use these smeared measurements to make non-parametric
+inferences about the underlying particle spectrum.
 
-------------------
-New functions
-------------------
+
+
+
+
 
 
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016).

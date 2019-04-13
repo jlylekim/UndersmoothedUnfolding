@@ -86,8 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why UndersmoothedUnfolding?</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to use</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#example-usage">Example usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#two-peaks-spectra">Two peaks spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#steeply-falling-spectra">Steeply falling spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expected-input-output">Expected input/output</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -173,15 +172,19 @@ Below is an example usage of <code class="docutils literal notranslate"><span cl
 <span class="n">unfold</span><span class="p">.</span><span class="n">DoUnfold</span><span class="p">(</span><span class="n">TauFromUndersmoothing</span><span class="p">);</span>   <span class="c1">// unfold again with undersmoothed tau</span>
 </pre></div>
 </div>
+<p>UndersmoothedUnfolding iteratively debiases the unfolded point estimator
+using undersmoothing. The undersmoothed estimator has nearly nominal coverage
+at the cost of a modest increase in the length of the confidence intervals.</p>
 </div>
-<div class="section" id="two-peaks-spectra">
-<h2>Two peaks spectra<a class="headerlink" href="#two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
-<a class="reference internal image-reference" href="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf"><img alt="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf" src="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
-<a class="reference internal image-reference" href="_images/binwise_coverage_US_curvature_lambdaMC.pdf"><img alt="_images/binwise_coverage_US_curvature_lambdaMC.pdf" src="_images/binwise_coverage_US_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
-<a class="reference internal image-reference" href="_images/boxplot_length_comparison_curvature_lambdaMC.pdf"><img alt="_images/boxplot_length_comparison_curvature_lambdaMC.pdf" src="_images/boxplot_length_comparison_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
-</div>
-<div class="section" id="steeply-falling-spectra">
-<h2>Steeply falling spectra<a class="headerlink" href="#steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="expected-input-output">
+<h2>Expected input/output<a class="headerlink" href="#expected-input-output" title="Permalink to this headline">¶</a></h2>
+<p>TODO:
+* input: throw a lot of error/warning messages</p>
+<blockquote>
+<div><ul class="simple">
+<li>probability version of smearing matrix (usually formed with Monte Carlo)</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 

@@ -3,6 +3,8 @@
 Installation
 ************
 
+TODO: finish modifying makefile first
+
 ----
 Make
 ----
