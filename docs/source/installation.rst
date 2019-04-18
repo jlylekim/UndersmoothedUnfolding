@@ -8,7 +8,6 @@ TODO: finish modifying makefile first
 ----
 Make
 ----
-
 To install, simply set up the ``ROOT`` environment (tested with ``ROOT`` V6.10/00) and run `make` as below:
 
 .. code-block:: bash

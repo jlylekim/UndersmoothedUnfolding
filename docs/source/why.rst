@@ -34,7 +34,6 @@ TODO: probably do not need this section
 .. [3] R. Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. & Meth. in Phys. Res. A **389** (1997).
 
 
-
 ------------------
 Two peaks spectra
 ------------------
@@ -57,8 +56,6 @@ The bottom plots show one realization of the unfolded confidence intervals
 for each method. The confidence intervals provided by `ScanLcurve` are too
 short and suffer from drastic undercoverage, while the intervals provided
 by `UndersmoothTau` have nearly nominal coverage without being excessively long.
-
-
 
 
 
