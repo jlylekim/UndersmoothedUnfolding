@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UndersmoothedUnfolding &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
+  <title>Installation &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
   
 
   
@@ -35,7 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview" href="overview.html" /> 
+    <link rel="next" title="Known issues" href="caveat.html" />
+    <link rel="prev" title="How to use" href="how.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> UndersmoothedUnfolding
+            <a href="index.html" class="icon icon-home"> UndersmoothedUnfolding
           
 
           
@@ -80,11 +81,16 @@
             
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why UndersmoothedUnfolding?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#make">Make</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-version">Development Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">UndersmoothedUnfolding API</a></li>
 </ul>
@@ -101,7 +107,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">UndersmoothedUnfolding</a>
+          <a href="index.html">UndersmoothedUnfolding</a>
         
       </nav>
 
@@ -130,15 +136,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>UndersmoothedUnfolding</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -151,48 +157,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="undersmoothedunfolding">
-<h1>UndersmoothedUnfolding<a class="headerlink" href="#undersmoothedunfolding" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Getting Started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-unfolding">What is unfolding?</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why UndersmoothedUnfolding?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why.html#optimal-uncertainty-quantification-vs-point-estimation">Optimal uncertainty quantification VS. point estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#coverage-for-gaussian-observations">Coverage for Gaussian observations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#two-peaks-spectra">Two peaks spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#steeply-falling-spectra">Steeply falling spectra</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="how.html#example-usage">Example usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="how.html#expected-input-output">Expected input/output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#make">Make</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#development-version">Development Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">UndersmoothedUnfolding API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#computecoverage">ComputeCoverage</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>TODO: finish modifying makefile first</p>
+<div class="section" id="make">
+<h2>Make<a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h2>
+<p>To install, simply set up the <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> environment (tested with <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> V6.10/00) and run <cite>make</cite> as below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make
+</pre></div>
+</div>
+<p>This installs extended <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> which includes <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code>.</p>
+</div>
+<div class="section" id="development-version">
+<h2>Development Version<a class="headerlink" href="#development-version" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/&lt;your-username&gt;/UndersmoothedUnfolding.git
+make
+</pre></div>
 </div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>UndersmoothedUnfolding requires the following dependencies:</p>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><a class="reference external" href="https://root.cern.ch/">ROOT</a> &gt;= 2.7 or &gt;= 3.4</li>
+<li><a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html/">TUnfold</a></li>
 </ul>
+</div>
 </div>
 
 
@@ -203,8 +193,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="caveat.html" class="btn btn-neutral float-right" title="Known issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="how.html" class="btn btn-neutral float-left" title="How to use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
