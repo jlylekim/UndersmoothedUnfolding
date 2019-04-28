@@ -32,5 +32,5 @@ at the cost of a modest increase in the length of the confidence intervals.
 Expected input/output
 ---------------------
 TODO:
-* input: throw a lot of error/warning messages
+  * input: throw a lot of error/warning messages
   * probability version of smearing matrix (usually formed with Monte Carlo)
