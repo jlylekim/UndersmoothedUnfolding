@@ -3,13 +3,15 @@
 Why UndersmoothedUnfolding?
 ****************************
 
-
 ---------------------------------------------------------
  Optimal uncertainty quantification VS. point estimation
 ---------------------------------------------------------
+TODO
+* Maybe add Figure 6.1, pg. 70 from Mikael's dissertation?
 
-UndersmoothedUnfolding an extension for the unfolding software TUnfold V17.6 [2]_ [3]_ written by Stefan Schmitt.
-TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors.
+``UndersmoothedUnfolding`` an extension for the unfolding software ``TUnfold`` V17.6 [2]_ [3]_
+written by Stefan Schmitt. ``TUnfold`` implements Tikhonov regularization for unfolding
+smeared data from particle detectors.
 However, as demonstrated by Kuusela (2016) [1]_, the resulting confidence intervals may seriously underestimate
 the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.
 
@@ -27,11 +29,6 @@ TODO: probably do not need this section
 
 .. image:: plots/computed_coverage_curvature_lambdaMC.pdf
     :width: 48%
-
-
-.. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
-.. [2] S. Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation **7** (2012).
-.. [3] R. Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. & Meth. in Phys. Res. A **389** (1997).
 
 
 ------------------
@@ -62,3 +59,9 @@ by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 ------------------------
 Steeply falling spectra
 ------------------------
+TODO: add steeply falling spectra after meeting
+
+
+.. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
+.. [2] S. Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation **7** (2012).
+.. [3] R. Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. & Meth. in Phys. Res. A **389** (1997).
