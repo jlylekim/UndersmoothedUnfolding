@@ -8,6 +8,9 @@
 
 UndersmoothedUnfolding
 ==================================================
+UndersmoothedUnfolding provides `ROOT <https://root.cern.ch/>` implementation
+of unfolding software which aims at optimal *uncertainty quantification*.
+
 
 .. toctree::
    :maxdepth: 2

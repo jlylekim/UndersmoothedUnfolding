@@ -55,11 +55,15 @@ short and suffer from drastic undercoverage, while the intervals provided
 by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 
 
-
 ------------------------
 Steeply falling spectra
 ------------------------
-TODO: add steeply falling spectra after meeting
+.. image:: plots/incjets_LF15e5_binwise_coverage_Lcurve.pdf
+    :width: 45%
+.. image:: plots/incjets_LF15e5_binwise_coverage_US.pdf
+    :width: 45%
+
+
 
 
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
