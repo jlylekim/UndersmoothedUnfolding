@@ -4,19 +4,17 @@ Overview
 
 ``UndersmoothedUnfolding`` is a software for unfolding in high energy physics with focus on
 optimal *uncertainty quantification*. Most existing unfolding softwares only provide
-method for optimal point estimation, which can suffer significant undercoverage and
-thus might not be suitable statistical inference and uncertainty quantification,
-as demonstrated in Kuusela (2016) [1]_.
-
-On the contrary, this software provides a function for choosing the
-regularization strength so that the estimated confidence intervals have
-nearly nominal coverage.
+method for optimal point estimation; however, as as demonstrated in Kuusela (2016) [1]_,
+confidence intervals formed from point estimates can suffer significant undercoverage,
+and thus might not be suitable statistical inference and uncertainty quantification.
 
 ``UndersmoothedUnfolding`` is a ``ROOT`` [3]_ implementation of the data-driven
-undersmoothing technique introduced in Kuusela (2016) [1]_.
+undersmoothing technique introduced in Kuusela (2016) [1]_, which aims at
+choosing the regularization strength so that the estimated confidence intervals have
+nearly nominal coverage.
+
 It is extended from the de facto unfolding library, ``TUnfold`` [2]_,
 which comes with ``ROOT`` [3]_.
-
 
 ------------------
 What is unfolding?
@@ -27,8 +25,9 @@ is smeared by the finite resolution of the particle detectors. The goal in
 unfolding is to use these smeared measurements to make non-parametric
 inferences about the underlying particle spectrum.
 
-TODO:
+TODO:    
 * Maybe add Figure 1.1 in Mikael's dissertation?
+
 
 
 
