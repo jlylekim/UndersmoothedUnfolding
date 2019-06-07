@@ -3,6 +3,11 @@
 How to use
 **********
 
+--------------
+New functions
+--------------
+
+MK: Briefly explain UndersmoothTau and ComputeCoverage here.
 
 --------------
 Example usage
