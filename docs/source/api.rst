@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 *******************
 Function references
 *******************
@@ -17,7 +16,6 @@ UndersmoothedUnfolding debiases the unfolded point estimator by gradually reduci
 the regularization strength until the target coverage is met within the tolerance epsilon.
 The undersmoothed estimator has nearly nominal coverage
 
-=======
 **************************
 UndersmoothedUnfolding API
 **************************
