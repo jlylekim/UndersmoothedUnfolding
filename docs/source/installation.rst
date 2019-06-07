@@ -14,12 +14,15 @@ To install, simply set up the ``ROOT`` environment (tested with ``ROOT`` V6.10/0
 
     make
 
-This installs extended ``TUnfold`` which includes ``UndersmoothedUnfolding``.
+This installs extended ``TUnfold`` with ``UndersmoothedUnfolding``.
 
 
 -------------------
 Development Version
 -------------------
+
+MK: Should <your-username> be replaced by Lyle's Github account?
+
 .. code-block:: bash
 
     git clone https://github.com/<your-username>/UndersmoothedUnfolding.git
@@ -28,7 +31,7 @@ Development Version
 ------------
 Dependencies
 ------------
-UndersmoothedUnfolding requires the following dependencies:
+``UndersmoothedUnfolding`` requires the following dependencies:
 
 - `ROOT <https://root.cern.ch/>`_ >= 2.7 or >= 3.4
 - `TUnfold <http://www.desy.de/~sschmitt/tunfold.html/>`_
