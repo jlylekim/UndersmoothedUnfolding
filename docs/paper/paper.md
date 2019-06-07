@@ -1,5 +1,5 @@
 ---
-title: 'UndersmoothedUnfolding: undersmoothed uncertainty quantification for unfolding'
+title: 'UndersmoothedUnfolding: Undersmoothed uncertainty quantification for unfolding in ROOT'
 tags:
   - unfolding
   - uncertainty quantification
@@ -7,15 +7,14 @@ tags:
   - inverse problems
   - undersmoothing
   - high energy physics
-
 authors:
   - name: Junhyung Lyle Kim
     orcid: ?
-    affiliation: 1
+    affiliation: "1"
     email: junhyung.kim@chicagobooth.edu
   - name: Mikael Kuusela
     orcid: ?
-    affiliation: 2
+    affiliation: "2"
     email: mkuusela@andrew.cmu.edu
 affiliations:
  - name: University of Chicago
