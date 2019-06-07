@@ -8,7 +8,7 @@
 
 UndersmoothedUnfolding
 ==================================================
-UndersmoothedUnfolding provides `ROOT <https://root.cern.ch/>`_ implementation
+``UndersmoothedUnfolding`` provides a `ROOT <https://root.cern.ch/>`_ implementation
 of unfolding software which aims at optimal *uncertainty quantification*.
 
 
