@@ -11,6 +11,8 @@ TODO:
 * Discuss with Mikael
 * Actually maybe I can use Jupyter notebook
 
+MK: Let's just write these manually.
+
 ----------------
 ComputeCoverage
 ----------------
