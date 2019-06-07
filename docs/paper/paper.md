@@ -33,7 +33,7 @@ Unfolding is a common task in experimental high-energy physics, and rigorous unc
 
 However, as demonstrated in Kuusela and Panaretos (2015), Kuusela (2016) and Kuusela and Stark (2017), these confidence intervals derived from point estimates can seriously underestimate the true uncertainty since they ignore the bias that is used to regularize the problem.
 
-To address this issue, we extend `TUnfold` (Schmitt, 2012), the existing unfolding library included in ROOT (Brun, 1997), by implementing a data-driven technique from Kuusela (2016) for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level.
+To address this issue, Kuusela (2016) proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for ROOT (Brun, 1997), the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` (Schmitt, 2012), the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
 
 # Simulated example
 
