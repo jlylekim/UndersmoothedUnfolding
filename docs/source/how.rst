@@ -39,4 +39,3 @@ Expected input/output
 ---------------------
 TODO:
   * input: throw a lot of error/warning messages
-  * probability version of smearing matrix (usually formed with Monte Carlo)
