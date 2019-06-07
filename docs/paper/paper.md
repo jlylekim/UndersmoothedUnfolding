@@ -43,9 +43,6 @@ To address this issue, Kuusela (2016) proposed a data-driven technique for choos
 
 The simulation above compares the performance of the unfolded confidence intervals when the regularization strength is chosen using `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this software. The tolerance epsilon was set to 0.01, so the intervals from `UndersmoothTau` should have 67% coverage. The top plots compare the binwise coverage of the methods. The coverage is estimated by repeating the unfolding 1,000 times with independent realizations of data. The bottom plots show one realization of the unfolded confidence intervals for each method. The confidence intervals provided by `ScanLcurve` are too short and suffer from drastic undercoverage, while the intervals provided by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 
-# TODO
-- add steeply falling spectra as well?
-
-Please refer to the online documentation for further details.
+Please refer to the online documentation for further details. MK: Add link to documentation? MK: Mention also that the documentation includes the steeply falling spectrum demonstration.
 
 # References
