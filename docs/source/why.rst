@@ -4,7 +4,7 @@ Why UndersmoothedUnfolding?
 ****************************
 
 ---------------------------------------------------------
- Optimal uncertainty quantification VS. point estimation
+Uncertainty quantification vs. point estimation
 ---------------------------------------------------------
 TODO
 * Maybe add Figure 6.1, pg. 70 from Mikael's dissertation? MK: No need for that here
