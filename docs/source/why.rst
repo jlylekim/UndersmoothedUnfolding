@@ -7,13 +7,15 @@ Why UndersmoothedUnfolding?
  Optimal uncertainty quantification VS. point estimation
 ---------------------------------------------------------
 TODO
-* Maybe add Figure 6.1, pg. 70 from Mikael's dissertation?
+* Maybe add Figure 6.1, pg. 70 from Mikael's dissertation? MK: No need for that here
 
-``UndersmoothedUnfolding`` an extension for the unfolding software ``TUnfold`` V17.6 [2]_ [3]_
+``UndersmoothedUnfolding`` an extension for the unfolding software ``TUnfold`` V17.6 [2]_
 written by Stefan Schmitt. ``TUnfold`` implements Tikhonov regularization for unfolding
 smeared data from particle detectors.
 However, as demonstrated by Kuusela (2016) [1]_, the resulting confidence intervals may seriously underestimate
-the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.
+the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. MK: Can we do Latex for tau here?
+
+MK: Explain the plot below
 
 .. image:: plots/coverage_peak_bin_curvature.pdf
     :width: 100%
@@ -22,7 +24,7 @@ the uncertainty in the unfolded space, unless care is taken in the choice of the
 ----------------------------------
 Coverage for Gaussian observations
 ----------------------------------
-TODO: probably do not need this section
+TODO: probably do not need this section MK: Yes, no need for this section
 
 .. image:: plots/empirical_coverage_curvature_lambdaMC.pdf
     :width: 48%
@@ -54,6 +56,7 @@ for each method. The confidence intervals provided by `ScanLcurve` are too
 short and suffer from drastic undercoverage, while the intervals provided
 by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 
+MK: I don't see the one realization plot above, did you link the wrong plot?
 
 ------------------------
 Steeply falling spectra
