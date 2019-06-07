@@ -84,7 +84,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Why UndersmoothedUnfolding?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#optimal-uncertainty-quantification-vs-point-estimation">Optimal uncertainty quantification VS. point estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uncertainty-quantification-vs-point-estimation">Uncertainty quantification vs. point estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#coverage-for-gaussian-observations">Coverage for Gaussian observations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#two-peaks-spectra">Two peaks spectra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#steeply-falling-spectra">Steeply falling spectra</a></li>
@@ -160,20 +160,21 @@
             
   <div class="section" id="why-undersmoothedunfolding">
 <h1>Why UndersmoothedUnfolding?<a class="headerlink" href="#why-undersmoothedunfolding" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="optimal-uncertainty-quantification-vs-point-estimation">
-<h2>Optimal uncertainty quantification VS. point estimation<a class="headerlink" href="#optimal-uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="uncertainty-quantification-vs-point-estimation">
+<h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
 <p>TODO
-* Maybe add Figure 6.1, pg. 70 from Mikael’s dissertation?</p>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding software <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> V17.6 <a class="footnote-reference" href="#id5" id="id1">[2]</a> <a class="footnote-reference" href="#id6" id="id2">[3]</a>
+* Maybe add Figure 6.1, pg. 70 from Mikael’s dissertation? MK: No need for that here</p>
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding software <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> V17.6 <a class="footnote-reference" href="#id4" id="id1">[2]</a>
 written by Stefan Schmitt. <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding
 smeared data from particle detectors.
-However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id4" id="id3">[1]</a>, the resulting confidence intervals may seriously underestimate
-the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau.</p>
+However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id3" id="id2">[1]</a>, the resulting confidence intervals may seriously underestimate
+the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. MK: Can we do Latex for tau here?</p>
+<p>MK: Explain the plot below</p>
 <a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.pdf"><img alt="_images/coverage_peak_bin_curvature.pdf" src="_images/coverage_peak_bin_curvature.pdf" style="width: 100%;" /></a>
 </div>
 <div class="section" id="coverage-for-gaussian-observations">
 <h2>Coverage for Gaussian observations<a class="headerlink" href="#coverage-for-gaussian-observations" title="Permalink to this headline">¶</a></h2>
-<p>TODO: probably do not need this section</p>
+<p>TODO: probably do not need this section MK: Yes, no need for this section</p>
 <a class="reference internal image-reference" href="_images/empirical_coverage_curvature_lambdaMC.pdf"><img alt="_images/empirical_coverage_curvature_lambdaMC.pdf" src="_images/empirical_coverage_curvature_lambdaMC.pdf" style="width: 48%;" /></a>
 <a class="reference internal image-reference" href="_images/computed_coverage_curvature_lambdaMC.pdf"><img alt="_images/computed_coverage_curvature_lambdaMC.pdf" src="_images/computed_coverage_curvature_lambdaMC.pdf" style="width: 48%;" /></a>
 </div>
@@ -193,34 +194,26 @@ The bottom plots show one realization of the unfolded confidence intervals
 for each method. The confidence intervals provided by <cite>ScanLcurve</cite> are too
 short and suffer from drastic undercoverage, while the intervals provided
 by <cite>UndersmoothTau</cite> have nearly nominal coverage without being excessively long.</p>
+<p>MK: I don’t see the one realization plot above, did you link the wrong plot?</p>
 </div>
 <div class="section" id="steeply-falling-spectra">
 <h2>Steeply falling spectra<a class="headerlink" href="#steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf"><img alt="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf" src="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf" style="width: 45%;" /></a>
 <a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_US.pdf"><img alt="_images/incjets_LF15e5_binwise_coverage_US.pdf" src="_images/incjets_LF15e5_binwise_coverage_US.pdf" style="width: 45%;" /></a>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td><ol class="first last upperalpha simple" start="13">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><ol class="first last upperalpha simple" start="13">
 <li>Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)</li>
 </ol>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
+<table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td><ol class="first last upperalpha simple" start="19">
 <li>Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation <strong>7</strong> (2012).</li>
-</ol>
-</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[3]</a></td><td><ol class="first last upperalpha simple" start="18">
-<li>Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. &amp; Meth. in Phys. Res. A <strong>389</strong> (1997).</li>
 </ol>
 </td></tr>
 </tbody>

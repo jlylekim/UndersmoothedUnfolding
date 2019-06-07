@@ -158,16 +158,16 @@
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a software for unfolding in high energy physics with focus on
-optimal <em>uncertainty quantification</em>. Most existing unfolding softwares only provide
-method for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id1">[1]</a>,
-confidence intervals formed from point estimates can suffer significant undercoverage,
-and thus might not be suitable statistical inference and uncertainty quantification.</p>
+optimal <em>uncertainty quantification</em>. Most existing unfolding software only provide
+methods for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id1">[1]</a>,
+confidence intervals formed from point estimates can suffer from significant undercoverage,
+and thus might not be suitable for statistical inference and uncertainty quantification.</p>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> <a class="footnote-reference" href="#id8" id="id2">[3]</a> implementation of the data-driven
 undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id3">[1]</a>, which aims at
-choosing the regularization strength so that the estimated confidence intervals have
+choosing the regularization strength so that the resulting unfolded confidence intervals have
 nearly nominal coverage.</p>
-<p>It is extended from the de facto unfolding library, <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> <a class="footnote-reference" href="#id7" id="id4">[2]</a>,
-which comes with <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> <a class="footnote-reference" href="#id8" id="id5">[3]</a>.</p>
+<p>It is extended from the existing unfolding library, <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> <a class="footnote-reference" href="#id7" id="id4">[2]</a>,
+which is included in <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> <a class="footnote-reference" href="#id8" id="id5">[3]</a>.</p>
 <div class="section" id="what-is-unfolding">
 <h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
 <p>Any measurement made at the Large Hadron Collider (LHC) at CERN
@@ -175,7 +175,7 @@ is smeared by the finite resolution of the particle detectors. The goal in
 unfolding is to use these smeared measurements to make non-parametric
 inferences about the underlying particle spectrum.</p>
 <p>TODO:
-* Maybe add Figure 1.1 in Mikael’s dissertation?</p>
+* Maybe add Figure 1.1 in Mikael’s dissertation? MK: Yes, please add that</p>
 <table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">

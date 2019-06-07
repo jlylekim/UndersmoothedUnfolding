@@ -160,7 +160,7 @@
 <h1>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="example-usage">
 <h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is implemented so that it can be used with any initial estimate of tau.
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is implemented so that it can be used with any initial pilot estimate of tau.
 Below is an example usage of <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> with the <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> method provided in <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code>.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TUnfold</span> <span class="n">unfold</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TUnfold</span><span class="p">();</span>          <span class="c1">// construct a TUnfold object</span>
 <span class="n">unfold</span><span class="p">.</span><span class="n">ScanLcurve</span><span class="p">();</span>                     <span class="c1">// unfold using ScanLcurve method</span>
@@ -172,8 +172,9 @@ Below is an example usage of <code class="docutils literal notranslate"><span cl
 <span class="n">unfold</span><span class="p">.</span><span class="n">DoUnfold</span><span class="p">(</span><span class="n">TauFromUndersmoothing</span><span class="p">);</span>   <span class="c1">// unfold again with undersmoothed tau</span>
 </pre></div>
 </div>
-<p>UndersmoothedUnfolding iteratively debiases the unfolded point estimator
-using undersmoothing. The undersmoothed estimator has nearly nominal coverage
+<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
+the regularization strength until the target coverage is met within the tolerance epsilon.
+The undersmoothed estimator has nearly nominal coverage
 at the cost of a modest increase in the length of the confidence intervals.</p>
 </div>
 <div class="section" id="expected-input-output">

@@ -7,7 +7,7 @@ How to use
 --------------
 Example usage
 --------------
-``UndersmoothTau`` is implemented so that it can be used with any initial estimate of tau.
+``UndersmoothTau`` is implemented so that it can be used with any initial pilot estimate of tau.
 Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method provided in ``TUnfold``.
 
 .. code-block:: c++
@@ -23,8 +23,9 @@ Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method p
 
 
 
-UndersmoothedUnfolding iteratively debiases the unfolded point estimator
-using undersmoothing. The undersmoothed estimator has nearly nominal coverage
+UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
+the regularization strength until the target coverage is met within the tolerance epsilon.
+The undersmoothed estimator has nearly nominal coverage
 at the cost of a modest increase in the length of the confidence intervals.
 
 

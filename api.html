@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>UndersmoothedUnfolding API &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
+  <title>Function references &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
   
 
   
@@ -86,7 +86,8 @@
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">UndersmoothedUnfolding API</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Function references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#undersmoothedunfolding-api">UndersmoothedUnfolding API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#computecoverage">ComputeCoverage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#undersmoothtau">UndersmoothTau</a></li>
 </ul>
@@ -136,7 +137,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>UndersmoothedUnfolding API</li>
+      <li>Function references</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -155,7 +156,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="undersmoothedunfolding-api">
+  <div class="section" id="function-references">
+<h1>Function references<a class="headerlink" href="#function-references" title="Permalink to this headline">¶</a></h1>
+<p><strong>TVectorD</strong> <code class="docutils literal notranslate"><span class="pre">TUnfoldV17::ComputeCoverage</span></code> (<strong>TMatrixD</strong> * beta, <strong>Double_t</strong> tau)</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Input:</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">TMatrixD*</span></code> beta</li>
+<li><code class="docutils literal notranslate"><span class="pre">Double_t</span></code> tau</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Output:</dt>
+<dd><ul class="first last">
+<li>Computes coverage probability for each bin and outputs in <code class="docutils literal notranslate"><span class="pre">TVectorD</span></code> type.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
+the regularization strength until the target coverage is met within the tolerance epsilon.
+The undersmoothed estimator has nearly nominal coverage</p>
+</div>
+<div class="section" id="undersmoothedunfolding-api">
 <h1>UndersmoothedUnfolding API<a class="headerlink" href="#undersmoothedunfolding-api" title="Permalink to this headline">¶</a></h1>
 <p>TODO:
 * autodoc only works with Python
@@ -164,11 +191,37 @@
 * Might be better to manually write API as we have 2 functions
 * Discuss with Mikael
 * Actually maybe I can use Jupyter notebook</p>
+<p>MK: Let’s just write these manually.</p>
 <div class="section" id="computecoverage">
 <h2>ComputeCoverage<a class="headerlink" href="#computecoverage" title="Permalink to this headline">¶</a></h2>
+<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 504f81f9b5d92b2019abf9dc4f9f5bb8011fe2f9</p>
 </div>
 <div class="section" id="undersmoothtau">
 <h2>UndersmoothTau<a class="headerlink" href="#undersmoothtau" title="Permalink to this headline">¶</a></h2>
+<p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">TUnfoldV17::UndersmoothTau</span></code> (<cite>Double_t</cite> tau, <cite>Double_t</cite> epsilon, <cite>Int_t</cite> max_iter)</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Input:</dt>
+<dd><ul class="first last">
+<li><cite>Double_t</cite> tau</li>
+<li><cite>Double_t</cite> epsilon</li>
+<li><cite>Int_t</cite> max_iter</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Output:</dt>
+<dd><ul class="first last">
+<li>Computes coverage probability for each bin and outputs in <code class="docutils literal notranslate"><span class="pre">TVectorD</span></code> type.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
+the regularization strength until the target coverage is met within the tolerance epsilon.
+The undersmoothed estimator has nearly nominal coverage</p>
 </div>
 </div>
 
