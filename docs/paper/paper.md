@@ -13,7 +13,7 @@ authors:
     affiliation: "1"
     email: junhyung.kim@chicagobooth.edu
   - name: Mikael Kuusela
-    orcid: ?
+    orcid: 0000-0001-6875-945X
     affiliation: "2"
     email: mkuusela@andrew.cmu.edu
 affiliations:
