@@ -25,9 +25,10 @@ is smeared by the finite resolution of the particle detectors. The goal in
 unfolding is to use these smeared measurements to make non-parametric
 inferences about the underlying particle spectrum.
 
-TODO:    
-* Maybe add Figure 1.1 in Mikael's dissertation? MK: Yes, please add that
+.. image:: plots/unfolding.png
 
+
+* JLK: seems like .png files are automatically shown
 
 
 
