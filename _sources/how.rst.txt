@@ -3,6 +3,11 @@
 How to use
 **********
 
+--------------
+New functions
+--------------
+
+MK: Briefly explain UndersmoothTau and ComputeCoverage here.
 
 --------------
 Example usage
@@ -34,4 +39,3 @@ Expected input/output
 ---------------------
 TODO:
   * input: throw a lot of error/warning messages
-  * probability version of smearing matrix (usually formed with Monte Carlo)

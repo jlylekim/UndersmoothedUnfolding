@@ -35,3 +35,9 @@ Dependencies
 
 - `ROOT <https://root.cern.ch/>`_ >= 2.7 or >= 3.4
 - `TUnfold <http://www.desy.de/~sschmitt/tunfold.html/>`_
+
+---------------------
+Checking installation
+---------------------
+
+MK: Give here instructions for reproducing the figure from the paper

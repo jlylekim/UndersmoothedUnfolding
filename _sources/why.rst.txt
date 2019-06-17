@@ -21,18 +21,6 @@ MK: Explain the plot below
     :width: 100%
 
 
-----------------------------------
-Coverage for Gaussian observations
-----------------------------------
-TODO: probably do not need this section MK: Yes, no need for this section
-
-.. image:: plots/empirical_coverage_curvature_lambdaMC.pdf
-    :width: 48%
-
-.. image:: plots/computed_coverage_curvature_lambdaMC.pdf
-    :width: 48%
-
-
 ------------------
 Two peaks spectra
 ------------------
