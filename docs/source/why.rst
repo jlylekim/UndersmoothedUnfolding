@@ -6,8 +6,6 @@ Why UndersmoothedUnfolding?
 ---------------------------------------------------------
 Uncertainty quantification vs. point estimation
 ---------------------------------------------------------
-TODO
-* Maybe add Figure 6.1, pg. 70 from Mikael's dissertation? MK: No need for that here
 
 ``UndersmoothedUnfolding`` an extension for the unfolding software ``TUnfold`` V17.6 [2]_
 written by Stefan Schmitt. ``TUnfold`` implements Tikhonov regularization for unfolding
@@ -17,20 +15,18 @@ the uncertainty in the unfolded space, unless care is taken in the choice of the
 
 MK: Explain the plot below
 
-.. image:: plots/coverage_peak_bin_curvature.pdf
-    :width: 100%
+.. image:: plots/coverage_peak_bin_curvature.png
+    :width: 80%
+    :align: center
+
 
 
 ------------------
 Two peaks spectra
 ------------------
-.. image:: plots/binwise_coverage_Lcurve_curvature_lambdaMC.pdf
-    :width: 45%
-.. image:: plots/binwise_coverage_US_curvature_lambdaMC.pdf
-    :width: 45%
-.. image:: plots/boxplot_length_comparison_curvature_lambdaMC.pdf
-    :width: 45%
-
+.. image:: plots/undersmooth_demo_twopeaks.png
+    :width: 100%
+    :align: center
 
 The simulation above compares the performance of the unfolded confidence
 intervals when the regularization strength is chosen using `ScanLcurve`
@@ -44,17 +40,16 @@ for each method. The confidence intervals provided by `ScanLcurve` are too
 short and suffer from drastic undercoverage, while the intervals provided
 by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 
-MK: I don't see the one realization plot above, did you link the wrong plot?
 
 ------------------------
 Steeply falling spectra
 ------------------------
-.. image:: plots/incjets_LF15e5_binwise_coverage_Lcurve.pdf
+.. image:: plots/incjets_LF15e5_binwise_coverage_Lcurve.png
     :width: 45%
-.. image:: plots/incjets_LF15e5_binwise_coverage_US.pdf
+.. image:: plots/incjets_LF15e5_binwise_coverage_US.png
     :width: 45%
 
-
+**TODO: make similar plot to two peaks case**
 
 
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)

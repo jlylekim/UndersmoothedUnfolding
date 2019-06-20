@@ -28,10 +28,6 @@ inferences about the underlying particle spectrum.
 .. image:: plots/unfolding.png
 
 
-* JLK: seems like .png files are automatically shown
-
-
-
 
 
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016).
