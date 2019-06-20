@@ -164,8 +164,8 @@
 <li><dl class="first docutils">
 <dt>Input:</dt>
 <dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">TMatrixD*</span></code> beta</li>
-<li><code class="docutils literal notranslate"><span class="pre">Double_t</span></code> tau</li>
+<li><code class="docutils literal notranslate"><span class="pre">TMatrixD*</span></code> beta:</li>
+<li><code class="docutils literal notranslate"><span class="pre">Double_t</span></code> tau: regularization strength</li>
 </ul>
 </dd>
 </dl>
@@ -191,9 +191,9 @@ The undersmoothed estimator has nearly nominal coverage</p>
 <li><dl class="first docutils">
 <dt>Input:</dt>
 <dd><ul class="first last">
-<li><cite>Double_t</cite> tau</li>
-<li><cite>Double_t</cite> epsilon</li>
-<li><cite>Int_t</cite> max_iter</li>
+<li><cite>Double_t</cite> tau: pilot estimate of tau</li>
+<li><cite>Double_t</cite> epsilon: coverage tolerance for undersmoothing</li>
+<li><cite>Int_t</cite> max_iter: maximum number of undersmoothing iterations</li>
 </ul>
 </dd>
 </dl>
@@ -201,7 +201,7 @@ The undersmoothed estimator has nearly nominal coverage</p>
 <li><dl class="first docutils">
 <dt>Output:</dt>
 <dd><ul class="first last">
-<li>Computes coverage probability for each bin and outputs in <code class="docutils literal notranslate"><span class="pre">TVectorD</span></code> type.</li>
+<li></li>
 </ul>
 </dd>
 </dl>

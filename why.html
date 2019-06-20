@@ -161,38 +161,57 @@
 <h1>Why UndersmoothedUnfolding?<a class="headerlink" href="#why-undersmoothedunfolding" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="uncertainty-quantification-vs-point-estimation">
 <h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
-<p>TODO
-* Maybe add Figure 6.1, pg. 70 from Mikael’s dissertation? MK: No need for that here</p>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding software <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> V17.6 <a class="footnote-reference" href="#id4" id="id1">[2]</a>
-written by Stefan Schmitt. <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding
-smeared data from particle detectors.
-However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id3" id="id2">[1]</a>, the resulting confidence intervals may seriously underestimate
-the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. MK: Can we do Latex for tau here?</p>
+<p>MK: Can we do Latex for tau here?</p>
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding
+software <code class="docutils literal notranslate"><span class="pre">TUnfoldV17.6</span></code> <a class="footnote-reference" href="#id4" id="id1">[2]</a> written by Stefan Schmitt.
+<code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding smeared data
+from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id3" id="id2">[1]</a>,
+the resulting confidence intervals may seriously underestimate the uncertainty
+in the unfolded space, unless care is taken in the choice of the regularization
+strength tau.</p>
 <p>MK: Explain the plot below</p>
-<a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.pdf"><img alt="_images/coverage_peak_bin_curvature.pdf" src="_images/coverage_peak_bin_curvature.pdf" style="width: 100%;" /></a>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.png"><img alt="_images/coverage_peak_bin_curvature.png" src="_images/coverage_peak_bin_curvature.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-text">Coverage is empirically obtained with
+10,000 independent realizations of data.</span></p>
+</div>
+<p>The plot above illustrates the empirical coverage at the peak bin
+(with highest y-value) for various values of regularization strength.
+Coverage starts at the nominal level (68 %) when there is no regularization.
+However, as regularization strength increases, coverage gradually
+decreases eventually to zero.</p>
+<p>The first vertical line indicates the average
+regularization strengths chosen by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>,
+and the corresponding coverage is near nominal level (68 %).
+On the other hand, the second vertical line, indicating average
+regularization strengths chosen by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>, and it
+shows serious undercoverage at around 20%.</p>
 </div>
 <div class="section" id="two-peaks-spectra">
 <h2>Two peaks spectra<a class="headerlink" href="#two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
-<a class="reference internal image-reference" href="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf"><img alt="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf" src="_images/binwise_coverage_Lcurve_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
-<a class="reference internal image-reference" href="_images/binwise_coverage_US_curvature_lambdaMC.pdf"><img alt="_images/binwise_coverage_US_curvature_lambdaMC.pdf" src="_images/binwise_coverage_US_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
-<a class="reference internal image-reference" href="_images/boxplot_length_comparison_curvature_lambdaMC.pdf"><img alt="_images/boxplot_length_comparison_curvature_lambdaMC.pdf" src="_images/boxplot_length_comparison_curvature_lambdaMC.pdf" style="width: 45%;" /></a>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/undersmooth_demo_twopeaks.png"><img alt="_images/undersmooth_demo_twopeaks.png" src="_images/undersmooth_demo_twopeaks.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">The coverage is estimated by repeating
+the unfolding 1,000 times with independent realizations of data.</span></p>
+</div>
 <p>The simulation above compares the performance of the unfolded confidence
-intervals when the regularization strength is chosen using <cite>ScanLcurve</cite>
-provided by <cite>TUnfold</cite> and the algorithm <cite>UndersmoothTau</cite> provided by this
-software. The tolerance epsilon was set to 0.01, so the intervals from
-<cite>UndersmoothTau</cite> should have 67% coverage. The top plots compare the
-binwise coverage of the methods. The coverage is estimated by repeating
-the unfolding 1,000 times with independent realizations of data.
-The bottom plots show one realization of the unfolded confidence intervals
-for each method. The confidence intervals provided by <cite>ScanLcurve</cite> are too
+intervals when the regularization strength is chosen using
+<code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> the algorithm <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>
+provided by this software. The tolerance epsilon was set to 0.01, so the intervals from
+<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> should have 67% coverage. The top plots compare the
+binwise coverage of the methods.</p>
+<p>The bottom plots show one realization of the unfolded confidence intervals
+for each method. As shown before, the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> are too
 short and suffer from drastic undercoverage, while the intervals provided
-by <cite>UndersmoothTau</cite> have nearly nominal coverage without being excessively long.</p>
-<p>MK: I don’t see the one realization plot above, did you link the wrong plot?</p>
+by <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> have nearly nominal coverage without being excessively long.
+(Note that the average confidence interval lengths for each method is written below
+on the top plots.)</p>
 </div>
 <div class="section" id="steeply-falling-spectra">
 <h2>Steeply falling spectra<a class="headerlink" href="#steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
-<a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf"><img alt="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf" src="_images/incjets_LF15e5_binwise_coverage_Lcurve.pdf" style="width: 45%;" /></a>
-<a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_US.pdf"><img alt="_images/incjets_LF15e5_binwise_coverage_US.pdf" src="_images/incjets_LF15e5_binwise_coverage_US.pdf" style="width: 45%;" /></a>
+<a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_Lcurve.png"><img alt="_images/incjets_LF15e5_binwise_coverage_Lcurve.png" src="_images/incjets_LF15e5_binwise_coverage_Lcurve.png" style="width: 45%;" /></a>
+<a class="reference internal image-reference" href="_images/incjets_LF15e5_binwise_coverage_US.png"><img alt="_images/incjets_LF15e5_binwise_coverage_US.png" src="_images/incjets_LF15e5_binwise_coverage_US.png" style="width: 45%;" /></a>
+<p><strong>TODO: make similar plot to two peaks case</strong></p>
 <table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">

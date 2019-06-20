@@ -20,12 +20,9 @@ This installs extended ``TUnfold`` with ``UndersmoothedUnfolding``.
 -------------------
 Development Version
 -------------------
-
-MK: Should <your-username> be replaced by Lyle's Github account?
-
 .. code-block:: bash
 
-    git clone https://github.com/<your-username>/UndersmoothedUnfolding.git
+    git clone https://github.com/lylejkim/UndersmoothedUnfolding.git
     make
 
 ------------
@@ -39,5 +36,4 @@ Dependencies
 ---------------------
 Checking installation
 ---------------------
-
 MK: Give here instructions for reproducing the figure from the paper
