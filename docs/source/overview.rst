@@ -23,7 +23,8 @@ What is unfolding?
 Any measurement made at the Large Hadron Collider (LHC) at CERN
 is smeared by the finite resolution of the particle detectors. The goal in
 unfolding is to use these smeared measurements to make non-parametric
-inferences about the underlying particle spectrum.
+inferences about the underlying particle spectrum. The image below
+visually illustrates folding and unfolding.
 
 .. image:: plots/unfolding.png
 
