@@ -70,12 +70,13 @@ on the top plots.)
 ------------------------
 Steeply falling spectra
 ------------------------
-.. image:: plots/incjets_LF15e5_binwise_coverage_Lcurve.png
-    :width: 45%
-.. image:: plots/incjets_LF15e5_binwise_coverage_US.png
-    :width: 45%
+.. figure:: plots/undersmooth_demo_incjets.png
+    :width: 100%
+    :align: center
 
-**TODO: make similar plot to two peaks case**
+    The coverage is estimated by repeating
+    the unfolding 1,000 times with independent realizations of data.
+
 
 
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
