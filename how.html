@@ -164,7 +164,8 @@
 <h2>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is the core functionality of <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code>, and
 is implemented so that it can be used with any initial pilot estimate
-of <span class="math notranslate nohighlight">\(\tau\)</span>, from such as cross-validation, L-curve, etc.</p>
+of <span class="math notranslate nohighlight">\(\tau\)</span>, from such as cross-validation, L-curve, etc.
+For general usage, users typically just need to use <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> function.</p>
 <p>Given an initial estimate of <span class="math notranslate nohighlight">\(\tau\)</span>,
 <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> gradually reduces the amount of regularization,
 until the target coverage is met within the tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>

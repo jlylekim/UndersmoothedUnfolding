@@ -9,6 +9,7 @@ New functions
 ``UndersmoothTau`` is the core functionality of ``UndersmoothedUnfolding``, and
 is implemented so that it can be used with any initial pilot estimate
 of :math:`\tau`, from such as cross-validation, L-curve, etc.
+For general usage, users typically just need to use ``UndersmoothTau`` function.
 
 Given an initial estimate of :math:`\tau`,
 ``UndersmoothTau`` gradually reduces the amount of regularization,
