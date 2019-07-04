@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -85,8 +86,8 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Why UndersmoothedUnfolding?</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#uncertainty-quantification-vs-point-estimation">Uncertainty quantification vs. point estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#two-peaks-spectra">Two peaks spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#steeply-falling-spectra">Steeply falling spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-i-two-peaks-spectra">Coverage demonstration I: two peaks spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-ii-steeply-falling-spectra">Coverage demonstration II: steeply falling spectra</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
@@ -161,14 +162,13 @@
 <h1>Why UndersmoothedUnfolding?<a class="headerlink" href="#why-undersmoothedunfolding" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="uncertainty-quantification-vs-point-estimation">
 <h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
-<p>MK: Can we do Latex for tau here?</p>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding
 software <code class="docutils literal notranslate"><span class="pre">TUnfoldV17.6</span></code> <a class="footnote-reference" href="#id4" id="id1">[2]</a> written by Stefan Schmitt.
 <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding smeared data
 from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id3" id="id2">[1]</a>,
 the resulting confidence intervals may seriously underestimate the uncertainty
 in the unfolded space, unless care is taken in the choice of the regularization
-strength tau.</p>
+strength <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <p>MK: Explain the plot below</p>
 <div class="figure align-center" id="id5">
 <a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.png"><img alt="_images/coverage_peak_bin_curvature.png" src="_images/coverage_peak_bin_curvature.png" style="width: 80%;" /></a>
@@ -176,7 +176,7 @@ strength tau.</p>
 10,000 independent realizations of data.</span></p>
 </div>
 <p>The plot above illustrates the empirical coverage at the peak bin
-(with highest y-value) for various values of regularization strength.
+(with highest <span class="math notranslate nohighlight">\(y\)</span>-value) for various values of regularization strength.
 Coverage starts at the nominal level (68 %) when there is no regularization.
 However, as regularization strength increases, coverage gradually
 decreases eventually to zero.</p>
@@ -187,33 +187,42 @@ On the other hand, the second vertical line, indicating average
 regularization strengths chosen by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>, and it
 shows serious undercoverage at around 20%.</p>
 </div>
-<div class="section" id="two-peaks-spectra">
-<h2>Two peaks spectra<a class="headerlink" href="#two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coverage-demonstration-i-two-peaks-spectra">
+<h2>Coverage demonstration I: two peaks spectra<a class="headerlink" href="#coverage-demonstration-i-two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
+<p>The first test case we consider has two Gaussian peaks on top of
+a uniform background, resembling situations where invariant mass peaks
+are observed on top of some background events.</p>
 <div class="figure align-center" id="id6">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_twopeaks.png"><img alt="_images/undersmooth_demo_twopeaks.png" src="_images/undersmooth_demo_twopeaks.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
-the unfolding 1,000 times with independent realizations of data.</span></p>
+the unfolding 1,000 times with independent realizations of data.
+The average confidence interval lengths for each method is written below
+on the top plots.</span></p>
 </div>
-<p>The simulation above compares the performance of the unfolded confidence
-intervals when the regularization strength is chosen using
-<code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> the algorithm <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>
-provided by this software. The tolerance epsilon was set to 0.01, so the intervals from
-<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> should have 67% coverage. The top plots compare the
-binwise coverage of the methods.</p>
+<p>The top two plots compare the performance of the unfolded confidence
+intervals when <span class="math notranslate nohighlight">\(\tau\)</span> is chosen using
+<code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> and the algorithm <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>
+provided by this software. The tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span> was set to 0.01, so the intervals from
+<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> should have 67% coverage.</p>
 <p>The bottom plots show one realization of the unfolded confidence intervals
-for each method. As shown before, the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> are too
+for each method. As shown before, the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> are too
 short and suffer from drastic undercoverage, while the intervals provided
-by <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> have nearly nominal coverage without being excessively long.
-(Note that the average confidence interval lengths for each method is written below
-on the top plots.)</p>
+by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage without being excessively long.</p>
 </div>
-<div class="section" id="steeply-falling-spectra">
-<h2>Steeply falling spectra<a class="headerlink" href="#steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coverage-demonstration-ii-steeply-falling-spectra">
+<h2>Coverage demonstration II: steeply falling spectra<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
+<p>The second test case we consider has a steeply falling particle spectrum.</p>
+<p>TODO: LK: a bit more (physical) context?</p>
 <div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_incjets.png"><img alt="_images/undersmooth_demo_incjets.png" src="_images/undersmooth_demo_incjets.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
-the unfolding 1,000 times with independent realizations of data.</span></p>
+the unfolding 1,000 times with independent realizations of data.
+The average confidence interval lengths for each method is written below
+on the top plots.</span></p>
 </div>
+<p>Again, we see that the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>
+suffer drastic undercoverage, while the intervals provided
+by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage.</p>
 <table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">

@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -161,12 +162,22 @@
 <h1>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="new-functions">
 <h2>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h2>
-<p>MK: Briefly explain UndersmoothTau and ComputeCoverage here.</p>
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is the core functionality of <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code>, and
+is implemented so that it can be used with any initial pilot estimate
+of <span class="math notranslate nohighlight">\(\tau\)</span>, from such as cross-validation, L-curve, etc.</p>
+<p>Given an initial estimate of <span class="math notranslate nohighlight">\(\tau\)</span>,
+<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> gradually reduces the amount of regularization,
+until the target coverage is met within the tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>
+<p>It depends on
+another core functionality, <code class="docutils literal notranslate"><span class="pre">ComputeCoverage</span></code>. Under some common assumptions,
+the coverage probability of the (Gaussian) confidence intervals can be
+written down in closed form, thus providing <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> a principled
+way how much to undersmooth.</p>
+<p>For more mathematical detail, please refer to Kuusela (2016) <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
 </div>
 <div class="section" id="example-usage">
 <h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is implemented so that it can be used with any initial pilot estimate of tau.
-Below is an example usage of <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> with the <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> method provided in <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code>.</p>
+<p>Below is an example usage of <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> with the <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> method provided in <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code>.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TUnfold</span> <span class="n">unfold</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TUnfold</span><span class="p">();</span>          <span class="c1">// construct a TUnfold object</span>
 <span class="n">unfold</span><span class="p">.</span><span class="n">ScanLcurve</span><span class="p">();</span>                     <span class="c1">// unfold using ScanLcurve method</span>
 <span class="n">TauFromLcurve</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">.</span><span class="n">GetTau</span><span class="p">();</span>         <span class="c1">// retrieve tau chosen by ScanLcurve</span>
@@ -177,10 +188,6 @@ Below is an example usage of <code class="docutils literal notranslate"><span cl
 <span class="n">unfold</span><span class="p">.</span><span class="n">DoUnfold</span><span class="p">(</span><span class="n">TauFromUndersmoothing</span><span class="p">);</span>   <span class="c1">// unfold again with undersmoothed tau</span>
 </pre></div>
 </div>
-<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
-the regularization strength until the target coverage is met within the tolerance epsilon.
-The undersmoothed estimator has nearly nominal coverage
-at the cost of a modest increase in the length of the confidence intervals.</p>
 </div>
 <div class="section" id="expected-input-output">
 <h2>Expected input/output<a class="headerlink" href="#expected-input-output" title="Permalink to this headline">¶</a></h2>
@@ -191,6 +198,15 @@ at the cost of a modest increase in the length of the confidence intervals.</p>
 </ul>
 </dd>
 </dl>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><ol class="first last upperalpha simple" start="13">
+<li>Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 

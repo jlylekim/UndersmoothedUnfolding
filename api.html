@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -87,8 +88,8 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Function references</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#computecoverage">ComputeCoverage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#undersmoothtau">UndersmoothTau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computecoverage">ComputeCoverage</a></li>
 </ul>
 </li>
 </ul>
@@ -157,43 +158,16 @@
             
   <div class="section" id="function-references">
 <h1>Function references<a class="headerlink" href="#function-references" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="computecoverage">
-<h2>ComputeCoverage<a class="headerlink" href="#computecoverage" title="Permalink to this headline">¶</a></h2>
-<p><strong>TVectorD</strong> <code class="docutils literal notranslate"><span class="pre">TUnfoldV17::ComputeCoverage</span></code> (<strong>TMatrixD</strong> * beta, <strong>Double_t</strong> tau)</p>
-<ul class="simple">
-<li><dl class="first docutils">
-<dt>Input:</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">TMatrixD*</span></code> beta:</li>
-<li><code class="docutils literal notranslate"><span class="pre">Double_t</span></code> tau: regularization strength</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Output:</dt>
-<dd><ul class="first last">
-<li>Computes coverage probability for each bin and outputs in <code class="docutils literal notranslate"><span class="pre">TVectorD</span></code> type.</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
-the regularization strength until the target coverage is met within the tolerance epsilon.
-The undersmoothed estimator has nearly nominal coverage</p>
-</div>
 <div class="section" id="undersmoothtau">
 <h2>UndersmoothTau<a class="headerlink" href="#undersmoothtau" title="Permalink to this headline">¶</a></h2>
-<p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">TUnfoldV17::UndersmoothTau</span></code> (<cite>Double_t</cite> tau, <cite>Double_t</cite> epsilon, <cite>Int_t</cite> max_iter)</p>
-<p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">TUnfoldV17::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
+<p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> (<cite>Double_t</cite> <strong>tau</strong>, <cite>Double_t</cite> <strong>epsilon</strong>, <cite>Int_t</cite> <strong>max_iter</strong>)</p>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>Input:</dt>
 <dd><ul class="first last">
-<li><cite>Double_t</cite> tau: pilot estimate of tau</li>
-<li><cite>Double_t</cite> epsilon: coverage tolerance for undersmoothing</li>
-<li><cite>Int_t</cite> max_iter: maximum number of undersmoothing iterations</li>
+<li><cite>Double_t</cite> <strong>tau</strong>: pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{init}\)</span></li>
+<li><cite>Double_t</cite> <strong>epsilon</strong>: tolerance for target coverage</li>
+<li><cite>Int_t</cite> <strong>max_iter</strong>: maximum number of undersmoothing iterations</li>
 </ul>
 </dd>
 </dl>
@@ -201,15 +175,35 @@ The undersmoothed estimator has nearly nominal coverage</p>
 <li><dl class="first docutils">
 <dt>Output:</dt>
 <dd><ul class="first last">
-<li></li>
+<li>Undersmoothed regularization strength <span class="math notranslate nohighlight">\(\tau^{undersmoothed}\)</span></li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<p>UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
-the regularization strength until the target coverage is met within the tolerance epsilon.
-The undersmoothed estimator has nearly nominal coverage</p>
+</div>
+<div class="section" id="computecoverage">
+<h2>ComputeCoverage<a class="headerlink" href="#computecoverage" title="Permalink to this headline">¶</a></h2>
+<p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Input:</dt>
+<dd><ul class="first last">
+<li><cite>TMatrixD</cite> * <strong>beta</strong>:</li>
+<li><cite>Double_t</cite> <strong>tau</strong>: regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Output:</dt>
+<dd><ul class="first last">
+<li>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 </div>
 
