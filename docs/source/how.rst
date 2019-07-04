@@ -6,13 +6,26 @@ How to use
 --------------
 New functions
 --------------
+``UndersmoothTau`` is the core functionality of ``UndersmoothedUnfolding``, and
+is implemented so that it can be used with any initial pilot estimate
+of :math:`\tau`, from such as cross-validation, L-curve, etc.
 
-MK: Briefly explain UndersmoothTau and ComputeCoverage here.
+Given an initial estimate of :math:`\tau`,
+``UndersmoothTau`` gradually reduces the amount of regularization,
+until the target coverage is met within the tolerance :math:`\epsilon`.
+
+It depends on
+another core functionality, ``ComputeCoverage``. Under some common assumptions,
+the coverage probability of the (Gaussian) confidence intervals can be
+written down in closed form, thus providing ``UndersmoothTau`` a principled
+way how much to undersmooth.
+
+For more mathematical detail, please refer to Kuusela (2016) [1]_.
+
 
 --------------
 Example usage
 --------------
-``UndersmoothTau`` is implemented so that it can be used with any initial pilot estimate of tau.
 Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method provided in ``TUnfold``.
 
 .. code-block:: c++
@@ -28,14 +41,12 @@ Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method p
 
 
 
-UndersmoothedUnfolding debiases the unfolded point estimator by gradually reducing
-the regularization strength until the target coverage is met within the tolerance epsilon.
-The undersmoothed estimator has nearly nominal coverage
-at the cost of a modest increase in the length of the confidence intervals.
-
-
 ---------------------
 Expected input/output
 ---------------------
 TODO:
   * input: throw a lot of error/warning messages
+
+
+
+.. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
