@@ -9,19 +9,19 @@ tags:
   - high energy physics
 authors:
   - name: Junhyung Lyle Kim
-    orcid: ?
+    orcid: 0000-0002-4774-5750
     affiliation: "1"
-    email: junhyung.kim@chicagobooth.edu
+    email: jlylekim@rice.edu
   - name: Mikael Kuusela
     orcid: 0000-0001-6875-945X
     affiliation: "2"
     email: mkuusela@andrew.cmu.edu
 affiliations:
- - name: University of Chicago
+ - name: Rice University
    index: 1
  - name: Carnegie Mellon University
    index: 2
-date: 08 April 2019
+date: 23 July 2019
 bibliography: paper.bib
 ---
 
@@ -37,12 +37,13 @@ To address this issue, Kuusela (2016) proposed a data-driven technique for choos
 
 # Simulated example
 
-`UndersmoothedUnfolding` is implemented so that it can be used with any initial point estimate of unfolded spectrum. MK: Do you mean any initial estimate of the regularization strength?
+`UndersmoothedUnfolding` is implemented so that it can be used with any initial estimate the regularization strength. We demonstrate the performance of `UndersmoothTau` in the case with two Gaussian peaks on top of a uniform background, resembling situations where invariant mass peaks are observed on top of some background events.
 
 ![Demonstration](UndersmoothDemo.png)
 
 The simulation above compares the performance of the unfolded confidence intervals when the regularization strength is chosen using `ScanLcurve` provided by `TUnfold` and the algorithm `UndersmoothTau` provided by this software. The tolerance epsilon was set to 0.01, so the intervals from `UndersmoothTau` should have 67% coverage. The top plots compare the binwise coverage of the methods. The coverage is estimated by repeating the unfolding 1,000 times with independent realizations of data. The bottom plots show one realization of the unfolded confidence intervals for each method. The confidence intervals provided by `ScanLcurve` are too short and suffer from drastic undercoverage, while the intervals provided by `UndersmoothTau` have nearly nominal coverage without being excessively long.
 
-Please refer to the online documentation for further details. MK: Add link to documentation? MK: Mention also that the documentation includes the steeply falling spectrum demonstration.
+Please refer to the [online documentation](https://lylejkim.github.io/UndersmoothedUnfolding/) for further details, which also
+contains the test case with steeply falling spectra.
 
 # References
