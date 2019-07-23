@@ -16,8 +16,6 @@ in the unfolded space, unless care is taken in the choice of the regularization
 strength :math:`\tau`.
 
 
-MK: Explain the plot below
-
 .. figure:: plots/coverage_peak_bin_curvature.png
     :width: 80%
     :align: center
@@ -71,9 +69,12 @@ by ``UndersmoothedUnfolding::UndersmoothTau`` have nearly nominal coverage witho
 --------------------------------------------------
 Coverage demonstration II: steeply falling spectra
 --------------------------------------------------
-The second test case we consider has a steeply falling particle spectrum.
+The second test case we consider has a steeply falling particle spectrum,
+and we use transverse momentum spectrum [3]_  as an example. Observing a jet,
+a collimated stream of energetic particles, in an LHC particle detector
+implies the creation of a quark or a gluon in proton-proton collision, and
+is an important test of the Standard Model of particle physics.
 
-TODO: LK: a bit more (physical) context?
 
 .. figure:: plots/undersmooth_demo_incjets.png
     :width: 100%
@@ -89,7 +90,6 @@ suffer drastic undercoverage, while the intervals provided
 by ``UndersmoothedUnfolding::UndersmoothTau`` have nearly nominal coverage.
 
 
-
-
 .. [1] M. Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)
-.. [2] S. Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation **7** (2012).
+.. [2] S. Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation **7** (2012)
+.. [3] CMS Collaboration, "Measurement of the Inclusive Jet Cross Section in :math:`pp` Collisions at :math:`\sqrt{s} = 7 TeV`", Physical Review D **107** (2011)

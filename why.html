@@ -163,14 +163,13 @@
 <div class="section" id="uncertainty-quantification-vs-point-estimation">
 <h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding
-software <code class="docutils literal notranslate"><span class="pre">TUnfoldV17.6</span></code> <a class="footnote-reference" href="#id4" id="id1">[2]</a> written by Stefan Schmitt.
+software <code class="docutils literal notranslate"><span class="pre">TUnfoldV17.6</span></code> <a class="footnote-reference" href="#id5" id="id1">[2]</a> written by Stefan Schmitt.
 <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding smeared data
-from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id3" id="id2">[1]</a>,
+from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id4" id="id2">[1]</a>,
 the resulting confidence intervals may seriously underestimate the uncertainty
 in the unfolded space, unless care is taken in the choice of the regularization
 strength <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
-<p>MK: Explain the plot below</p>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.png"><img alt="_images/coverage_peak_bin_curvature.png" src="_images/coverage_peak_bin_curvature.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-text">Coverage is empirically obtained with
 10,000 independent realizations of data.</span></p>
@@ -192,7 +191,7 @@ shows serious undercoverage at around 20%.</p>
 <p>The first test case we consider has two Gaussian peaks on top of
 a uniform background, resembling situations where invariant mass peaks
 are observed on top of some background events.</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_twopeaks.png"><img alt="_images/undersmooth_demo_twopeaks.png" src="_images/undersmooth_demo_twopeaks.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
 the unfolding 1,000 times with independent realizations of data.
@@ -211,9 +210,12 @@ by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnf
 </div>
 <div class="section" id="coverage-demonstration-ii-steeply-falling-spectra">
 <h2>Coverage demonstration II: steeply falling spectra<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
-<p>The second test case we consider has a steeply falling particle spectrum.</p>
-<p>TODO: LK: a bit more (physical) context?</p>
-<div class="figure align-center" id="id7">
+<p>The second test case we consider has a steeply falling particle spectrum,
+and we use transverse momentum spectrum <a class="footnote-reference" href="#id6" id="id3">[3]</a>  as an example. Observing a jet,
+a collimated stream of energetic particles, in an LHC particle detector
+implies the creation of a quark or a gluon in proton-proton collision, and
+is an important test of the Standard Model of particle physics.</p>
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_incjets.png"><img alt="_images/undersmooth_demo_incjets.png" src="_images/undersmooth_demo_incjets.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
 the unfolding 1,000 times with independent realizations of data.
@@ -223,7 +225,7 @@ on the top plots.</span></p>
 <p>Again, we see that the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>
 suffer drastic undercoverage, while the intervals provided
 by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage.</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
+<table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><ol class="first last upperalpha simple" start="13">
@@ -232,13 +234,19 @@ by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnf
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td><ol class="first last upperalpha simple" start="19">
-<li>Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation <strong>7</strong> (2012).</li>
+<li>Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation <strong>7</strong> (2012)</li>
 </ol>
 </td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>CMS Collaboration, “Measurement of the Inclusive Jet Cross Section in <span class="math notranslate nohighlight">\(pp\)</span> Collisions at <span class="math notranslate nohighlight">\(\sqrt{s} = 7 TeV\)</span>”, Physical Review D <strong>107</strong> (2011)</td></tr>
 </tbody>
 </table>
 </div>

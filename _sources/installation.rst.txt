@@ -30,7 +30,9 @@ Dependencies
 ------------
 ``UndersmoothedUnfolding`` requires the following dependencies:
 
-- `ROOT <https://root.cern.ch/>`_ >= 2.7 or >= 3.4
+TODO: ideally our repo won't depend on TUnfold at all
+
+- `ROOT <https://root.cern.ch/>`_ = 6.10
 - `TUnfold <http://www.desy.de/~sschmitt/tunfold.html/>`_
 
 ---------------------
