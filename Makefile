@@ -1,6 +1,19 @@
-# Modified by Junhyung Lyle Kim and Mikael Kuusela
-# starting from Makefile in TUnfold package (version 17.6) by Stefan Schmitt
-
+#
+#  This file is part of TUnfold.
+#
+#  TUnfold is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  TUnfold is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with TUnfold.  If not, see <http://www.gnu.org/licenses/>.
+#
 ROOTCONFIG   := $(ROOTSYS)/bin/root-config
 ROOTCFLAGS   := $(shell $(ROOTCONFIG) --cflags)
 ROOTLDFLAGS  := $(shell $(ROOTCONFIG) --ldflags)
@@ -42,7 +55,7 @@ SRC=$(shell ls TUnfold*$(TUNFOLDCODEVER).cxx)
 MACRO=$(shell ls UndersmoothDemo*.C)
 
 ## this is for changing the code version
-TUNFOLDNEWVERSION:=V17.6
+TUNFOLDNEWVERSION:=V17.9
 TUNFOLDNEWCODEVER :=$(subst ., ,$(TUNFOLDNEWVERSION))
 TUNFOLDNEWCODEVER :=$(word 1,$(TUNFOLDNEWCODEVER))
 DIRNEW:=../TUnfold_$(TUNFOLDNEWVERSION)
@@ -64,15 +77,21 @@ else
 #	LB0=lib$(LIB)0.a
 endif
 
-COBJC=$(SRC:%.cxx=%.o)
 DICT=TUnfold$(TUNFOLDCODEVER)Dict.C
+COBJC=$(SRC:%.cxx=%.o) $(DICT:%.C=%.o)
 DICTINPUT=$(if $(subst 5,,$(ROOTMAJORVERSION)),$(HEADER),$(SRC))
 ##
 ## macro examples for stand-alone tests
 
+# BINSRC:=$(subst Unfold,unfoldmain,$(MACRO))
 BINSRC:=$(MACRO)
 
 BIN:=$(BINSRC:%.C=%)
+
+##
+## figures included in the manual
+#
+FIGURES=$(shell ls fig/tunfold_manual_fig*.eps)
 
 ##
 ## tar file including all files
@@ -87,21 +106,68 @@ VERSIONTAR:=TUnfold_$(TUNFOLDVERSION).tgz
 ROOTSOURCES=$(subst TUnfold,hist/unfold/src/TUnfold,$(SRC:%$(TUNFOLDCODEVER).cxx=%.cxx))
 ROOTHEADERS= $(subst TUnfold,hist/unfold/inc/TUnfold,$(HEADER))
 
+##
+## tar file including the root source tree
+##
+
+ROOTTAR:=TUnfold_$(TUNFOLDVERSION)_for_root.tgz
 
 ## shortcuts
 ##
+##  depend
 ##  clean
 ##  lib
+##  tar
+##  roottar
+##  manual
 
 make: $(BIN)
 
+depend:  $(SRC) $(HEADER)
+	makedepend -V -I. $(SRC) $(HEADER)
+	makedepend -V -I. $(BINSRC) $(MACRO) -a
+
 clean:
-	rm -f $(LB) *.o *Dict.* *.pcm $(BIN:%=%.pdf)
+	rm -f $(LB) *.o *Dict.* $(BIN) $(BINSRC) $(BIN:%=%.ps) *\~ tunfold_manual.pdf tunfold_manual.dvi *.pcm testUnfold5binning.xml testUnfold*.root filter testUnfold5.ps tunfold_manual.aux tunfold_manual.log Makefile.bak dictlib.xml
+	rm -rf hist tutorials doxygen *.eps testUnfold*.pdf testUnfold6.out.xml
 
 lib: $(LB)
 
+tar: $(VERSIONTAR)
+
+roottar: $(ROOTTAR)
+
+manual: tunfold_manual.pdf
+
+## create PDF of the user's manual
+
+tunfold_manual.dvi: tunfold_manual.tex $(FIGURES)
+	latex $< -o $@
+	latex $< -o $@
+
+tunfold_manual.pdf: tunfold_manual.dvi
+	dvipdf $<
+
+
+# extract doxygen documentation
+
+filter: doxygentest/filter.cxx
+	g++ -g --std=c++11 $< -o$@
+
+doxygen: clean filter
+	mkdir -p doxygen
+	export DOXYGEN_OUTPUT_DIRECTORY=doxygen export DOXYGEN_SOURCE_DIRECTORY=. ; doxygen doxygentest/Doxyfile
+
+# create tar file including all files beloning to this version
+
+$(VERSIONTAR): $(HEADER) $(SRC) $(MACRO) altercodeversion.sh Makefile README COPYING tunfold_manual.tex tunfold_manual.pdf $(FIGURES) testUnfold6binning.xml testUnfold7binning.xml tunfoldbinning.dtd
+	tar cvfz $@ $+
 
 # create root source tree
+
+$(ROOTTAR): $(ROOTSOURCES) $(ROOTHEADERS) $(ROOTMACROS)
+	tar cvfz $@ $+
+
 $(ROOTHEADERS): hist/unfold/inc/%.h : %.h altercodeversion.sh
 	mkdir -p hist/unfold/inc
 	./altercodeversion.sh $< $(TUNFOLDCODEVER) > $@
@@ -110,21 +176,23 @@ $(ROOTSOURCES): hist/unfold/src/%.cxx : %$(TUNFOLDCODEVER).cxx altercodeversion.
 	mkdir -p hist/unfold/src
 	./altercodeversion.sh $< $(TUNFOLDCODEVER) > $@
 
+$(ROOTMACROS): tutorials/unfold/%.C : %.C
+	mkdir -p tutorials/unfold
+	cp $< $@
 
 # create new version
 # (some manual changes are required in addition)
 
-newversion: copyoldversion $(HEADERNEW) $(SRCNEW)
-
-copyoldversion:
+newversion:
 	make $(VERSIONTAR)
 	mkdir -p $(DIRNEW)
 	cp $(VERSIONTAR) $(DIRNEW)/$(VERSIONTAR)
 	cd $(DIRNEW) ; tar xvfz $(VERSIONTAR)
 	rm $(DIRNEW)/$(VERSIONTAR)
-	mkdir -p $(DIRNEW)/tmpheader
 	rm $(DIRNEW)/*.h
 	rm $(DIRNEW)/*.cxx
+	make $(HEADERNEW)
+	make $(SRCNEW)
 
 $(HEADERNEW): $(HEADER)
 	mkdir -p $(DIRNEW)
@@ -139,7 +207,15 @@ $(SRCNEW): $(SRC)
 dict: $(DICT)
 
 $(DICT): $(DICTINPUT)
-	$(ROOTCINT) -f $@ -c -p $^
+	rm -f dictlib.xml
+	echo '<class name="TUnfold'$(TUNFOLDCODEVER)'"/>' > dictlib.xml
+	# echo '<class name="TUnfoldSys'$(TUNFOLDCODEVER)'"/>' >> dictlib.xml
+	# echo '<class name="TUnfoldDensity'$(TUNFOLDCODEVER)'"/>' >> dictlib.xml
+	# echo '<class name="TUnfoldBinning'$(TUNFOLDCODEVER)'"/>' >> dictlib.xml
+	# echo '<class name="TUnfoldBinningXML'$(TUNFOLDCODEVER)'"/>' >> dictlib.xml
+	genreflex ./TUnfold.h -o $@ -s dictlib.xml
+	# genreflex ./TUnfoldDensity.h ./TUnfoldBinningXML.h -o $@ -s dictlib.xml
+#	$(ROOTCINT) -f $@ -s $@ -c -p $^
 
 # library of TUnfold classes
 
@@ -149,18 +225,34 @@ $(DICT): $(DICTINPUT)
 $(LB): $(COBJC)
 	$(call MAKELIBRARY,$(COBJC),$(LB))
 
+# create code to compile example macros stand-alone
+
+# $(BINSRC): Makefile
+# 	rm -f $@
+# 	echo "#include <TError.h>" > $@
+# 	echo "/* This code is generated automatically, do not edit */" >> $@
+# 	echo "void "$(patsubst %.C,%,$(subst unfoldmain,Unfold,$@))"();" >> $@
+# 	echo "int main() {" >>$@
+# 	echo "gErrorIgnoreLevel=kInfo+1;" >>$@
+# 	echo "gErrorAbortLevel=kError;" >>$@
+# 	echo $(patsubst %.C,%,$(subst unfoldmain,Unfold,$@))"();" >>$@
+# 	echo "return 0;" >> $@
+# 	echo "}" >> $@
 
 # compile macros stand-alone
+
 %.o: %.C
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# $(BIN): testunfoldmain%: testunfoldmain%.C $(LB) testUnfold%.o
+# 	$(CXX) $(CXXFLAGS) $< -o  $@ testUnfold$(*).o $(LDFLAGS) -l$(LIB) \
+# 	$(ROOTLIBS)
 $(BIN): UndersmoothDemo%: UndersmoothDemo%.C $(LB) $(DICT) UndersmoothDemo%.o
 	$(CXX) $(CXXFLAGS) -o  $@ $(DICT) UndersmoothDemo$(*).o $(LDFLAGS) -l$(LIB) \
 	$(ROOTLIBS)
-
 
 # DO NOT DELETE
 
 TUnfoldV17.o: TUnfold.h
 
-UndersmoothDemo.o: TUnfold.h
+testUnfold2.o: TUnfold.h

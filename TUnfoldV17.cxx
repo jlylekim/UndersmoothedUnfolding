@@ -1,13 +1,15 @@
 // Modified by Junhyung Lyle Kim and Mikael Kuusela
-// starting from TUnfoldV17.cxx (version 17.6) by Stefan Schmitt
+// starting from TUnfoldV17.cxx (version 17.8) by Stefan Schmitt
 
 
 // Author: Stefan Schmitt
 // DESY, 13/10/08
 
-// Version 17.6, updated doxygen-style comments, add one argument for scanLCurve
+//  Version 17.8, add new method GetDXDY() for histograms
 //
 //  History:
+//    Version 17.7, change finite() -> TMath::Finite()
+//    Version 17.6, updated doxygen-style comments, add one argument for scanLCurve
 //    Version 17.5, fix memory leak with fVyyInv, bugs in GetInputInverseEmatrix(), GetInput(), bug in MultiplyMSparseMSparseTranspVector
 //    Version 17.4, in parallel to changes in TUnfoldBinning
 //    Version 17.3, in parallel to changes in TUnfoldBinning
@@ -2419,10 +2421,12 @@ Int_t TUnfoldV17::SetInput(const TH1 *input, Double_t scaleBias,
   TMatrixDSparse *mAtV=MultiplyMSparseTranspMSparse(fA,vecV);
   DeleteMatrix(&vecV);
   Int_t nError2=0;
+  Int_t error2bin=-1;
   for (Int_t i = 0; i <mAtV->GetNrows();i++) {
      if(mAtV->GetRowIndexArray()[i]==
         mAtV->GetRowIndexArray()[i+1]) {
         nError2 ++;
+        error2bin=i;
      }
   }
   if(nVarianceForced) {
@@ -2464,7 +2468,7 @@ Int_t TUnfoldV17::SetInput(const TH1 *input, Double_t scaleBias,
                     binlist +=row;
                  }
                  } */
-              Warning("SetInput",binlist);
+              Warning("SetInput","%s",(char const *)binlist);
            }
         }
      }
@@ -2472,7 +2476,8 @@ Int_t TUnfoldV17::SetInput(const TH1 *input, Double_t scaleBias,
         Error("SetInput","%d/%d output bins are not constrained by any data.",
                 nError2,mAtV->GetNrows());
      } else {
-        Error("SetInput","One output bins is not constrained by any data.");
+        Error("SetInput","One output bin [%d] is not constrained by any data.",
+              error2bin);
      }
   }
   DeleteMatrix(&mAtV);
@@ -2576,10 +2581,10 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
      Double_t x0=GetLcurveX();
      Double_t y0=GetLcurveY();
      Info("ScanLcurve","logtau=-Infinity X=%lf Y=%lf",x0,y0);
-     if(!finite(x0)) {
+     if(!TMath::Finite(x0)) {
         Fatal("ScanLcurve","problem (too few input bins?) X=%f",x0);
      }
-     if(!finite(y0)) {
+     if(!TMath::Finite(y0)) {
         Fatal("ScanLcurve","problem (missing regularisation?) Y=%f",y0);
      }
      {
@@ -2588,7 +2593,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
            0.5*(TMath::Log10(fChi2A+3.*TMath::Sqrt(GetNdf()+1.0))
                 -GetLcurveY());
         DoUnfold(TMath::Power(10.,logTau));
-        if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+        if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
            Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                  GetLcurveX(),GetLcurveY());
         }
@@ -2607,7 +2612,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
            x0=GetLcurveX();
            Double_t logTau=(*curve.begin()).first-0.5;
            DoUnfold(TMath::Power(10.,logTau));
-           if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+           if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
               Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                     GetLcurveX(),GetLcurveY());
            }
@@ -2629,7 +2634,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
                (curve.size()<2))) {
            Double_t logTau=(*curve.begin()).first-0.5;
            DoUnfold(TMath::Power(10.,logTau));
-           if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+           if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
               Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                     GetLcurveX(),GetLcurveY());
            }
@@ -2644,7 +2649,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
      if(nPoint>1) {
         // insert maximum tau
         DoUnfold(TMath::Power(10.,logTauMax));
-        if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+        if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
            Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
                  GetLcurveX(),GetLcurveY());
         }
@@ -2654,7 +2659,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
      }
      // insert minimum tau
      DoUnfold(TMath::Power(10.,logTauMin));
-     if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+     if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
         Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
               GetLcurveX(),GetLcurveY());
      }
@@ -2689,7 +2694,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
       i0=i1;
     }
     DoUnfold(TMath::Power(10.,logTau));
-    if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+    if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
        Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
              GetLcurveX(),GetLcurveY());
     }
@@ -2823,7 +2828,7 @@ Int_t TUnfoldV17::ScanLcurve(Int_t nPoint,
     delete[] cCi;
     logTauFin=cTmax;
     DoUnfold(TMath::Power(10.,logTauFin));
-    if((!finite(GetLcurveX())) ||(!finite(GetLcurveY()))) {
+    if((!TMath::Finite(GetLcurveX())) ||(!TMath::Finite(GetLcurveY()))) {
        Fatal("ScanLcurve","problem (missing regularisation?) X=%f Y=%f",
              GetLcurveX(),GetLcurveY());
     }
@@ -2977,7 +2982,7 @@ void TUnfoldV17::GetFoldedOutput(TH1 *out,const Int_t *binMap) const
 ///
 /// \param[out] A two-dimensional histogram to store the
 /// probabilities (normalized response matrix). The bin contents are
-/// overwritten
+/// overwritten for those bins where A is nonzero
 /// \param[in] histmap specify axis along which the truth bins are
 /// oriented
 
@@ -2998,6 +3003,29 @@ void TUnfoldV17::GetProbabilityMatrix(TH2 *A,EHistMap histmap) const
          } else {
             A->SetBinContent(iy+1, ih,data_A[indexA]);
          }
+      }
+   }
+}
+
+////////////////////////////////////////////////////////////////////////
+/// get matrix describing gow the result changes with the input data
+///
+/// \param[out] dxdy two-dimensional histogram to store the
+///  matrix connecting the output and input data.
+///   The bin contents are overwritten for those bins where dxdy is non-zero.
+
+void TUnfoldV17::GetDXDY(TH2 *dxdy) const
+{
+   // retreive matrix connecting input and output
+   //    dxdy: histogram to store the probability matrix
+   const Int_t *rows_dxdy=fDXDY->GetRowIndexArray();
+   const Int_t *cols_dxdy=fDXDY->GetColIndexArray();
+   const Double_t *data_dxdy=fDXDY->GetMatrixArray();
+   for (Int_t ix = 0; ix <fDXDY->GetNrows(); ix++) {
+      for(Int_t indexDXDY=rows_dxdy[ix];indexDXDY<rows_dxdy[ix+1];indexDXDY++) {
+         Int_t iy = cols_dxdy[indexDXDY];
+         Int_t ih=fXToHist[ix];
+         dxdy->SetBinContent(ih, iy+1,data_dxdy[indexDXDY]);
       }
    }
 }
@@ -3134,7 +3162,7 @@ Int_t TUnfoldV17::GetNr(void) const {
 /// \param[out] out histogram to store the regularisation conditions.
 /// the bincontents are overwritten
 ///
-/// The histogram should have dimension nr (x-axis) times nx (y-axis).
+/// The histogram should have dimension nr (y-axis) times nx (x-axis).
 /// nr corresponds to the number of regularisation conditions, it can
 /// be obtained using the method GetNr(). nx corresponds to the number
 /// of histogram bins in the response matrix along the truth axis.
@@ -3659,7 +3687,7 @@ void TUnfoldV17::SetEpsMatrix(Double_t eps) {
 
 
 ////////////////////////////////////////////////////////////////////////
-///
+/// Implemented by Junhung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 {
   if(!fVyyInv) {
@@ -3747,7 +3775,7 @@ TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 }
 
 ////////////////////////////////////////////////////////////////////////
-///
+/// Implemented by Junhung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 {
   // converting TH1 hist_beta to TMatrixD beta
@@ -3762,7 +3790,7 @@ TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 }
 
 ////////////////////////////////////////////////////////////////////////
-///
+/// Implemented by Junhung Lyle Kim and Mikael Kuusela
 Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
@@ -3823,6 +3851,7 @@ Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_it
   Info("UndersmoothTau", "Obtained estimated coverage: %lf", coverages[1]);
   return tau;
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////

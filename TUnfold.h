@@ -1,12 +1,15 @@
 // Modified by Junhyung Lyle Kim and Mikael Kuusela
-// starting from TUnfold.h (version 17.6) by Stefan Schmitt
+// starting from TUnfold.h (version 17.8) by Stefan Schmitt
+
 
 // Author: Stefan Schmitt
 // DESY, 13/10/08
 
-//  Version 17.6,  updated doxygen-style comments, add one argument for scanLCurve
+//  Version 17.8, add new method GetDXDY() for histograms
 //
 //  History:
+//    Version 17.7, updates in the TUnfold implementation
+//    Version 17.6,  updated doxygen-style comments, add one argument for scanLCurve
 //    Version 17.5, fix memory leak and other bugs
 //    Version 17.4, in parallel to changes in TUnfoldBinning
 //    Version 17.3, in parallel to changes in TUnfoldBinning
@@ -100,7 +103,7 @@
 #include <TObjArray.h>
 #include <TString.h>
 
-#define TUnfold_VERSION "V17.6"
+#define TUnfold_VERSION "V17.8"
 #define TUnfold_CLASS_VERSION 17
 
 #define TUnfold TUnfoldV17
@@ -299,12 +302,14 @@ public:
    Double_t GetRhoI(TH1 *rhoi,const Int_t *binMap=0,TH2 *invEmat=0) const;
    void GetFoldedOutput(TH1 *folded,const Int_t *binMap=0) const;
 
+
    ////////////////////////////////////////////////////////////////////////////////
    // Implemented by Junhung Lyle Kim and Mikael Kuusela                         //
    TVectorD ComputeCoverage(TMatrixD *beta, Double_t tau);                       //
    TVectorD ComputeCoverage(TH1 *hist_beta, Double_t tau);                       //
    Double_t UndersmoothTau(Double_t tau_init, Double_t epsilon, Int_t max_iter); //
    ////////////////////////////////////////////////////////////////////////////////
+
 
 
    // access input parameters
@@ -318,6 +323,8 @@ public:
    void GetLsquared(TH2 *lsquared) const;
 
    // access various properties of the result
+   /// get matrix connecting input and output changes
+   void GetDXDY(TH2 *dxdy) const;
    /// get maximum global correlation determined in recent unfolding
    inline Double_t GetRhoMax(void) const { return fRhoMax; }
    /// get average global correlation determined in recent unfolding
