@@ -2,7 +2,7 @@
 
 ### Authors: Junhyung Lyle Kim, University of Chicago, and Mikael Kuusela, Carnegie Mellon University
 
-This repository provides an extension for the unfolding software [TUnfold V17.6](https://www.desy.de/~sschmitt/tunfold.html#versions) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing tau so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
+This repository provides an extension for the unfolding software [TUnfold V17.8](https://www.desy.de/~sschmitt/tunfold.html#versions) written by Stefan Schmitt. TUnfold implements Tikhonov regularization for unfolding smeared data from particle detectors. However, as demonstrated by Kuusela (2016), the resulting confidence intervals may seriously underestimate the uncertainty in the unfolded space, unless care is taken in the choice of the regularization strength tau. This extension provides a new function for choosing the regularization strength, `UndersmoothTau`, which aims at choosing tau so that the confidence intervals have nearly nominal coverage. `UndersmoothTau` is an implementation of the data-driven undersmoothing technique introduced in Kuusela (2016). Please refer to the references section for more details on the statistical methodology.
 
 ## Documentation
 Detailed documentation for UndersmoothedUnfolding can be found at [https://jlylekim.github.io/UndersmoothedUnfolding/](https://jlylekim.github.io/UndersmoothedUnfolding/)
@@ -38,7 +38,7 @@ The simulation below compares the performance of the unfolded confidence interva
 ![Demonstration](UndersmoothDemo.png)
 
 ## Installation
-To install, simply set up the `ROOT` environment (tested with [ROOT V6.10/00](https://root.cern.ch/content/release-61000)) and run `make` as below:
+To install, simply set up the `ROOT` environment (tested with [ROOT V6.18/00](https://root.cern.ch/content/release-61800)) and run `make` as below:
 ```bash
 $ source /path/to/install-or-build/dir/bin/thisroot.sh
 $ make
