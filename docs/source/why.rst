@@ -8,8 +8,8 @@ Uncertainty quantification vs. point estimation
 ---------------------------------------------------------
 
 ``UndersmoothedUnfolding`` an extension for the unfolding
-software ``TUnfoldV17.6`` [2]_ written by Stefan Schmitt.
-``TUnfold`` implements Tikhonov regularization for unfolding smeared data
+software `TUnfoldV17.8 <http://www.desy.de/~sschmitt/tunfold.html>`_ [2]_ written by Stefan Schmitt.
+`TUnfold <http://www.desy.de/~sschmitt/tunfold.html>`_ implements Tikhonov regularization for unfolding smeared data
 from particle detectors. However, as demonstrated by Kuusela (2016) [1]_,
 the resulting confidence intervals may seriously underestimate the uncertainty
 in the unfolded space, unless care is taken in the choice of the regularization
