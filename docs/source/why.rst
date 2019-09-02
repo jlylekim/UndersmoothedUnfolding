@@ -37,6 +37,7 @@ regularization strengths chosen by ``TUnfold::ScanLcurve``, and it
 shows serious undercoverage at around 20%.
 
 
+.. _demo-two-peaks:
 
 -------------------------------------------
 Coverage demonstration I: two peaks spectra
@@ -65,6 +66,8 @@ for each method. As shown before, the confidence intervals provided by ``TUnfold
 short and suffer from drastic undercoverage, while the intervals provided
 by ``UndersmoothedUnfolding::UndersmoothTau`` have nearly nominal coverage without being excessively long.
 
+
+.. _demo-steeply-falling:
 
 --------------------------------------------------
 Coverage demonstration II: steeply falling spectra
