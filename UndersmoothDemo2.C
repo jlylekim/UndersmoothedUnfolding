@@ -344,7 +344,7 @@ void UndersmoothDemo2()
   ratio_US->GetLowerRefGraph()->SetMinimum(-1.7E7);
 
 
-  output->SaveAs("UndersmoothDemo_incjets.pdf");
+  output->SaveAs("UndersmoothDemo2.pdf");
 }
 
 int main() {

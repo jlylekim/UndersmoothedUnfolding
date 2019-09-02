@@ -290,7 +290,7 @@ void UndersmoothDemo1()
   hLambda->SetLineColor(6); // Magenta
   hLambda->Draw("SAME HIST");
 
-  output->SaveAs("UndersmoothDemo.pdf");
+  output->SaveAs("UndersmoothDemo1.pdf");
 }
 
 int main() {
