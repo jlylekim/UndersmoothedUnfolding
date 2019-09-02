@@ -27,7 +27,8 @@ For more mathematical detail, please refer to Kuusela (2016) [1]_.
 --------------
 Example usage
 --------------
-Below is an example usage of ``UndersmoothTau`` with the ``ScanLcurve`` method provided in ``TUnfold``.
+``UndersmoothTau`` is implemented so that it can be used with any initial estimate of :math:`\tau`.
+Below is an example usage of ``UndersmoothTau`` with the ``TUnfold::ScanLcurve`` method.
 
 .. code-block:: c++
 

@@ -88,9 +88,8 @@
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#make">Make</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#development-version">Development Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#checking-installation">Checking installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
@@ -161,34 +160,34 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>TODO: finish modifying makefile first</p>
 <div class="section" id="make">
 <h2>Make<a class="headerlink" href="#make" title="Permalink to this headline">¶</a></h2>
-<p>To install, simply set up the <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> environment (tested with <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> V6.10/00) and run <cite>make</cite> as below:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make
-</pre></div>
-</div>
-<p>This installs extended <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> with <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code>.</p>
-</div>
-<div class="section" id="development-version">
-<h2>Development Version<a class="headerlink" href="#development-version" title="Permalink to this headline">¶</a></h2>
+<p>To install, simply set up the <a class="reference external" href="https://root.cern.ch/">ROOT</a> environment
+(tested with <a class="reference external" href="https://root.cern.ch/">ROOT</a> &gt;= V6.12/04),
+clone <a class="reference external" href="https://github.com/jlylekim/UndersmoothedUnfolding">this repository</a>,
+and run <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/lylejkim/UndersmoothedUnfolding.git
 make
 </pre></div>
 </div>
 </div>
-<div class="section" id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> requires the following dependencies:</p>
-<p>TODO: ideally our repo won’t depend on TUnfold at all</p>
-<ul class="simple">
-<li><a class="reference external" href="https://root.cern.ch/">ROOT</a> = 6.10</li>
-<li><a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html/">TUnfold</a></li>
-</ul>
-</div>
 <div class="section" id="checking-installation">
 <h2>Checking installation<a class="headerlink" href="#checking-installation" title="Permalink to this headline">¶</a></h2>
-<p>MK: Give here instructions for reproducing the figure from the paper</p>
+<p>Upon successful installation, two executables should be in the repository, <code class="docutils literal notranslate"><span class="pre">UndersmoothDemo1</span></code> and <code class="docutils literal notranslate"><span class="pre">UndersmoothDemo2</span></code>,
+which can be executed as below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./UndersmoothDemo1
+./UndersmoothDemo2
+</pre></div>
+</div>
+<p>The former is the test case with two Gaussian peaks, and should generate
+<a class="reference internal" href="why.html#demo-two-peaks"><span class="std std-ref">this plot</span></a>. The latter is the test case with steeply falling spectra,
+and should generate <a class="reference internal" href="why.html#demo-steeply-falling"><span class="std std-ref">this plot</span></a>.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://root.cern.ch/">ROOT</a> &gt;= V6.12/04 (tested up to the most recent release V6.18/00)</li>
+</ul>
 </div>
 </div>
 

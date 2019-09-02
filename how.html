@@ -178,7 +178,8 @@ way how much to undersmooth.</p>
 </div>
 <div class="section" id="example-usage">
 <h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<p>Below is an example usage of <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> with the <code class="docutils literal notranslate"><span class="pre">ScanLcurve</span></code> method provided in <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is implemented so that it can be used with any initial estimate of <span class="math notranslate nohighlight">\(\tau\)</span>.
+Below is an example usage of <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> with the <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> method.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">TUnfold</span> <span class="n">unfold</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TUnfold</span><span class="p">();</span>          <span class="c1">// construct a TUnfold object</span>
 <span class="n">unfold</span><span class="p">.</span><span class="n">ScanLcurve</span><span class="p">();</span>                     <span class="c1">// unfold using ScanLcurve method</span>
 <span class="n">TauFromLcurve</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">.</span><span class="n">GetTau</span><span class="p">();</span>         <span class="c1">// retrieve tau chosen by ScanLcurve</span>

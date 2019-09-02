@@ -160,15 +160,15 @@
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a software for unfolding in high energy physics with focus on
 optimal <em>uncertainty quantification</em>. Most existing unfolding software only provide
-methods for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id1">[1]</a>,
+methods for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference" href="#id7" id="id1">[1]</a>,
 confidence intervals formed from point estimates can suffer from significant undercoverage,
 and thus might not be suitable for statistical inference and uncertainty quantification.</p>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> <a class="footnote-reference" href="#id8" id="id2">[3]</a> implementation of the data-driven
-undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference" href="#id6" id="id3">[1]</a>, which aims at
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference" href="#id9" id="id2">[3]</a> implementation of the data-driven
+undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference" href="#id7" id="id3">[1]</a>, which aims at
 choosing the regularization strength so that the resulting unfolded confidence intervals have
 nearly nominal coverage.</p>
-<p>It is extended from the existing unfolding library, <code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> <a class="footnote-reference" href="#id7" id="id4">[2]</a>,
-which is included in <code class="docutils literal notranslate"><span class="pre">ROOT</span></code> <a class="footnote-reference" href="#id8" id="id5">[3]</a>.</p>
+<p>It is extended from the existing unfolding library, <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfold</a> <a class="footnote-reference" href="#id8" id="id4">[2]</a>,
+which is included in <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference" href="#id9" id="id6">[3]</a>.</p>
 <div class="section" id="what-is-unfolding">
 <h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
 <p>Any measurement made at the Large Hadron Collider (LHC) at CERN
@@ -177,7 +177,7 @@ unfolding is to use these smeared measurements to make non-parametric
 inferences about the underlying particle spectrum. The image below
 visually illustrates folding and unfolding.</p>
 <img alt="_images/unfolding.png" src="_images/unfolding.png" />
-<table class="docutils footnote" frame="void" id="id6" rules="none">
+<table class="docutils footnote" frame="void" id="id7" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> <ol class="last upperalpha simple" start="13">
@@ -186,7 +186,7 @@ visually illustrates folding and unfolding.</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
+<table class="docutils footnote" frame="void" id="id8" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td><ol class="first last upperalpha simple" start="19">
@@ -195,10 +195,10 @@ visually illustrates folding and unfolding.</p>
 </td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
+<table class="docutils footnote" frame="void" id="id9" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> <ol class="last upperalpha simple" start="18">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id6">2</a>)</em> <ol class="last upperalpha simple" start="18">
 <li>Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. &amp; Meth. in Phys. Res. A <strong>389</strong> (1997).</li>
 </ol>
 </td></tr>

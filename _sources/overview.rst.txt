@@ -8,13 +8,15 @@ methods for optimal point estimation; however, as as demonstrated in Kuusela (20
 confidence intervals formed from point estimates can suffer from significant undercoverage,
 and thus might not be suitable for statistical inference and uncertainty quantification.
 
-``UndersmoothedUnfolding`` is a ``ROOT`` [3]_ implementation of the data-driven
+``UndersmoothedUnfolding`` is a `ROOT <https://root.cern.ch/>`_ [3]_ implementation of the data-driven
 undersmoothing technique introduced in Kuusela (2016) [1]_, which aims at
 choosing the regularization strength so that the resulting unfolded confidence intervals have
 nearly nominal coverage.
 
-It is extended from the existing unfolding library, ``TUnfold`` [2]_,
-which is included in ``ROOT`` [3]_.
+It is extended from the existing unfolding library, `TUnfold <http://www.desy.de/~sschmitt/tunfold.html>`_ [2]_,
+which is included in `ROOT <https://root.cern.ch/>`_ [3]_.
+
+
 
 ------------------
 What is unfolding?

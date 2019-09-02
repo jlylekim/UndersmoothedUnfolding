@@ -163,8 +163,8 @@
 <div class="section" id="uncertainty-quantification-vs-point-estimation">
 <h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding
-software <code class="docutils literal notranslate"><span class="pre">TUnfoldV17.6</span></code> <a class="footnote-reference" href="#id5" id="id1">[2]</a> written by Stefan Schmitt.
-<code class="docutils literal notranslate"><span class="pre">TUnfold</span></code> implements Tikhonov regularization for unfolding smeared data
+software <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfoldV17.8</a> <a class="footnote-reference" href="#id5" id="id1">[2]</a> written by Stefan Schmitt.
+<a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfold</a> implements Tikhonov regularization for unfolding smeared data
 from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference" href="#id4" id="id2">[1]</a>,
 the resulting confidence intervals may seriously underestimate the uncertainty
 in the unfolded space, unless care is taken in the choice of the regularization
@@ -187,7 +187,7 @@ regularization strengths chosen by <code class="docutils literal notranslate"><s
 shows serious undercoverage at around 20%.</p>
 </div>
 <div class="section" id="coverage-demonstration-i-two-peaks-spectra">
-<h2>Coverage demonstration I: two peaks spectra<a class="headerlink" href="#coverage-demonstration-i-two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
+<span id="demo-two-peaks"></span><h2>Coverage demonstration I: two peaks spectra<a class="headerlink" href="#coverage-demonstration-i-two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
 <p>The first test case we consider has two Gaussian peaks on top of
 a uniform background, resembling situations where invariant mass peaks
 are observed on top of some background events.</p>
@@ -209,7 +209,7 @@ short and suffer from drastic undercoverage, while the intervals provided
 by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage without being excessively long.</p>
 </div>
 <div class="section" id="coverage-demonstration-ii-steeply-falling-spectra">
-<h2>Coverage demonstration II: steeply falling spectra<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
+<span id="demo-steeply-falling"></span><h2>Coverage demonstration II: steeply falling spectra<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
 <p>The second test case we consider has a steeply falling particle spectrum,
 and we use transverse momentum spectrum <a class="footnote-reference" href="#id6" id="id3">[3]</a>  as an example. Observing a jet,
 a collimated stream of energetic particles, in an LHC particle detector
