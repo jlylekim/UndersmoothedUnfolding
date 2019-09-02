@@ -52,7 +52,7 @@ TH1D* generateData() {
   return hy;
 }
 
-int UndersmoothDemo1()
+void UndersmoothDemo1()
 {
   gRandom->SetSeed(123456);
 
