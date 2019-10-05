@@ -165,9 +165,9 @@
 <li><dl class="first docutils">
 <dt>Input:</dt>
 <dd><ul class="first last">
-<li><cite>Double_t</cite> <strong>tau</strong>: pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{initial}\)</span></li>
-<li><cite>Double_t</cite> <strong>epsilon</strong>: tolerance for target coverage</li>
-<li><cite>Int_t</cite> <strong>max_iter</strong>: maximum number of undersmoothing iterations</li>
+<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{initial}\)</span></li>
+<li><cite>Double_t</cite> <strong>epsilon</strong>: (strictly positive) tolerance for target coverage</li>
+<li><cite>Int_t</cite> <strong>max_iter</strong>: (strictly positive) maximum number of undersmoothing iterations</li>
 </ul>
 </dd>
 </dl>
@@ -192,7 +192,7 @@
 <dt>Input:</dt>
 <dd><ul class="first last">
 <li><cite>TMatrixD</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TMatrixD</cite> type</li>
-<li><cite>Double_t</cite> <strong>tau</strong>: regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
+<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
 </ul>
 </dd>
 </dl>
@@ -212,7 +212,7 @@
 <dt>Input:</dt>
 <dd><ul class="first last">
 <li><cite>TH1</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TH1</cite> type</li>
-<li><cite>Double_t</cite> <strong>tau</strong>: regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
+<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
 </ul>
 </dd>
 </dl>
