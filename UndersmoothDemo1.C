@@ -154,7 +154,7 @@ void UndersmoothDemo1()
     Double_t deltaFromLcurve = unfoldUndersmooth->GetTau();
     //tauListLcurve[i] = deltaFromLcurve;
 
-
+    std::cout << "LcurveScan tau is: " << deltaFromLcurve << std::endl;
     Double_t new_delta = unfoldUndersmooth->UndersmoothTau(deltaFromLcurve, 0.01, 1000);
     std::cout << "Undersmoothed tau is: " << new_delta << std::endl;
 
