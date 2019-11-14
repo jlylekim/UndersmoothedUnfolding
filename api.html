@@ -35,8 +35,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Known issues" href="caveat.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,17 +80,12 @@
             
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why UndersmoothedUnfolding?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="caveat.html">Known issues</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Function references</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#undersmoothtau">UndersmoothTau</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#computecoverage">ComputeCoverage</a></li>
-</ul>
-</li>
 </ul>
 
             
@@ -161,21 +155,20 @@
 <div class="section" id="undersmoothtau">
 <h2>UndersmoothTau<a class="headerlink" href="#undersmoothtau" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> (<cite>Double_t</cite> <strong>tau</strong>, <cite>Double_t</cite> <strong>epsilon</strong>, <cite>Int_t</cite> <strong>max_iter</strong>)<ul>
-<li><dl class="first docutils">
-<dt>Input:</dt>
-<dd><ul class="first last">
-<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{initial}\)</span></li>
-<li><cite>Double_t</cite> <strong>epsilon</strong>: (strictly positive) tolerance for target coverage</li>
-<li><cite>Int_t</cite> <strong>max_iter</strong>: (strictly positive) maximum number of undersmoothing iterations</li>
+<li><p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> (<cite>Double_t</cite> <strong>tau</strong>, <cite>Double_t</cite> <strong>epsilon</strong>, <cite>Int_t</cite> <strong>max_iter</strong>)</p>
+<ul>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{initial}\)</span></p></li>
+<li><p><cite>Double_t</cite> <strong>epsilon</strong>: (strictly positive) tolerance for target coverage</p></li>
+<li><p><cite>Int_t</cite> <strong>max_iter</strong>: (strictly positive) maximum number of undersmoothing iterations</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Output:</dt>
-<dd><ul class="first last">
-<li>Undersmoothed regularization strength <span class="math notranslate nohighlight">\(\tau^{undersmoothed}\)</span></li>
+<li><dl class="simple">
+<dt>Output:</dt><dd><ul>
+<li><p>Undersmoothed regularization strength <span class="math notranslate nohighlight">\(\tau^{undersmoothed}\)</span></p></li>
 </ul>
 </dd>
 </dl>
@@ -187,40 +180,38 @@
 <div class="section" id="computecoverage">
 <h2>ComputeCoverage<a class="headerlink" href="#computecoverage" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)<ul>
-<li><dl class="first docutils">
-<dt>Input:</dt>
-<dd><ul class="first last">
-<li><cite>TMatrixD</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TMatrixD</cite> type</li>
-<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
+<li><p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
+<ul>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>TMatrixD</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TMatrixD</cite> type</p></li>
+<li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Output:</dt>
-<dd><ul class="first last">
-<li>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</li>
+<li><dl class="simple">
+<dt>Output:</dt><dd><ul>
+<li><p>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
 </li>
-<li><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TH1</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)<ul>
-<li><dl class="first docutils">
-<dt>Input:</dt>
-<dd><ul class="first last">
-<li><cite>TH1</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TH1</cite> type</li>
-<li><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></li>
+<li><p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TH1</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
+<ul>
+<li><dl class="simple">
+<dt>Input:</dt><dd><ul>
+<li><p><cite>TH1</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TH1</cite> type</p></li>
+<li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Output:</dt>
-<dd><ul class="first last">
-<li>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</li>
+<li><dl class="simple">
+<dt>Output:</dt><dd><ul>
+<li><p>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</p></li>
 </ul>
 </dd>
 </dl>
@@ -236,13 +227,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="caveat.html" class="btn btn-neutral float-left" title="Known issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

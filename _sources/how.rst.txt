@@ -46,8 +46,8 @@ Below is an example usage of ``UndersmoothTau`` with the ``TUnfold::ScanLcurve``
 ---------------------
 Expected input/output
 ---------------------
-TODO:
-  * input: throw a lot of error/warning messages
+Please refer to `function references <https://jlylekim.github.io/UndersmoothedUnfolding/how.html>`_
+for details about supported input and expected output.
 
 
 
