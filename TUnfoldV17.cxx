@@ -3796,7 +3796,6 @@ Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_it
   if(tau <= 0) {
     Error("UndersmoothedUnfolding::UndersmoothTau", "Tau should be strictly positive");
     return std::numeric_limits<double>::infinity();
-    // return -1.0;
   }
   if(epsilon <= 0) {
     Error("UndersmoothedUnfolding::UndersmoothTau", "Tolerance should be strictly positive");
