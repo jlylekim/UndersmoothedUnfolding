@@ -3793,11 +3793,8 @@ TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 /// Implemented by Junhung Lyle Kim and Mikael Kuusela
 Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
-  // 10/5 JLK: discuss with Mikael
-  // we can return something like -1.0 in which case the code will still return
-  // or return infinity in which case the code will not run
   if(tau <= 0) {
-    Error("UndersmoothedUnfolding::UndersmoothTau", "here?Tau should be strictly positive");
+    Error("UndersmoothedUnfolding::UndersmoothTau", "Tau should be strictly positive");
     return std::numeric_limits<double>::infinity();
     // return -1.0;
   }
