@@ -19,9 +19,10 @@ of unfolding software which aims at optimal *uncertainty quantification*.
    overview
    why
    how
+   api
    installation
    caveat
-   api
+
 
 
 Indices and tables
