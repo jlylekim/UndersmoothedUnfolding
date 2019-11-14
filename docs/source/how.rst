@@ -46,8 +46,7 @@ Below is an example usage of ``UndersmoothTau`` with the ``TUnfold::ScanLcurve``
 ---------------------
 Expected input/output
 ---------------------
-Please refer to `function references <https://jlylekim.github.io/UndersmoothedUnfolding/how.html>`_
-for details about supported input and expected output.
+Please refer to :ref:`function references<function-references>` page for details about supported input and expected output.
 
 
 
