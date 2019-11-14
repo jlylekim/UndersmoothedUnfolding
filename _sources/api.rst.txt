@@ -3,6 +3,7 @@
 Function references
 *******************
 
+.. _function-references:
 
 ---------------
 UndersmoothTau
