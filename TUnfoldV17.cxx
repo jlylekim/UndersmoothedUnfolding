@@ -3687,7 +3687,7 @@ void TUnfoldV17::SetEpsMatrix(Double_t eps) {
 
 
 ////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhung Lyle Kim and Mikael Kuusela
+/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 {
   if(!fVyyInv) {
@@ -3775,7 +3775,7 @@ TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 }
 
 ////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhung Lyle Kim and Mikael Kuusela
+/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 {
   // converting TH1 hist_beta to TMatrixD beta
@@ -3790,7 +3790,7 @@ TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 }
 
 ////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhung Lyle Kim and Mikael Kuusela
+/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
   if(tau <= 0) {
