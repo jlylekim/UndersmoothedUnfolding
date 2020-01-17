@@ -4,12 +4,12 @@
    contain the root `toctree` directive.
 
 
-**NOTE: this documentation website is stills under development.**
+**NOTE: this documentation website is under development**
 
 UndersmoothedUnfolding
 ==================================================
 ``UndersmoothedUnfolding`` provides a `ROOT <https://root.cern.ch/>`_ implementation
-of unfolding software which aims at optimal *uncertainty quantification*.
+of an unfolding technique which aims at optimal *uncertainty quantification* for the unfolded particle spectrum. The implementation is an extension of the `TUnfold <http://www.desy.de/~sschmitt/tunfold.html>`_ library and can hence be easily incorporated into existing TUnfold-based particle physics data analyses.
 
 
 .. toctree::
