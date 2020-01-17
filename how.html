@@ -164,17 +164,16 @@
 <h2>New functions<a class="headerlink" href="#new-functions" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> is the core functionality of <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code>, and
 is implemented so that it can be used with any initial pilot estimate
-of <span class="math notranslate nohighlight">\(\tau\)</span>, from such as cross-validation, L-curve, etc.
-For general usage, users typically just need to use <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> function.</p>
+of <span class="math notranslate nohighlight">\(\tau\)</span> from, say, cross-validation, L-curve, etc.
+For typical usage, users simply need to add a call to <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> to their usual TUnfold workflow.</p>
 <p>Given an initial estimate of <span class="math notranslate nohighlight">\(\tau\)</span>,
-<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> gradually reduces the amount of regularization,
-until the target coverage is met within the tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>
-<p>It depends on
+<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> gradually reduces the amount of regularization
+until the 68% target coverage is met within a tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> depends on
 another core functionality, <code class="docutils literal notranslate"><span class="pre">ComputeCoverage</span></code>. Under some common assumptions,
 the coverage probability of the (Gaussian) confidence intervals can be
 written down in closed form, thus providing <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> a principled
-way how much to undersmooth.</p>
-<p>For more mathematical detail, please refer to Kuusela (2016) <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+way of choosing the amount of undersmoothing. The expression for the coverage depends on the unknown true spectrum, which <code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> substitutes with a nontrivial plug-in estimate when calling <code class="docutils literal notranslate"><span class="pre">ComputeCoverage</span></code>. For more mathematical and technical detail, please refer to Kuusela (2016) <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 </div>
 <div class="section" id="example-usage">
 <h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
@@ -224,7 +223,7 @@ Below is an example usage of <code class="docutils literal notranslate"><span cl
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Junhyung Lyle Kim and Mikael Kuusela
+        &copy; Copyright 2020, Junhyung Lyle Kim and Mikael Kuusela
 
     </p>
   </div>

@@ -158,37 +158,36 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a software for unfolding in high energy physics with focus on
-optimal <em>uncertainty quantification</em>. Most existing unfolding software only provide
-methods for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference brackets" href="#id7" id="id1">1</a>,
-confidence intervals formed from point estimates can suffer from significant undercoverage,
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a software for unfolding particle spectra in high energy physics with focus on optimal <em>uncertainty quantification</em>. Most existing unfolding software implementations only provide
+methods for optimal point estimation; however, as as demonstrated in Kuusela (2016) <a class="footnote-reference brackets" href="#id8" id="id1">1</a>,
+confidence intervals formed from such point estimates can suffer from significant undercoverage,
 and thus might not be suitable for statistical inference and uncertainty quantification.</p>
-<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference brackets" href="#id9" id="id2">3</a> implementation of the data-driven
-undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference brackets" href="#id7" id="id3">1</a>, which aims at
+<p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> is a <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference brackets" href="#id10" id="id2">3</a> implementation of the data-driven
+undersmoothing technique introduced in Kuusela (2016) <a class="footnote-reference brackets" href="#id8" id="id3">1</a>, which aims at
 choosing the regularization strength so that the resulting unfolded confidence intervals have
 nearly nominal coverage.</p>
-<p>It is extended from the existing unfolding library, <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfold</a> <a class="footnote-reference brackets" href="#id8" id="id4">2</a>,
-which is included in <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference brackets" href="#id9" id="id6">3</a>.</p>
+<p>It is extended from the existing unfolding library, <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfold</a> <a class="footnote-reference brackets" href="#id9" id="id4">2</a>,
+which is included in <a class="reference external" href="https://root.cern.ch/">ROOT</a> <a class="footnote-reference brackets" href="#id10" id="id6">3</a>.</p>
 <div class="section" id="what-is-unfolding">
 <h2>What is unfolding?<a class="headerlink" href="#what-is-unfolding" title="Permalink to this headline">¶</a></h2>
-<p>Any measurement made at the Large Hadron Collider (LHC) at CERN
-is smeared by the finite resolution of the particle detectors. The goal in
-unfolding is to use these smeared measurements to make non-parametric
-inferences about the underlying particle spectrum. The image below
-visually illustrates folding and unfolding.</p>
+<p>Particle physics measurements, including those made at the Large Hadron Collider (LHC) at CERN,
+are smeared by the finite resolution of the particle detectors. The goal in
+unfolding is to use these smeared observations to make non-parametric
+inferences about the underlying unsmeared particle spectrum. The image below
+visually illustrates folding and unfolding. This problem is an ill-posed inverse problem which complicates the task of quantifying the uncertainty of the unfolded spectrum <a class="footnote-reference brackets" href="#id8" id="id7">1</a>.</p>
 <img alt="_images/unfolding.png" src="_images/unfolding.png" />
 <dl class="footnote brackets">
-<dt class="label" id="id7"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dt class="label" id="id8"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>,<a href="#id7">3</a>)</span></dt>
 <dd><ol class="upperalpha simple" start="13">
 <li><p>Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016).</p></li>
 </ol>
 </dd>
-<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
 <dd><ol class="upperalpha simple" start="19">
 <li><p>Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation <strong>7</strong> (2012).</p></li>
 </ol>
 </dd>
-<dt class="label" id="id9"><span class="brackets">3</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id6">2</a>)</span></dt>
+<dt class="label" id="id10"><span class="brackets">3</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id6">2</a>)</span></dt>
 <dd><ol class="upperalpha simple" start="18">
 <li><p>Brun and F. Rademakers, “ROOT - An Object Oriented Data Analysis Framework”, Nucl. Inst. &amp; Meth. in Phys. Res. A <strong>389</strong> (1997).</p></li>
 </ol>
@@ -217,7 +216,7 @@ visually illustrates folding and unfolding.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Junhyung Lyle Kim and Mikael Kuusela
+        &copy; Copyright 2020, Junhyung Lyle Kim and Mikael Kuusela
 
     </p>
   </div>

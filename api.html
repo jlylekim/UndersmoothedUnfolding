@@ -161,69 +161,51 @@
 <h1>Function references<a class="headerlink" href="#function-references" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="undersmoothtau">
 <span id="id1"></span><h2>UndersmoothTau<a class="headerlink" href="#undersmoothtau" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> (<cite>Double_t</cite> <strong>tau</strong>, <cite>Double_t</cite> <strong>epsilon</strong>, <cite>Int_t</cite> <strong>max_iter</strong>)</p>
 <ul>
-<li><dl class="simple">
-<dt>Input:</dt><dd><ul>
+<li><p><cite>Double_t</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> (<cite>Double_t</cite> <strong>tau</strong>, <cite>Double_t</cite> <strong>epsilon</strong>, <cite>Int_t</cite> <strong>max_iter</strong>)</p>
+<dl class="simple">
+<dt>Input:</dt><dd><ul class="simple">
 <li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) pilot estimate of regularization strength <span class="math notranslate nohighlight">\(\tau^{initial}\)</span></p></li>
 <li><p><cite>Double_t</cite> <strong>epsilon</strong>: (strictly positive) tolerance for target coverage</p></li>
 <li><p><cite>Int_t</cite> <strong>max_iter</strong>: (strictly positive) maximum number of undersmoothing iterations</p></li>
 </ul>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Output:</dt><dd><ul>
+<dt>Output:</dt><dd><ul class="simple">
 <li><p>Undersmoothed regularization strength <span class="math notranslate nohighlight">\(\tau^{undersmoothed}\)</span></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-</li>
-</ul>
 </div>
 <div class="section" id="computecoverage">
 <h2>ComputeCoverage<a class="headerlink" href="#computecoverage" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
 <ul>
-<li><dl class="simple">
-<dt>Input:</dt><dd><ul>
+<li><p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TMatrixD</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
+<dl class="simple">
+<dt>Input:</dt><dd><ul class="simple">
 <li><p><cite>TMatrixD</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TMatrixD</cite> type</p></li>
 <li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></p></li>
 </ul>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Output:</dt><dd><ul>
+<dt>Output:</dt><dd><ul class="simple">
 <li><p>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-</ul>
-</li>
 <li><p><cite>TVectorD</cite> <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::ComputeCoverage</span></code> (<cite>TH1</cite> * <strong>beta</strong>, <cite>Double_t</cite> <strong>tau</strong>)</p>
-<ul>
-<li><dl class="simple">
-<dt>Input:</dt><dd><ul>
+<dl class="simple">
+<dt>Input:</dt><dd><ul class="simple">
 <li><p><cite>TH1</cite> * <strong>beta</strong>: estimate of the true histogram in <cite>TH1</cite> type</p></li>
 <li><p><cite>Double_t</cite> <strong>tau</strong>: (strictly positive) regularization strength <span class="math notranslate nohighlight">\(\tau\)</span></p></li>
 </ul>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Output:</dt><dd><ul>
+<dt>Output:</dt><dd><ul class="simple">
 <li><p>Computes coverage probability for each bin and outputs in <cite>TVectorD</cite> type</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-</ul>
 </li>
 </ul>
 </div>
@@ -249,7 +231,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Junhyung Lyle Kim and Mikael Kuusela
+        &copy; Copyright 2020, Junhyung Lyle Kim and Mikael Kuusela
 
     </p>
   </div>
