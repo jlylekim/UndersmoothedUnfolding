@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u'UndersmoothedUnfolding'
-copyright = u'2019, Junhyung Lyle Kim and Mikael Kuusela'
+copyright = u'2020, Junhyung Lyle Kim and Mikael Kuusela'
 author = u'Junhyung Lyle Kim and Mikael Kuusela'
 
 # The short X.Y version

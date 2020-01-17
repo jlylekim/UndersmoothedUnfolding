@@ -4,7 +4,6 @@
    contain the root `toctree` directive.
 
 
-**NOTE: this documentation website is under development**
 
 UndersmoothedUnfolding
 ==================================================
