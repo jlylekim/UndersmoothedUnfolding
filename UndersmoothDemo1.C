@@ -96,28 +96,22 @@ void UndersmoothDemo1()
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
 
   Int_t repeatNum = 1000;
-  //Double_t *tauListY = new Double_t[repeatNum];   // uncomment to save and plot the taus
-  //Double_t *tauListX = new Double_t[repeatNum];   // uncomment to save and plot the taus
 
-  // initiating vectors to store confidence interval lengths for each iteration
+  // vectors to store confidence interval lengths for each iteration
   vector<Double_t> intervalLengthListUndersmooth(repeatNum);
   vector<Double_t> intervalLengthListLcurve(repeatNum);
 
   // for plotting binwise coverage
-  // initiating with bin# + 1 since bins start from index 1 in histograms
-  // first 0 in binwiseCoverage array will be just 0
   Double_t binwiseCoverageLcurve[41] = {0};
   Double_t binwiseCoverageY[41] = {0};
   Double_t binwiseCoverageX[41];
-  // initiating vectors to display average interval lengths
+  // vectors to display average interval lengths
   vector<Double_t> intervalLengthsUndersmooth(40);
   vector<Double_t> intervalLengthsLcurve(40);
 
-
-  // set up constants needed for ScanLcurve
+  // set up parameters for ScanLcurve
   Double_t tauMin=0.00005;
-  //Double_t tauMax=0.1;   //for size, sizeLambdaMC, curvature cases
-  Double_t tauMax=0.2; //for curvatureLambdaMC case
+  Double_t tauMax=0.2;
 
   Int_t nScan=50;
   TSpline *logTauX,*logTauY;
@@ -131,12 +125,10 @@ void UndersmoothDemo1()
   TH1D *unfoldedLcurve = new TH1D("UnfoldedLcurve","", 40, -7.0, 7.0);
   TH1D *unfoldedUndersmooth = new TH1D("UnfoldedUndersmooth","", 40, -7.0, 7.0);
 
+  //coverage study
   for (Int_t i=0; i<repeatNum; i++) {
     TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
     TUnfold* unfoldUndersmooth = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeCurvature, TUnfold::kEConstraintNone);
-
-    //TUnfold* unfoldLcurve = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
-    //TUnfold* unfoldUndersmooth = new TUnfold(KAlt, TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize, TUnfold::kEConstraintNone);
 
     TH1D *hLambdaHatInvLcurve = new TH1D("LcurveUnfolded","", 40, -7.0, 7.0);
     TH1D *hLambdaHatInvUndersmooth = new TH1D("UndersmoothUnfolded","", 40, -7.0, 7.0);
@@ -160,9 +152,6 @@ void UndersmoothDemo1()
 
     unfoldUndersmooth->DoUnfold(new_delta);
 
-    // save delta obtained from debiasTau
-    //tauListX[i] = i;
-    //tauListY[i] = new_delta;
 
     unfoldLcurve->GetOutput(hLambdaHatInvLcurve);
     unfoldLcurve->GetOutput(unfoldedLcurve);
@@ -170,7 +159,6 @@ void UndersmoothDemo1()
     unfoldUndersmooth->GetOutput(unfoldedUndersmooth);
 
     // check coverage in each bin
-    // should start from 1; GetBinContent(0) and GetBinContent(41) are other information
     for (Int_t j=1; j<41; j++) {
       Double_t hLambdaValue = hLambda->GetBinContent(j);
 
@@ -187,13 +175,13 @@ void UndersmoothDemo1()
       intervalLengthsLcurve[j-1] = hLambdaHatInvLcurveVar * 2.0;
       intervalLengthsUndersmooth[j-1] = hLambdaHatInvUndersmoothVar * 2.0;
 
-      // check if lcurve scan covered the true lambda
+      // check if ScanLcurve covered the true lambda
       if (hLambdaHatInvLcurveLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvLcurveUp) {
         binwiseCoverageLcurve[j] = binwiseCoverageLcurve[j] + (1.0 / repeatNum);
       }
 
+      // check if UndersmoothTau covered the true lambda
       if (hLambdaHatInvUndersmoothLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvUndersmoothUp) {
-        // binwiseCoverageY starts from index 0 but it is initialized to 0 so neglect;
         binwiseCoverageY[j] = binwiseCoverageY[j] + (1.0 / repeatNum);
       }
     }
@@ -234,7 +222,7 @@ void UndersmoothDemo1()
   output->Divide(2,2);
 
   output->cd(1);
-  lcurveCoverageHist->SetLineColor(1);   // black
+  lcurveCoverageHist->SetLineColor(1);
   lcurveCoverageHist->SetBarWidth(0.9);
   lcurveCoverageHist->SetFillColor(38);
   lcurveCoverageHist->SetTitle("Binwise coverage, ScanLcurve");
@@ -244,14 +232,14 @@ void UndersmoothDemo1()
   lcurveCoverageHist->SetStats(kFALSE);
   lcurveCoverageHist->Draw("bar");
   TLine *nominalCov = new TLine(0,nominalCoverage,41,nominalCoverage);
-  nominalCov->SetLineColor(1);  // black
+  nominalCov->SetLineColor(1);
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
   TLatex *lcurveIntervalLength = new TLatex(10.5,0.81,Form("#scale[0.85]{#bf{Average interval length: %g}}", averageIntervalLengthLcurve));
   lcurveIntervalLength->Draw();
 
   output->cd(2);
-  undersmoothCoverageHist->SetLineColor(1);   // black
+  undersmoothCoverageHist->SetLineColor(1);
   undersmoothCoverageHist->SetBarWidth(0.9);
   undersmoothCoverageHist->SetFillColor(38);
   undersmoothCoverageHist->SetTitle("Binwise coverage, Undersmoothing");
@@ -260,7 +248,7 @@ void UndersmoothDemo1()
   undersmoothCoverageHist->GetYaxis()->SetRangeUser(0.0, 0.8);
   undersmoothCoverageHist->SetStats(kFALSE);
   undersmoothCoverageHist->Draw("bar");
-  nominalCov->SetLineColor(1);  // black
+  nominalCov->SetLineColor(1);
   nominalCov->SetLineStyle(3);  // dotted line; 1: simple, 2: dashed, 3: dotted
   nominalCov->Draw("SAME");
   TLatex *undersmoothIntervalLength = new TLatex(10.5,0.81,Form("#scale[0.85]{#bf{Average interval length: %g}}", averageIntervalLengthUndersmooth));
@@ -269,25 +257,25 @@ void UndersmoothDemo1()
   TLegend* legendData = new TLegend(0.15,0.7,0.35,0.85);
   output->cd(3);
   unfoldedLcurve->SetStats(kFALSE);
-  unfoldedLcurve->SetLineColor(15); // Gray
+  unfoldedLcurve->SetLineColor(15);
   unfoldedLcurve->SetTitle("Unfolded, ScanLcurve");
   unfoldedLcurve->GetYaxis()->SetRangeUser(0.0, 1600.0);
   unfoldedLcurve->Draw("");
   legendData->AddEntry(unfoldedLcurve,"Unfolded","l");
   hLambda->SetStats(kFALSE);
-  hLambda->SetLineColor(6); // Magenta
+  hLambda->SetLineColor(6);
   hLambda->Draw("SAME HIST");
   legendData->AddEntry(hLambda,"True","l");
   legendData->Draw();
 
   output->cd(4);
   unfoldedUndersmooth->SetStats(kFALSE);
-  unfoldedUndersmooth->SetLineColor(15); // Gray
+  unfoldedUndersmooth->SetLineColor(15);
   unfoldedUndersmooth->SetTitle("Unfolded, Undersmoothing");
   unfoldedUndersmooth->GetYaxis()->SetRangeUser(0.0, 1600.0);
   unfoldedUndersmooth->Draw("");
   hLambda->SetStats(kFALSE);
-  hLambda->SetLineColor(6); // Magenta
+  hLambda->SetLineColor(6);
   hLambda->Draw("SAME HIST");
 
   output->SaveAs("UndersmoothDemo1.pdf");

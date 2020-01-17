@@ -19,8 +19,8 @@ using std::endl;
 #include <TLegend.h>
 #include <TLatex.h>
 #include "TUnfold.h"
-#include <TRatioPlot.h> // LK: for ratio plot
-#include "Math/ProbFunc.h" //LK: this includes normal cdf function
+#include <TRatioPlot.h>
+#include "Math/ProbFunc.h"
 
 TH1D* generateData(Int_t j, vector<vector<string>> data) {
   TH1D* hy = new TH1D ("y", "", 30, 400.0, 1000.0); // Smeared observations
@@ -36,7 +36,7 @@ void UndersmoothDemo2()
   gRandom->SetSeed(123456);
 
   Int_t binSize = 30;
-  //Double_t* y = new Double_t[binSize];            // smeared data y
+
   Double_t* fPertBinsE = new Double_t[binSize];   // lambdaMC
   Double_t* fBinsE = new Double_t[binSize];       // true lambda
 
@@ -44,7 +44,7 @@ void UndersmoothDemo2()
   TH1D* hfPertBinsE = new TH1D ("fPertBinsE", "", 30, 400.0, 1000.0); // lambdaMC
 
 
-  // true lambda
+  // read true lambda from .csv file
   Int_t ind = 0;
   ifstream fBinsE_csv ("fBinsE.csv");
   if (fBinsE_csv.is_open()) {
@@ -58,7 +58,7 @@ void UndersmoothDemo2()
     hfBinsE->SetBinContent(i+1, fBinsE[i]); // true lambda
   }
 
-  // lambda MC
+  // read lambda MC from .csv file
   ind = 0;
   ifstream fPertBinsE_csv ("fPertBinsE.csv");
   if (fPertBinsE_csv.is_open()) {
@@ -72,7 +72,7 @@ void UndersmoothDemo2()
     hfPertBinsE->SetBinContent(i+1, fPertBinsE[i]); // lambda MC
   }
 
-  // KAlt (response matrix)
+  // read KAlt (response matrix) from .csv file
   ifstream kHistPert_csv ("kHistPert.csv");
   vector<vector<string>> kPert;
   string line;
@@ -98,8 +98,6 @@ void UndersmoothDemo2()
       kHistPert->SetBinContent(i+1,j+1,val);  // KAlt
     }
   }
-  //TCanvas* c2 = new TCanvas("c2");
-  //kHistPert->Draw("BOX");
 
   // construct response matrix in count version
   TH2D* kHistPertCount = new TH2D("kHistPertCount","", 30, 0.0, 1.0, 30, 0.0, 1.0);
@@ -112,7 +110,6 @@ void UndersmoothDemo2()
       kHistPertCount->SetBinContent(i+1,j+1,(val*hfPertBinsE->GetBinContent(j+1)));
     }
   }
-  //kHistPertCount->Print("range");
 
   double colsum[30] = {0.0};
   for (int j=0; j<binSize; j++) {
@@ -127,7 +124,6 @@ void UndersmoothDemo2()
   for (int j=0; j<binSize; j++) {
     kHistPertCount->SetBinContent(0,j+1, (fPertBinsE[j] - colsum[j]));
   }
-  //kHistPertCount->Print("range");
 
 
   ifstream y10000realizations_csv ("y10000realizations.csv");
@@ -147,33 +143,24 @@ void UndersmoothDemo2()
 
 
 
-  // nominal coverage; for plotting and obtaining oracle interval length
+  // obtain nominal coverage
   Double_t nominalCoverage = ROOT::Math::normal_cdf(1) - ROOT::Math::normal_cdf(-1);
 
-  // for plotting different delta's (tau's)
   Int_t repeatNum = 1000;
-  // Double_t *tauListY = new Double_t[repeatNum];
-  // Double_t *tauListX = new Double_t[repeatNum];
 
-  // initiating vectors to store confidence interval lengths for each iteration
+  // vectors to store confidence interval lengths for each iteration
   vector<Double_t> intervalLengthListUndersmooth(repeatNum);
   vector<Double_t> intervalLengthListLcurve(repeatNum);
 
   Double_t binwiseCoverageLcurve[31] = {0};
   Double_t binwiseCoverageY[31] = {0};
   Double_t binwiseCoverageX[31];
-  // initiating vectors to display average interval lengths
+  // vectors to display average interval lengths
   vector<Double_t> intervalLengthsUndersmooth(30);
   vector<Double_t> intervalLengthsLcurve(30);
 
+  // set up parameters for ScanLcurve
   Double_t tauMin=1.0E-9;
-  // Double_t tauMin=1.0E-10;
-  // Double_t tauMin=1.5E-9;
-  // Double_t tauMin=0.0;
-
-
-  // Double_t tauMax=0.5;// all cases
-  // Double_t tauMax=0.01;
   Double_t tauMax=1.0E-3;
 
   Int_t nScan=50;
@@ -210,10 +197,6 @@ void UndersmoothDemo2()
     unfoldUndersmooth->DoUnfold(new_delta);
 
 
-    // tauListX[i] = i;
-    // tauListY[i] = new_tau;
-    //tauListY[i] = TauFromLcurve;
-
     unfoldLcurve->GetOutput(hLambdaHatInvLcurve);
     unfoldLcurve->GetOutput(unfoldedLcurve);
     unfoldUndersmooth->GetOutput(hLambdaHatInvUndersmooth);
@@ -236,13 +219,13 @@ void UndersmoothDemo2()
       intervalLengthsLcurve[j-1] = hLambdaHatInvLcurveVar * 2.0;
       intervalLengthsUndersmooth[j-1] = hLambdaHatInvUndersmoothVar * 2.0;
 
-      // check if lcurve scan covered the true lambda
+      // check if ScanLcurve covered the true lambda
       if (hLambdaHatInvLcurveLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvLcurveUp) {
         binwiseCoverageLcurve[j] = binwiseCoverageLcurve[j] + (1.0 / repeatNum);
       }
 
+      // check if UndersmoothTau covered the true lambda
       if (hLambdaHatInvUndersmoothLow <= hLambdaValue && hLambdaValue <= hLambdaHatInvUndersmoothUp) {
-        // binwiseCoverageY starts from index 0 but it is initialized to 0 so neglect;
         binwiseCoverageY[j] = binwiseCoverageY[j] + (1.0 / repeatNum);
       }
     }
