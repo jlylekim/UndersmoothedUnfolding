@@ -27,7 +27,7 @@ bibliography: paper.bib
 
 # Summary
 
-The high energy physics unfolding problem [@Lyons2011; @Cowan1998; @Blobel2013; @Zech2016; Kuusela2016] is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared, and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations.
+The high energy physics unfolding problem [@Lyons2011; @Cowan1998; @Blobel2013; @Zech2016; @Kuusela2016] is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared, and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations.
 
 Unfolding is a common task in experimental high-energy physics, and rigorous uncertainty quantification of the unfolded spectrum is of central importance to particle physicists. The standard approach is to form a regularized point estimator, and then to form frequentist confidence intervals using the variability of this estimator.
 
