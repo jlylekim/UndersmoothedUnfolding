@@ -8,21 +8,18 @@ New functions
 --------------
 ``UndersmoothTau`` is the core functionality of ``UndersmoothedUnfolding``, and
 is implemented so that it can be used with any initial pilot estimate
-of :math:`\tau`, from such as cross-validation, L-curve, etc.
-For general usage, users typically just need to use ``UndersmoothTau`` function.
+of :math:`\tau` from, say, cross-validation, L-curve, etc.
+For typical usage, users simply need to add a call to ``UndersmoothTau`` to their usual TUnfold workflow.
 
 Given an initial estimate of :math:`\tau`,
-``UndersmoothTau`` gradually reduces the amount of regularization,
-until the target coverage is met within the tolerance :math:`\epsilon`.
+``UndersmoothTau`` gradually reduces the amount of regularization
+until the 68% target coverage is met within a tolerance :math:`\epsilon`.
 
-It depends on
+``UndersmoothTau`` depends on
 another core functionality, ``ComputeCoverage``. Under some common assumptions,
 the coverage probability of the (Gaussian) confidence intervals can be
 written down in closed form, thus providing ``UndersmoothTau`` a principled
-way how much to undersmooth.
-
-For more mathematical detail, please refer to Kuusela (2016) [1]_.
-
+way of choosing the amount of undersmoothing. The expression for the coverage depends on the unknown true spectrum, which ``UndersmoothTau`` substitutes with a nontrivial plug-in estimate when calling ``ComputeCoverage``. For more mathematical and technical detail, please refer to Kuusela (2016) [1]_.
 
 --------------
 Example usage
