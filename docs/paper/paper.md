@@ -27,13 +27,13 @@ bibliography: paper.bib
 
 # Summary
 
-The high energy physics unfolding problem (Prosper and Lyons, 2011; Cowan, 1998; Blobel, 2013; Zech, 2016; Kuusela, 2016) is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared, and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations.
+The high energy physics unfolding problem [@Lyons2011; @Cowan1998; @Blobel2013; @Zech2016; Kuusela2016] is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared, and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations.
 
 Unfolding is a common task in experimental high-energy physics, and rigorous uncertainty quantification of the unfolded spectrum is of central importance to particle physicists. The standard approach is to form a regularized point estimator, and then to form frequentist confidence intervals using the variability of this estimator.
 
-However, as demonstrated in Kuusela and Panaretos (2015), Kuusela (2016) and Kuusela and Stark (2017), these confidence intervals derived from point estimates can seriously underestimate the true uncertainty since they ignore the bias that is used to regularize the problem.
+However, as demonstrated in [@Kuusela2015; @Kuusela2016; @Kuusela2017], these confidence intervals derived from point estimates can seriously underestimate the true uncertainty since they ignore the bias that is used to regularize the problem.
 
-To address this issue, Kuusela (2016) proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for ROOT (Brun, 1997), the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` (Schmitt, 2012), the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
+To address this issue, @Kuusela2016 proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for `ROOT` [@root1997], the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` [tunfold2012], the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
 
 # Simulated example
 
