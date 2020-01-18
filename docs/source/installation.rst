@@ -22,19 +22,18 @@ Checking installation
 ---------------------
 
 Upon successful installation, two executables should be in the repository, ``UndersmoothDemo1`` and ``UndersmoothDemo2``,
-which can be executed as below:
+which can be executed as follows:
 
 .. code-block:: bash
 
     ./UndersmoothDemo1
     ./UndersmoothDemo2
 
-The former is the test case with two Gaussian peaks, and should generate
-:ref:`this plot<demo-two-peaks>`. The latter is the test case with steeply falling spectra,
-and should generate :ref:`this plot<demo-steeply-falling>`.
+The former is the test case with two Gaussian peaks and should generate
+:ref:`this plot<demo-two-peaks>`. The latter is the test case with a steeply falling spectrum and should generate :ref:`this plot<demo-steeply-falling>`. Inspecting the code for these demos in the ``UndersmoothedUnfolding`` `repository <https://github.com/jlylekim/UndersmoothedUnfolding>`_ is a recommended way of learning how to set up an unfolding analysis with this software.
 
 
 ------------
 Dependencies
 ------------
-- `ROOT <https://root.cern.ch/>`_ >= V6.12/04 (tested up to the most recent release V6.18/00)
+- `ROOT <https://root.cern.ch/>`_ >= V6.12/04 (tested up to release V6.18/00)
