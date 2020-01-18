@@ -8,7 +8,7 @@
 UndersmoothedUnfolding
 ==================================================
 ``UndersmoothedUnfolding`` provides a `ROOT <https://root.cern.ch/>`_ implementation
-of an unfolding technique which aims at optimal *uncertainty quantification* for the unfolded particle spectrum. The implementation is an extension of the `TUnfold <http://www.desy.de/~sschmitt/tunfold.html>`_ library and can hence be easily incorporated into existing TUnfold-based particle physics data analyses.
+of an unfolding technique that aims at optimal *uncertainty quantification* for an unfolded particle spectrum. The implementation is an extension of the `TUnfold <http://www.desy.de/~sschmitt/tunfold.html>`_ library and can hence be easily incorporated into existing TUnfold-based particle physics data analyses. This website provides the documentation for using and installing ``UndersmoothedUnfolding`` which can be downloaded by cloning `this <https://github.com/jlylekim/UndersmoothedUnfolding>`_ Git repository.
 
 
 .. toctree::

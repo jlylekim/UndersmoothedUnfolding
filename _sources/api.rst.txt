@@ -9,7 +9,7 @@ Function references
 UndersmoothTau
 ---------------
 
-* `Double_t` ``UndersmoothedUnfolding::UndersmoothTau`` (`Double_t` **tau**, `Double_t` **epsilon**, `Int_t` **max_iter**)
+* `Double_t` ``UndersmoothedUnfolding::UndersmoothTau`` (`Double_t` **tau**, `Double_t` **epsilon** = 0.01, `Int_t` **max_iter** = 1000)
 
   Input:
     * `Double_t` **tau**: (strictly positive) pilot estimate of regularization strength :math:`\tau^{initial}`
