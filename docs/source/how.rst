@@ -3,9 +3,6 @@
 How to use
 **********
 
---------------
-New functions
---------------
 ``UndersmoothTau`` is the core functionality of ``UndersmoothedUnfolding``, and
 is implemented so that it can be used with any initial pilot estimate
 of :math:`\tau` from, say, cross-validation, L-curve, etc.
