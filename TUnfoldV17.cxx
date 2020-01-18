@@ -1,5 +1,18 @@
-// Modified by Junhyung Lyle Kim and Mikael Kuusela
-// starting from TUnfoldV17.cxx (version 17.8) by Stefan Schmitt
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+// Junhyung Lyle Kim, Rice University and Mikael Kuusela, Carnegie Mellon University //
+// Date: 1/17/2020                                                                   //
+// Modified from TUnfoldV17.cxx (version 17.8) by Stefan Schmitt                     //
+//                                                                                   //
+// Our contribution starts from line XXX to line YYY                                 //
+// The rest is from the original TUnfold (version 17.8)                              //
+//                                                                                   //
+// Our modiciation and its documentation can be found in                             //
+// https://jlylekim.github.io/UndersmoothedUnfolding/                                //
+//                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
 
 
 // Author: Stefan Schmitt
@@ -3684,10 +3697,12 @@ void TUnfoldV17::SetEpsMatrix(Double_t eps) {
    if((eps>0.0)&&(eps<1.0)) fEpsMatrix=eps;
 }
 
+//*********************************************************************//
+//*********************************************************************//
+// Contribution of JLK and MK starts here                              //
+//*********************************************************************//
+//*********************************************************************//
 
-
-////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
 {
   if(!fVyyInv) {
@@ -3774,8 +3789,6 @@ TVectorD TUnfoldV17::ComputeCoverage(TMatrixD *beta, Double_t tau)
   return Coverage_probability;
 }
 
-////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
 {
   // converting TH1 hist_beta to TMatrixD beta
@@ -3789,8 +3802,6 @@ TVectorD TUnfoldV17::ComputeCoverage(TH1 *hist_beta, Double_t tau)
   return Coverage_probability;
 }
 
-////////////////////////////////////////////////////////////////////////
-/// Implemented by Junhyung Lyle Kim and Mikael Kuusela
 Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_iter)
 {
   if(tau <= 0) {
@@ -3864,6 +3875,12 @@ Double_t TUnfoldV17::UndersmoothTau(Double_t tau, Double_t epsilon, Int_t max_it
   Info("UndersmoothTau", "Obtained estimated coverage: %lf", coverages[1]);
   return tau;
 }
+
+//*********************************************************************//
+//*********************************************************************//
+// Contribution of JLK and MK ends here                              //
+//*********************************************************************//
+//*********************************************************************//
 
 
 
