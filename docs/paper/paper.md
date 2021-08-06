@@ -35,6 +35,9 @@ However, these confidence intervals derived from point estimates can seriously u
 
 To address this issue, @Kuusela2016 proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for `ROOT` [@root1997], the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` [@tunfold2012], the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
 
+# Statement of need
+TODO
+
 # Simulated example
 
 `UndersmoothedUnfolding` is implemented so that it can be used with any initial estimate the regularization strength. We demonstrate the performance of `UndersmoothTau` in the case with two Gaussian peaks on top of a uniform background, resembling situations where invariant mass peaks are observed on top of some background events.
