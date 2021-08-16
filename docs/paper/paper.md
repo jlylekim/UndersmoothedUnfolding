@@ -27,16 +27,17 @@ bibliography: paper.bib
 
 # Summary
 
-The high energy physics unfolding problem [@Lyons2011; @Cowan1998; @Blobel2013; @Zech2016; @Kuusela2016] is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared, and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations.
+The high energy physics unfolding problem [@Lyons2011; @Cowan1998; @Blobel2013; @Zech2016; @Kuusela2016] is an ill-posed inverse problem arising in data analysis at the Large Hadron Collider (LHC) at CERN. Due to the limited resolution of particle detectors, any measurement made at the LHC is smeared (noisy), and the goal in unfolding is to make inferences about the true particle spectrum given the smeared observations. Mathematically, the problem is to infer the intensity function of an indirectly observed Poisson point process.
 
-Unfolding is a common task in experimental high-energy physics, and rigorous uncertainty quantification of the unfolded spectrum is of central importance to particle physicists. The standard approach is to form a regularized point estimator, and then to form frequentist confidence intervals using the variability of this estimator.
+Unfolding is a common task in experimental high-energy physics, and rigorous uncertainty quantification of the unfolded spectrum is of central importance to particle physicists. The standard approach is to form a regularized point estimator, and then to form frequentist confidence intervals using the variability of this estimator. However, these confidence intervals derived from point estimates can seriously underestimate the true uncertainty since they ignore the bias that is used to regularize the problem [@Kuusela2015; @Kuusela2016; @Kuusela2017]. 
 
-However, these confidence intervals derived from point estimates can seriously underestimate the true uncertainty since they ignore the bias that is used to regularize the problem [@Kuusela2015; @Kuusela2016; @Kuusela2017].
-
-To address this issue, @Kuusela2016 proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for `ROOT` [@root1997], the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` [@tunfold2012], the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
+`UndersmoothedUnfolding` addresses this issue by providing an implementation of data-driven techniques for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Please refer to the `Simulated example` section below for a demonstration of `UndersmoothedUnfolding`.
 
 # Statement of need
-TODO
+
+A crucial feature that distinguishes unfolding from many other inverse problems is the need for rigorous uncertainty quantification in the unfolded space. A simple point estimate of the unfolded spectrum is of little use to a particle physicist who wishes to use the spectrum to, for instance, test theory predictions, compare and combine different experiments, and extract further theoretical parameters. Moreover, forming confidence intervals based on the variablity of the regularized point estimator suffers from serious undercoverage, and relying on such method as the statistical starting point for the complex inferential tasks mentioned above can lead to catastrophic results.
+
+To address this issue, @Kuusela2016 proposed a data-driven technique for choosing the regularization strength so that the frequentist coverage of the unfolded uncertainties is improved to near-nominal level. Here we provide a software implementation of this method for `ROOT` [@root1997], the de facto data analysis framework used in high energy physics. Our implementation is based on extending `TUnfold` [@tunfold2012], the existing unfolding library in ROOT, to include new functionality for unfolding with data-driven undersmoothing.
 
 # Simulated example
 
