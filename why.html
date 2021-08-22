@@ -1,39 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Why UndersmoothedUnfolding? &mdash; UndersmoothedUnfolding 0.0.1 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="How to use" href="how.html" />
@@ -74,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,9 +90,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Why UndersmoothedUnfolding?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#uncertainty-quantification-vs-point-estimation">Uncertainty quantification vs. point estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-i-two-peaks-spectra">Coverage demonstration I: two peaks spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-ii-steeply-falling-spectra">Coverage demonstration II: steeply falling spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-as-a-function-of-regularization-strength">Coverage as a function of regularization strength</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-i-two-gaussian-peaks">Coverage demonstration I: Two Gaussian peaks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage-demonstration-ii-steeply-falling-spectrum">Coverage demonstration II: Steeply falling spectrum</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="how.html">How to use</a></li>
@@ -99,6 +104,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -133,18 +139,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Why UndersmoothedUnfolding?</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/why.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -160,84 +168,90 @@
             
   <div class="section" id="why-undersmoothedunfolding">
 <h1>Why UndersmoothedUnfolding?<a class="headerlink" href="#why-undersmoothedunfolding" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="uncertainty-quantification-vs-point-estimation">
-<h2>Uncertainty quantification vs. point estimation<a class="headerlink" href="#uncertainty-quantification-vs-point-estimation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coverage-as-a-function-of-regularization-strength">
+<h2>Coverage as a function of regularization strength<a class="headerlink" href="#coverage-as-a-function-of-regularization-strength" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding</span></code> an extension for the unfolding
-software <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfoldV17.8</a> <a class="footnote-reference brackets" href="#id5" id="id1">2</a> written by Stefan Schmitt.
+software <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfoldV17.8</a> <a class="footnote-reference brackets" href="#id6" id="id1">2</a> written by Stefan Schmitt.
 <a class="reference external" href="http://www.desy.de/~sschmitt/tunfold.html">TUnfold</a> implements Tikhonov regularization for unfolding smeared data
-from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference brackets" href="#id4" id="id2">1</a>,
-the resulting confidence intervals may seriously underestimate the uncertainty
+from particle detectors. However, as demonstrated by Kuusela (2016) <a class="footnote-reference brackets" href="#id5" id="id2">1</a>,
+the resulting confidence intervals may seriously underestimate the true uncertainty
 in the unfolded space, unless care is taken in the choice of the regularization
 strength <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
-<div class="figure align-center" id="id7">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/coverage_peak_bin_curvature.png"><img alt="_images/coverage_peak_bin_curvature.png" src="_images/coverage_peak_bin_curvature.png" style="width: 80%;" /></a>
 <p class="caption"><span class="caption-text">Coverage is empirically obtained with
-10,000 independent realizations of data.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+10,000 independent realizations of the data.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 <p>The plot above illustrates the empirical coverage at the peak bin
-(with highest <span class="math notranslate nohighlight">\(y\)</span>-value) for various values of regularization strength.
+(with highest <span class="math notranslate nohighlight">\(y\)</span>-value) for various values of the regularization strength
+in the two Gaussian peaks example described below.
 Coverage starts at the nominal level (68 %) when there is no regularization.
-However, as regularization strength increases, coverage gradually
-decreases eventually to zero.</p>
+However, as the regularization strength increases, coverage gradually
+decreases to zero.</p>
 <p>The first vertical line indicates the average
-regularization strengths chosen by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>,
-and the corresponding coverage is near nominal level (68 %).
-On the other hand, the second vertical line, indicating average
-regularization strengths chosen by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>, and it
-shows serious undercoverage at around 20%.</p>
+regularization strength chosen by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>,
+and the corresponding coverage is near the nominal level (68 %).
+On the other hand, the second vertical line, corresponding to the average
+regularization strength chosen by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>, shows serious undercoverage at around 20%.
+This result shows that <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> regularizes too strongly from the perspective
+of uncertainty quantification, while <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> has chosen
+a regularization strength that results in better-calibrated uncertainties.</p>
 </div>
-<div class="section" id="coverage-demonstration-i-two-peaks-spectra">
-<span id="demo-two-peaks"></span><h2>Coverage demonstration I: two peaks spectra<a class="headerlink" href="#coverage-demonstration-i-two-peaks-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coverage-demonstration-i-two-gaussian-peaks">
+<span id="demo-two-peaks"></span><h2>Coverage demonstration I: Two Gaussian peaks<a class="headerlink" href="#coverage-demonstration-i-two-gaussian-peaks" title="Permalink to this headline">¶</a></h2>
 <p>The first test case we consider has two Gaussian peaks on top of
 a uniform background, resembling situations where invariant mass peaks
-are observed on top of some background events.</p>
-<div class="figure align-center" id="id8">
+are observed on top of some background events. The observations are smeared with Gaussian noise,
+resulting in a Gaussian deconvolution problem.</p>
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_twopeaks.png"><img alt="_images/undersmooth_demo_twopeaks.png" src="_images/undersmooth_demo_twopeaks.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
-the unfolding 1,000 times with independent realizations of data.
-The average confidence interval lengths for each method is written below
-on the top plots.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+the unfolding 1,000 times with independent realizations of the data.
+The average confidence interval length for each method is indicated above
+the top plots.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 <p>The top two plots compare the performance of the unfolded confidence
 intervals when <span class="math notranslate nohighlight">\(\tau\)</span> is chosen using
 <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> and the algorithm <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code>
-provided by this software. The tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span> was set to 0.01, so the intervals from
-<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> should have 67% coverage.</p>
-<p>The bottom plots show one realization of the unfolded confidence intervals
-for each method. As shown before, the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> are too
+provided by this software. The tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span> is set to 0.01, so the intervals from
+<code class="docutils literal notranslate"><span class="pre">UndersmoothTau</span></code> should have 67% coverage.
+The bottom plots show one realization of the unfolded confidence intervals
+for each method. The confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code> are too
 short and suffer from drastic undercoverage, while the intervals provided
 by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage without being excessively long.</p>
 </div>
-<div class="section" id="coverage-demonstration-ii-steeply-falling-spectra">
-<span id="demo-steeply-falling"></span><h2>Coverage demonstration II: steeply falling spectra<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectra" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coverage-demonstration-ii-steeply-falling-spectrum">
+<span id="demo-steeply-falling"></span><h2>Coverage demonstration II: Steeply falling spectrum<a class="headerlink" href="#coverage-demonstration-ii-steeply-falling-spectrum" title="Permalink to this headline">¶</a></h2>
 <p>The second test case we consider has a steeply falling particle spectrum,
-and we use transverse momentum spectrum <a class="footnote-reference brackets" href="#id6" id="id3">3</a>  as an example. Observing a jet,
+and we use the inclusive jet transverse momentum spectrum <a class="footnote-reference brackets" href="#id7" id="id3">3</a>  as an example. Observing a jet,
 a collimated stream of energetic particles, in an LHC particle detector
-implies the creation of a quark or a gluon in proton-proton collision, and
-is an important test of the Standard Model of particle physics.</p>
-<div class="figure align-center" id="id9">
+implies the creation of a quark or a gluon, and
+analyzing the properties of these jets is an important test of the Standard Model of particle physics.
+In this example, the smearing kernel is Gaussian with a variance that changes along the <span class="math notranslate nohighlight">\(x\)</span>-axis.
+See Kuusela (2016) <a class="footnote-reference brackets" href="#id5" id="id4">1</a> for a more detailed description of the experiment setup.</p>
+<div class="figure align-center" id="id10">
 <a class="reference internal image-reference" href="_images/undersmooth_demo_incjets.png"><img alt="_images/undersmooth_demo_incjets.png" src="_images/undersmooth_demo_incjets.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">The coverage is estimated by repeating
-the unfolding 1,000 times with independent realizations of data.
-The average confidence interval lengths for each method is written below
-on the top plots.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+the unfolding 1,000 times with independent realizations of the data.
+The average confidence interval length for each method is indicated above
+the top plots.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 <p>Again, we see that the confidence intervals provided by <code class="docutils literal notranslate"><span class="pre">TUnfold::ScanLcurve</span></code>
-suffer drastic undercoverage, while the intervals provided
+suffer from drastic undercoverage especially on the left side of the spectrum, while the intervals provided
 by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnfolding::UndersmoothTau</span></code> have nearly nominal coverage.</p>
 <dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dt class="label" id="id5"><span class="brackets">1</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id4">2</a>)</span></dt>
 <dd><ol class="upperalpha simple" start="13">
 <li><p>Kuusela, “Uncertainty quantification in unfolding elementary particle spectra at the Large Hadron Collider”, PhD thesis, EPFL (2016)</p></li>
 </ol>
 </dd>
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
 <dd><ol class="upperalpha simple" start="19">
 <li><p>Schmitt, “TUnfold, an algorithm for correcting migration effects in high energy physics”, Journal of Instrumentation <strong>7</strong> (2012)</p></li>
 </ol>
 </dd>
-<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p>CMS Collaboration, “Measurement of the Inclusive Jet Cross Section in <span class="math notranslate nohighlight">\(pp\)</span> Collisions at <span class="math notranslate nohighlight">\(\sqrt{s} = 7 TeV\)</span>”, Physical Review D <strong>107</strong> (2011)</p>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>CMS Collaboration, “Measurement of the Inclusive Jet Cross Section in <span class="math notranslate nohighlight">\(pp\)</span> Collisions at <span class="math notranslate nohighlight">\(\sqrt{s} = 7\)</span> TeV”, Physical Review D <strong>107</strong> (2011)</p>
 </dd>
 </dl>
 </div>
@@ -248,29 +262,29 @@ by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnf
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="how.html" class="btn btn-neutral float-right" title="How to use" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="how.html" class="btn btn-neutral float-right" title="How to use" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Junhyung Lyle Kim and Mikael Kuusela
+        &#169; Copyright 2020, Junhyung Lyle Kim and Mikael Kuusela.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -278,7 +292,6 @@ by <code class="docutils literal notranslate"><span class="pre">UndersmoothedUnf
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
